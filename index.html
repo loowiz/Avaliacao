@@ -4,28 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Avaliação de Recuperação: UC Linguagem de Programação</title>
-    <!-- Tailwind CSS (Estilo Visual) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- jsPDF (Gerador de PDF) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
         
-        /* --- CORREÇÃO CRÍTICA: GARANTE QUE A TROCA DE TELA FUNCIONE SEM INTERNET --- */
         .hidden { display: none !important; }
-        /* -------------------------------------------------------------------------- */
 
-        /* Proteção Anti-Cópia via CSS */
         .no-select {
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and IE 11 */
-            user-select: none; /* Standard syntax */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .question-card { transition: all 0.3s ease; }
         .question-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
         
-        /* Animação para o relógio quando estiver perto do fim */
         @keyframes pulse-red {
             0% { color: white; }
             50% { color: #ffcccc; }
@@ -36,7 +30,6 @@
             font-weight: bold;
         }
 
-        /* Animação para penalidade */
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
             10% { transform: translate(-1px, -2px) rotate(-1deg); }
@@ -52,18 +45,14 @@
         }
         .penalty-shake {
             animation: shake 0.5s;
-            background-color: #ef4444 !important; /* Red-500 */
+            background-color: #ef4444 !important;
         }
     </style>
 </head>
 <body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 no-select" oncontextmenu="return false;">
 
-    <!-- Removido 'overflow-hidden' para permitir que o cabeçalho sticky funcione -->
     <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg relative">
         
-        <!-- ========================================== -->
-        <!-- TELA 1: BOAS-VINDAS E REGRAS (VISÍVEL INICIALMENTE) -->
-        <!-- ========================================== -->
         <div id="welcome-screen" class="p-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-blue-700">Avaliação de Recuperação - Linguagem de Programação</h1>
@@ -78,7 +67,6 @@
                 </p>
             </div>
 
-            <!-- Dados do Aluno (Preenchimento Obrigatório ANTES de começar) -->
             <div class="mb-8 bg-gray-50 p-6 rounded-lg border border-gray-200">
                 <h3 class="text-md font-bold text-gray-700 mb-4 uppercase tracking-wide border-b pb-2">1. Identificação</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -94,7 +82,6 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <!-- Conteúdo Cobrado -->
                 <div class="bg-white border border-gray-200 p-5 rounded-lg shadow-sm">
                     <h3 class="text-md font-bold text-gray-800 mb-3 flex items-center">
                         📚 O que vai cair na prova?
@@ -108,7 +95,6 @@
                     </ul>
                 </div>
 
-                <!-- Regras de Segurança -->
                 <div class="bg-yellow-50 border border-yellow-200 p-5 rounded-lg shadow-sm">
                     <h3 class="text-md font-bold text-red-700 mb-3 flex items-center">
                         ⚠️ Regras Anti-Fraude
@@ -124,7 +110,6 @@
                 </div>
             </div>
 
-            <!-- Material de Estudo Extra -->
             <div class="mb-8 bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                 <h3 class="text-md font-bold text-blue-800 mb-4 flex items-center gap-2">
                     🎓 Material de Estudo (Revisão)
@@ -161,14 +146,8 @@
             <p class="text-xs text-gray-400 text-center mt-2">Ao clicar, o tempo começará a contar e as proteções serão ativadas.</p>
         </div>
 
-
-        <!-- ========================================== -->
-        <!-- TELA 2: AVALIAÇÃO (INICIALMENTE OCULTA) -->
-        <!-- ========================================== -->
         <div id="exam-screen" class="hidden relative">
             
-            <!-- Cabeçalho Flutuante -->
-            <!-- Adicionado 'rounded-t-xl' para manter o design com a remoção do overflow-hidden -->
             <div class="bg-blue-600 px-6 py-4 text-white flex flex-col md:flex-row justify-between items-center sticky top-0 z-50 shadow-md gap-4 rounded-t-xl">
                 <div>
                     <h1 class="text-lg md:text-xl font-bold">Avaliação em Andamento</h1>
@@ -176,13 +155,11 @@
                 </div>
                 
                 <div class="flex gap-4">
-                    <!-- Mostrador de Penalidades -->
                     <div id="penalty-box" class="bg-red-800 px-3 py-2 rounded-lg text-center shadow-inner transition-colors duration-300 min-w-[100px]">
                         <p class="text-[10px] text-red-200 uppercase tracking-wide">Penalidades</p>
                         <div class="text-lg font-mono font-bold"><span id="penalty-display">0</span>/10</div>
                     </div>
 
-                    <!-- Timer -->
                     <div class="bg-blue-800 px-3 py-2 rounded-lg text-center shadow-inner min-w-[100px]">
                         <p class="text-[10px] text-blue-200 uppercase tracking-wide">Tempo</p>
                         <div id="timer-display" class="text-lg font-mono font-bold">00:00</div>
@@ -190,12 +167,9 @@
                 </div>
             </div>
 
-            <!-- Área do Quiz -->
             <div id="quiz-container" class="p-6 space-y-6 bg-gray-50 min-h-[500px]">
-                <!-- As questões serão inseridas aqui via JavaScript -->
             </div>
 
-            <!-- Botões de Ação -->
             <div class="p-6 bg-white border-t border-gray-200 flex justify-end items-center gap-4">
                 <button onclick="finishQuiz()" id="btn-finish" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow transition duration-200">
                     Finalizar e Ver Nota
@@ -205,7 +179,6 @@
                 </button>
             </div>
             
-            <!-- Resultado -->
             <div id="result-area" class="hidden p-6 bg-yellow-50 text-center border-t border-yellow-200">
                 <h3 class="text-2xl font-bold text-gray-800">Sua Nota: <span id="score-display" class="text-blue-600"></span>/100</h3>
                 <p class="text-gray-600 mt-2">Clique no botão "Baixar Comprovante" para salvar seu recibo de nota e enviar ao professor.</p>
@@ -214,19 +187,41 @@
     </div>
 
 <script>
-    // --- ESTADO DO SISTEMA ---
+    document.addEventListener('keydown', function(e) {
+        if(
+            e.keyCode === 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+            (e.ctrlKey && e.keyCode === 85) || 
+            (e.ctrlKey && e.keyCode === 83) || 
+            (e.ctrlKey && e.keyCode === 80)    
+        ) {
+            e.preventDefault();
+            e.stopPropagation();
+            if(isExamStarted && !isLocked) addPenalty("Tentativa de uso de teclas proibidas/inspeção.");
+            return false;
+        }
+    });
+
+    setInterval(() => {
+        if (isExamStarted && !isLocked) {
+            const start = performance.now();
+            debugger; 
+            const end = performance.now();
+            if (end - start > 100) {
+                addPenalty("Ferramentas de desenvolvedor detectadas.");
+            }
+        }
+    }, 2000);
+
     let isExamStarted = false;
     let isLocked = false;
     
-    // --- SISTEMA ANTI-FRAUDE ---
     let penaltyCount = 0;
     const MAX_PENALTIES = 10;
 
     function addPenalty(reason) {
-        // Só aplica penalidade se a prova já começou e não está travada/finalizada
         if (!isExamStarted || isLocked) return;
 
-        // Se o botão de finalizar estiver oculto (prova já corrigida), não gera penalidade
         if (document.getElementById('btn-finish').classList.contains('hidden')) return;
 
         penaltyCount++;
@@ -235,7 +230,6 @@
         
         display.textContent = penaltyCount;
         
-        // Efeito visual de alerta
         box.classList.add('penalty-shake');
         setTimeout(() => box.classList.remove('penalty-shake'), 500);
 
@@ -248,16 +242,14 @@
         }
     }
 
-    // 1. Monitoramento de Saída de Aba
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
             addPenalty("Saída da aba/janela ou minimização do navegador.");
         }
     });
 
-    // 2. Monitoramento de Cópia e Seleção
     document.addEventListener('copy', (e) => {
-        if (!isExamStarted) return; // Permite copiar na tela de boas-vindas
+        if (!isExamStarted) return; 
         e.preventDefault();
         addPenalty("Tentativa de copiar conteúdo.");
     });
@@ -268,13 +260,11 @@
         addPenalty("Tentativa de recortar conteúdo.");
     });
 
-    // Desabilitar menu de contexto (botão direito)
     document.addEventListener('contextmenu', (e) => {
         e.preventDefault();
         return false;
     });
 
-    // --- CONTROLE DE FLUXO ---
     function startExam() {
         try {
             const nameInput = document.getElementById('studentName');
@@ -295,19 +285,15 @@
 
             if(!confirm("Tem certeza que deseja iniciar? O tempo começará a contar e as penalidades por saída de tela estarão ativas.")) return;
 
-            // Transição de Tela
             document.getElementById('welcome-screen').classList.add('hidden');
             document.getElementById('exam-screen').classList.remove('hidden');
             
-            // Atualiza display do aluno no cabeçalho da prova
             document.getElementById('student-display').textContent = `Aluno: ${name} (${turma})`;
 
-            // Inicia Lógicas
             isExamStarted = true;
             generateQuiz();
             startTimer();
             
-            // Rola para o topo para garantir visualização do cabeçalho sticky
             window.scrollTo(0, 0);
         } catch (error) {
             alert("Erro ao iniciar a prova: " + error.message);
@@ -315,9 +301,8 @@
         }
     }
 
-    // --- LÓGICA DO RELÓGIO ---
     let timeElapsed = 0;
-    const timeLimit = 30 * 60; // 30 minutos em segundos
+    const timeLimit = 30 * 60; 
     let timerInterval;
 
     function startTimer() {
@@ -359,117 +344,9 @@
         alert(`🚫 PROVA BLOQUEADA!\n\nMotivo: ${reason}\n\nO formulário foi bloqueado para novas respostas. Finalize para gerar o relatório.`);
     }
 
-    // --- BANCO DE DADOS DE QUESTÕES ---
-    const questionBank = [
-        // --- C++ Básico e Estrutura Arduino (20 questões) ---
-        { q: "Qual função do Arduino roda apenas uma vez quando a placa é ligada?", options: ["loop()", "setup()", "main()", "start()"], a: 1 },
-        { q: "Qual função do Arduino é executada repetidamente em ciclo infinito?", options: ["setup()", "repeat()", "loop()", "cycle()"], a: 2 },
-        { q: "Para configurar um pino como saída de energia, qual comando utilizamos?", options: ["pinMode(pino, OUTPUT)", "pinMode(pino, INPUT)", "digitalWrite(pino, HIGH)", "analogWrite(pino, 255)"], a: 0 },
-        { q: "Qual comando é usado para ler o estado de um botão digital?", options: ["analogRead()", "digitalWrite()", "digitalRead()", "pinMode()"], a: 2 },
-        { q: "O que o comando 'delay(2000)' faz no código?", options: ["Pausa o programa por 2000 segundos", "Pausa o programa por 2 segundos", "Reinicia o Arduino", "Espera um botão ser pressionado"], a: 1 },
-        { q: "Em C++, como declaramos uma variável para armazenar números inteiros?", options: ["float", "String", "boolean", "int"], a: 3 },
-        { q: "Qual o tipo de variável mais adequado para armazenar a temperatura '25.5'?", options: ["int", "char", "float", "long"], a: 2 },
-        { q: "O que significa o símbolo '//' no código do Arduino?", options: ["Início de função", "Divisão", "Comentário de uma linha", "Fim de instrução"], a: 2 },
-        { q: "Qual operador é usado para verificar igualdade em uma condição 'if'?", options: ["=", "==", "===", "!="], a: 1 },
-        { q: "Qual operador lógico representa 'E' (AND)?", options: ["||", "!", "&&", "**"], a: 2 },
-        { q: "Qual operador lógico representa 'OU' (OR)?", options: ["&&", "||", "??", "!"], a: 1 },
-        { q: "O símbolo '!' antes de uma variável booleana serve para:", options: ["Confirmar o valor", "Inverter o valor (NÃO lógico)", "Transformar em inteiro", "Apagar a variável"], a: 1 },
-        { q: "Qual biblioteca é essencial para usar o Display LCD 16x2?", options: ["&lt;Keypad.h&gt;", "&lt;DHT.h&gt;", "&lt;LiquidCrystal.h&gt;", "&lt;Servo.h&gt;"], a: 2 },
-        { q: "Para incluir uma biblioteca no código, usamos a diretiva:", options: ["#define", "#include", "import", "using"], a: 1 },
-        { q: "O comando 'Serial.begin(9600)' serve para:", options: ["Ligar o LCD", "Iniciar a comunicação com o computador", "Definir a velocidade do motor", "Configurar um pino PWM"], a: 1 },
-        { q: "Qual pontuação é usada para finalizar uma instrução em C++?", options: [":", ".", ";", ","], a: 2 },
-        { q: "O que acontece se esquecermos de fechar uma chave '}' no código?", options: ["O código roda normalmente", "Erro de compilação", "O Arduino trava", "Apenas a última função falha"], a: 1 },
-        { q: "A função 'lcd.clear()' serve para:", options: ["Desligar o LCD", "Acender a luz de fundo", "Limpar todos os caracteres da tela", "Reiniciar o Arduino"], a: 2 },
-        { q: "O que a função 'lcd.setCursor(0, 1)' faz?", options: ["Vai para a coluna 0, linha 0", "Vai para a coluna 0, linha 1 (segunda linha)", "Escreve '0' e '1' na tela", "Limpa a linha 1"], a: 1 },
-        { q: "Para concatenar (juntar) texto em uma String, usamos o operador:", options: ["*", "-", "+", "%"], a: 2 },
-        // --- Estação 1 & 4: Teclado e Senha (15 questões) ---
-        { q: "No projeto da Catraca, qual componente é usado para entrada de senha?", options: ["LDR", "Sensor Ultrassônico", "Teclado Matricial 4x4", "Potenciômetro"], a: 2 },
-        { q: "Qual biblioteca facilita o uso do teclado matricial?", options: ["Matrix.h", "Keypad.h", "Button.h", "Input.h"], a: 1 },
-        { q: "Se a senha correta é '1234' e o usuário digita '1234', qual função compara as Strings?", options: ["texto.compare()", "texto.check()", "texto.equals()", "texto.is()"], a: 2 },
-        { q: "No código da Catraca, a tecla '#' foi programada para:", options: ["Apagar a senha", "Digitar o número zero", "Confirmar (Enter)", "Reiniciar o sistema"], a: 2 },
-        { q: "No código da Catraca, a tecla '*' foi usada para:", options: ["Confirmar", "Cancelar/Limpar", "Ligar o LED", "Digitar uma letra"], a: 1 },
-        { q: "O que é um 'LCD Keypad Shield'?", options: ["Um escudo de proteção física", "Uma placa que acopla LCD e botões no Arduino", "Um tipo de sensor de temperatura", "Um software de simulação"], a: 1 },
-        { q: "Para exibir um asterisco '*' ao invés do número digitado na senha, usamos:", options: ["lcd.print('*')", "lcd.noDisplay()", "lcd.hide()", "Serial.print('*')"], a: 0 },
-        { q: "Qual variável foi usada para armazenar a senha digitada?", options: ["int", "float", "String", "char"], a: 2 },
-        { q: "No projeto da Trava Eletromagnética, o sistema é 'biestável'. O que isso significa?", options: ["Tem dois microcontroladores", "Alterna entre dois estados estáveis (Travado/Destravado)", "Funciona com duas baterias", "Só funciona por 2 segundos"], a: 1 },
-        { q: "O operador ternário 'condição ? valor1 : valor2' substitui qual estrutura?", options: ["for", "while", "if...else simples", "switch...case"], a: 2 },
-        { q: "Se 'trava_destravada' é false, o que '!trava_destravada' retorna?", options: ["false", "true", "null", "erro"], a: 1 },
-        { q: "Para limpar a variável 'senha_digitada', atribuímos a ela:", options: ["0", "null", "\"\" (string vazia)", "false"], a: 2 },
-        { q: "Quantos pinos digitais são necessários para controlar as linhas de um teclado 4x4?", options: ["2", "4", "8", "16"], a: 1 },
-        { q: "O mapeamento das teclas do teclado matricial é feito usando:", options: ["Um array bidimensional (matriz)", "Uma lista simples", "Uma variável int", "Um sensor analógico"], a: 0 },
-        { q: "No projeto da Trava, o Relé em estado HIGH significa:", options: ["Trava Aberta", "Trava Fechada (Desligado)", "Curto-circuito", "LED queimado"], a: 1 },
-        // --- Estação 2: Ultrassônico e Alarme (12 questões) ---
-        { q: "Qual sensor foi utilizado para o Alarme de Intrusão?", options: ["DHT11", "LDR", "HC-SR04 (Ultrassônico)", "LM35"], a: 2 },
-        { q: "O pino 'Trig' do sensor ultrassônico serve para:", options: ["Receber o eco", "Enviar o pulso sonoro", "Alimentar o sensor", "Aterrar o sensor"], a: 1 },
-        { q: "O pino 'Echo' do sensor ultrassônico serve para:", options: ["Enviar o som", "Receber o pulso refletido", "Configurar a distância", "Ligar o LED"], a: 1 },
-        { q: "A velocidade do som usada no cálculo da distância é aproximadamente:", options: ["340 m/s", "100 km/h", "300.000 km/s", "10 m/s"], a: 0 },
-        { q: "Por que dividimos o tempo de viagem do som por 2 no cálculo da distância?", options: ["Para converter metros em centímetros", "Porque o som vai e volta", "Para reduzir o ruído", "É uma constante do Arduino"], a: 1 },
-        { q: "Qual função mede a duração do pulso no pino Echo?", options: ["digitalRead()", "analogRead()", "pulseIn()", "time()"], a: 2 },
-        { q: "A função 'delayMicroseconds(10)' é usada para:", options: ["Pausar por 10 segundos", "Gerar o pulso de disparo no Trig", "Esperar o LCD ligar", "Reiniciar o sensor"], a: 1 },
-        { q: "No alarme, se a distância for menor que o limite, o que acontece?", options: ["O sistema desliga", "O LED acende e o Relé ativa", "O Arduino reinicia", "O sensor para de ler"], a: 1 },
-        { q: "O sensor ultrassônico usa ondas sonoras de:", options: ["Baixa frequência (graves)", "Alta frequência (inaudíveis)", "Luz infravermelha", "Rádio frequência"], a: 1 },
-        { q: "O Módulo de Relé é usado no projeto para:", options: ["Medir a distância", "Simular uma sirene ou lâmpada de alta potência", "Armazenar dados", "Substituir o Arduino"], a: 1 },
-        { q: "O que acontece com o relé quando enviamos um sinal LOW (em módulos ativo-baixo)?", options: ["Ele desliga", "Ele liga (ativa)", "Ele queima", "Nada acontece"], a: 1 },
-        { q: "A variável 'long' é usada para armazenar a duração do pulso porque:", options: ["É um número decimal", "É um texto", "Pode ser um número inteiro muito grande", "É negativo"], a: 2 },
-        // --- Estação 3: LED RGB e Status (10 questões) ---
-        { q: "Um LED RGB pode emitir:", options: ["Apenas luz vermelha", "Apenas luz branca", "Várias cores combinando Vermelho, Verde e Azul", "Som"], a: 2 },
-        { q: "Para controlar a intensidade das cores do LED RGB, usamos qual função?", options: ["digitalWrite()", "analogWrite() (PWM)", "digitalRead()", "tone()"], a: 1 },
-        { q: "Pinos PWM no Arduino são identificados por:", options: ["Uma letra 'A'", "Um símbolo '~' ou a sigla PWM", "A cor vermelha", "Não têm identificação"], a: 1 },
-        { q: "A cor Amarela no LED RGB é formada misturando:", options: ["Vermelho e Azul", "Verde e Azul", "Vermelho e Verde", "Apenas Verde"], a: 2 },
-        { q: "O que significa 'Debounce' no contexto de botões?", options: ["Fazer o botão pular", "Técnica para evitar leituras falsas/ruído ao pressionar", "Ligar o botão no 5V", "Queimar o botão"], a: 1 },
-        { q: "O modo INPUT_PULLUP configura o botão para:", options: ["Ler HIGH quando pressionado", "Ler LOW quando pressionado e usar resistor interno", "Precisar de um resistor externo", "Funcionar como saída"], a: 1 },
-        { q: "A estrutura 'enum' foi usada no código para:", options: ["Contar números", "Definir estados nomeados (LIVRE, OCUPADO, ATENCAO)", "Criar um loop", "Configurar o LCD"], a: 1 },
-        { q: "Os valores de PWM variam de:", options: ["0 a 1023", "0 a 100", "0 a 255", "-128 a 127"], a: 2 },
-        { q: "Se usarmos 'analogWrite(pino, 0)', o LED:", options: ["Brilha ao máximo", "Pisca", "Apaga", "Muda de cor"], a: 2 },
-        { q: "Qual a vantagem de usar funções (como statusLivre()) no código?", options: ["Deixa o código mais lento", "Organiza e facilita a leitura do código", "Gasta mais memória", "Não tem vantagem"], a: 1 },
-        // --- Estação 5 & 6: DHT11, Temperatura e Umidade (13 questões) ---
-        { q: "O sensor DHT11 mede quais grandezas?", options: ["Luz e Som", "Temperatura e Umidade", "Distância e Presença", "Pressão e Altitude"], a: 1 },
-        { q: "Qual o intervalo mínimo recomendado entre leituras do DHT11?", options: ["10 milissegundos", "500 milissegundos", "2 segundos", "1 minuto"], a: 2 },
-        { q: "A função 'isnan()' verifica:", options: ["Se o valor é um número válido", "Se o valor é zero", "Se o sensor está desligado", "Se é um número inteiro"], a: 0 },
-        { q: "No monitor de temperatura, os valores são exibidos em qual unidade?", options: ["Fahrenheit", "Kelvin", "Celsius", "Volts"], a: 2 },
-        { q: "Para exibir uma variável float com apenas 1 casa decimal no LCD, usamos:", options: ["lcd.print(var, 1)", "lcd.print(var, 0)", "lcd.decimal(var)", "lcd.one(var)"], a: 0 },
-        { q: "Se a umidade ultrapassar o limite crítico, o sistema:", options: ["Desliga o Arduino", "Aciona um Relé (Exaustor)", "Apaga o LCD", "Toca música"], a: 1 },
-        { q: "Para ler a temperatura do DHT11, usamos o comando:", options: ["dht.read()", "dht.getTemp()", "dht.readTemperature()", "analogRead()"], a: 2 },
-        { q: "O que é 'Histerese' no controle de umidade?", options: ["Um erro do sensor", "Uma faixa de diferença entre ligar e desligar para evitar oscilação", "Um tipo de cabo", "A velocidade do cooler"], a: 1 },
-        { q: "No projeto, o pino de dados do DHT11 foi ligado no pino digital:", options: ["0", "1", "40", "A0"], a: 2 },
-        { q: "Se o sensor DHT11 falhar, o código foi programado para:", options: ["Travar", "Exibir 'Erro de Sensor' no LCD", "Reiniciar sozinho", "Ignorar o erro"], a: 1 },
-        { q: "A biblioteca DHT.h serve para:", options: ["Controlar motores", "Facilitar a comunicação com sensores DHT", "Ler teclados", "Gerar sons"], a: 1 },
-        { q: "Umidade Crítica foi definida no código como:", options: ["Uma constante float", "Uma variável int", "Uma String", "Um pino"], a: 0 },
-        { q: "O que o comando 'dht.begin()' faz?", options: ["Lê a temperatura", "Inicializa o sensor", "Para o sensor", "Calibra o sensor"], a: 1 },
-        // --- Estação 7 & 8: LDR e Iluminação (15 questões) ---
-        { q: "O componente LDR é um tipo de:", options: ["LED", "Capacitor", "Resistor que varia com a luz", "Transistor"], a: 2 },
-        { q: "Quando a luz incide sobre o LDR, sua resistência:", options: ["Aumenta", "Diminui", "Permanece igual", "Queima"], a: 1 },
-        { q: "O LDR deve ser conectado a qual tipo de pino no Arduino para medir intensidade?", options: ["Digital", "PWM", "Analógico (Ex: A8)", "Alimentação apenas"], a: 2 },
-        { q: "A função 'analogRead()' retorna um valor entre:", options: ["0 e 255", "0 e 1023", "0 e 1", "-5V e +5V"], a: 1 },
-        { q: "Para converter o valor bruto do LDR (0-1023) para porcentagem (0-100), usamos:", options: ["convert()", "map()", "pulseIn()", "transform()"], a: 1 },
-        { q: "A função 'constrain(valor, 0, 100)' serve para:", options: ["Forçar o valor a ficar entre 0 e 100", "Zerar o valor", "Multiplicar por 100", "Dividir por 100"], a: 0 },
-        { q: "No projeto de Iluminação Automática, o que acontece se o ambiente escurecer?", options: ["Os relés desligam", "Os relés ligam gradativamente", "O LCD apaga", "O LDR para de ler"], a: 1 },
-        { q: "Para controlar 4 relés, foi utilizado no código:", options: ["4 variáveis soltas", "Um array (vetor) de pinos e um loop for", "4 Arduinos", "Uma matriz de LEDs"], a: 1 },
-        { q: "O que é um 'Divisor de Tensão' usado com o LDR?", options: ["Uma ferramenta de corte", "Um circuito com 2 resistores para dividir a voltagem", "Um software", "Uma bateria extra"], a: 1 },
-        { q: "Se a leitura do LDR for muito instável, qual técnica foi sugerida nos desafios?", options: ["Média Móvel", "Trocar o Arduino", "Usar cola quente", "Aumentar a voltagem"], a: 0 },
-        { q: "No código, 'map(valor, MIN, MAX, 0, 100)' faz o quê?", options: ["Desenha um mapa", "Escala o valor de uma faixa para outra", "Procura um valor", "Apaga a memória"], a: 1 },
-        { q: "O 'Feedback visual' no projeto de iluminação foi feito com:", options: ["Um motor", "Uma sirene", "Um LED piscando ou Display LCD", "Aquecimento"], a: 2 },
-        { q: "Os limites de luminosidade para acionar os relés foram definidos como:", options: ["Constantes percentuais", "Valores aleatórios", "Strings", "Funções"], a: 0 },
-        { q: "Para inverter o estado de um pino digital (Toggle) usamos:", options: ["digitalWrite(pino, !digitalRead(pino))", "digitalWrite(pino, 0)", "analogWrite(pino, 255)", "pinMode(pino, OUTPUT)"], a: 0 },
-        { q: "Em um ambiente totalmente escuro, o valor lido pelo pino analógico do LDR tende a ser:", options: ["Próximo do extremo (dependendo da montagem)", "Sempre zero", "Aleatório", "Sempre 512"], a: 0 },
-        // --- Conceitos Gerais e Eletrônica (15 questões) ---
-        { q: "O que é um Relé?", options: ["Um sensor de luz", "Um interruptor eletromecânico controlado eletricamente", "Um gerador de energia", "Um tipo de memória"], a: 1 },
-        { q: "Por que usamos resistores em série com LEDs?", options: ["Para aumentar o brilho", "Para limitar a corrente e não queimar o LED", "Para mudar a cor", "Para inverter a polaridade"], a: 1 },
-        { q: "O Arduino Mega, usado nos projetos, é programado em qual linguagem base?", options: ["Python", "Java", "C++", "HTML"], a: 2 },
-        { q: "O que significa GND?", options: ["Grande", "Ground (Terra/Negativo)", "Ganho", "Geral"], a: 1 },
-        { q: "O que é VCC ou 5V?", options: ["O pino de dados", "A alimentação positiva", "O terra", "A entrada analógica"], a: 1 },
-        { q: "Qual a função do 'Serial Monitor' na IDE do Arduino?", options: ["Ver vídeos", "Exibir dados enviados pelo Arduino para o PC", "Desenhar gráficos 3D", "Compilar o código"], a: 1 },
-        { q: "Uma variável 'const int' pode ter seu valor alterado durante o loop?", options: ["Sim", "Não, é uma constante", "Às vezes", "Apenas se reiniciar"], a: 1 },
-        { q: "Qual a diferença entre Digital e Analógico?", options: ["Digital tem 2 estados (0/1), Analógico tem valores contínuos", "Não há diferença", "Analógico é melhor", "Digital é para áudio apenas"], a: 0 },
-        { q: "O que é um 'Protoboard'?", options: ["Uma placa de circuito impresso final", "Uma placa de ensaio para montagem sem solda", "O processador do Arduino", "Uma bateria"], a: 1 },
-        { q: "Para que serve o botão 'Reset' no Arduino?", options: ["Apagar o código", "Reiniciar a execução do programa do início", "Desligar a placa", "Salvar o código"], a: 1 },
-        { q: "O comando 'Serial.println()' difere do 'Serial.print()' porque:", options: ["Imprime colorido", "Pula uma linha ao final", "Imprime mais rápido", "Imprime apenas números"], a: 1 },
-        { q: "Qual a resolução padrão do conversor analógico-digital (ADC) do Arduino Mega/Uno?", options: ["8 bits (0-255)", "10 bits (0-1023)", "12 bits (0-4095)", "16 bits"], a: 1 },
-        { q: "O sensor DHT11 é digital ou analógico?", options: ["Analógico", "Digital (envia dados codificados)", "Mecânico", "Nenhum"], a: 1 },
-        { q: "O que acontece se ligarmos um LED invertido?", options: ["Ele pisca", "Ele não acende", "Ele explode", "Ele muda de cor"], a: 1 },
-        { q: "Na metodologia de Rotação por Estações, o objetivo é:", options: ["Ficar parado", "Passar por diferentes pontos de aprendizagem realizando tarefas variadas", "Apenas copiar o código", "Competir com os colegas"], a: 1 }
-    ];
+    const _secureData = "WwogICAgeyAicSI6ICJRdWFsIGZ1u/DNvIGRvIEFyZHVpbm8gcm9kYSBhcGVuYXMgdW1hIHZleiBxdWFuZG8gYSBwbGFjYSDDqSBsaWdhZGE/IiwgIm9wdGlvbnMiOiBbImxvb3AoKSIsICJzZXR1cCgpIiwgIm1haW4oKSIsICJzdGFydCgpIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJRdWFsIGZ1u/DNvIGRvIEFyZHVpbm8gw6kgZXhlY3V0YWRhIHJlcGV0aWRhbWVudGUgZW0gY2ljbG8gaW5maW5pdG8/IiwgIm9wdGlvbnMiOiBbInNldHVwKCkiLCAicmVwZWF0KCkiLCAibG9vcCgpIiwgImN5Y2xlKCkiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlBhcmEgY29uZmlndXJhciB1bSBwaW5vIGNvbW8gc2HDrWRhIGRlIGVuZXJnaWEsIHF1YWwgY29tYW5kbyB1dGlsaXphbW9zPyIsICJvcHRpb25zIjogWyJwaW5Nb2RlKHBpbm8sIE9VVFBVVCkiLCAicGluTW9kZShwaW5vLCBJTlBVVCkiLCAiZGlnaXRhbFdyaXRlKHBpbm8sIEhJR0gpIiwgImFuYWxvZ1dyaXRlKHBpbm8sIDI1NSkiXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIlF1YWwgY29tYW5kbyDDqSB1c2FkbyBwYXJhIGxlciBvIGVzdGFkbyBkZSB1bSBib3TDo28gZGlnaXRhbD8iLCAib3B0aW9ucyI6IFsiYW5hbG9nUmVhZCgpIiwgImRpZ2l0YWxXcml0ZSgpIiwgImRpZ2l0YWxSZWFkKCkiLCAicGluTW9kZSgpIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJPIHF1ZSBvIGNvbWFuZG8gJ2RlbGF5KDIwMDApJyBmYXogbm8gY8OzZGlnbz8iLCAib3B0aW9ucyI6IFsiUGF1c2EgbyBwcm9ncmFtYSBwb3IgMjAwMCBzZWd1bmRvcyIsICJQYXVzYSBvIHByb2dyYW1hIHBvciAyIHNlZ3VuZG9zIiwgIlJlaW5pY2lhIG8gQXJkdWlubyIsICJFc3BlcmEgdW0gYm90w6NvIHNlciBwcmVzc2lvbmFkbyJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiRW0gQysrLCBjb21vIGRlY2xhcmFtb3MgdW1hIHZhcmnDoXZlbCBwYXJhIGFybWF6ZW5hciBuw7ptZXJvcyBpbnRlaXJvcz8iLCAib3B0aW9ucyI6IFsiZmxvYXQiLCAiU3RyaW5nIiwgImJvb2xlYW4iLCAiaW50Il0sICJhIjogMyB9LAogICAgeyAicSI6ICJRdWFsIG8gdGlwbyBkZSB2YXJpw6F2ZWwgbWFpcyBhZGVxdWFkbyBwYXJhIGFybWF6ZW5hciBhIHRlbXBlcmF0dXJhICcyNS41Jz8iLCAib3B0aW9ucyI6IFsiaW50IiwgImNoYXIiLCAiZmxvYXQiLCAibG9uZyJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiTyBxdWUgc2lnbmlmaWNhIG8gc8OtbWJvbG8gJy8vJyBubyBjw7NkaWdvIGRvIEFyZHVpbm8/IiwgIm9wdGlvbnMiOiBbIkluw61jaW8gZGUgZnWxw6NvIiwgIkRpdmlzw6NvIiwgIkNvbWVudMOhcmlvIGRlIHVtYSBsaW5oYSIsICJGaW0gZGUgaW5zdHJ1w6fDo28iXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlF1YWwgb3BlcmFkb3Igw6kgdXNhZG8gcGFyYSB2ZXJpZmljYXIgaWd1YWxkYWRlIGVtIHVtYSBjb25kacOnw6NvICdpZic/IiwgIm9wdGlvbnMiOiBbIj0iLCAiPT0iLCAiPT09IiwgIiE9Il0sICJhIjogMSB9LAogICAgeyAicSI6ICJRdWFsIG9wZXJhZG9yIGzDs2dpY28gcmVwcmVzZW50YSAnRScgKEFORCk/IiwgIm9wdGlvbnMiOiBbInx8IiwgIiEiLCAiJiYiLCAiKioiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlF1YWwgb3BlcmFkb3IgbMOzZ2ljbyByZXByZXNlbnRhICdPVScgKE9SKT8iLCAib3B0aW9ucyI6IFsiJiYiLCAifHwiLCAiPz8iLCAiISJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiTyBzw61tYm9sbyAnIScgYW50ZXMgZGUgdW1hIHZhcmnDoXZlbCBib29sZWFuYSBzZXJ2ZSBwYXJhOiIsICJvcHRpb25zIjogWyJDb25maXJtYXIgbyB2YWxvciIsICJJbnZlcnRlciBvIHZhbG9yIChOw4N1IGzDs2dpY28pIiwgIlRyYW5zZm9ybWFyIGVtIGludGVpcm8iLCAiQXBhZ2FyIGEgdmF1acOhdmVsIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJRdWFsIGJpYmxpb3RlY2Egw6kgZXNzZW5jaWFsIHBhcmEgdXNhciBvIERpc3BsYXkgTENEIDE2eDI/IiwgIm9wdGlvbnMiOiBbIiZsdDtLZXlwYWQuaCZndDsiLCAiJmx0O0RIVC5oJmd0OyIsICImbHQ7TGlxdWlkQ3J5c3RhbC5oJmd0OyIsICImbHQ7U2Vydm8uaCZndDsiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlBhcmEgaW5jbHVpciB1bWEgYmlibGlvdGVjYSBubyBjw7NkaWdvLCB1c2Ftb3MgYSBkaXJldGl2YToiLCAib3B0aW9ucyI6IFsiI2RlZmluZSIsICIjaW5jbHVkZSIsICJpbXBvcnQiLCAidXNpbmciXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gY29tYW5kbyAnU2VyaWFsLmJlZ2luKDk2MDApJyBzZXJ2ZSBwYXJhOiIsICJvcHRpb25zIjogWyJMaWdhciBvIExDRCIsICJJbmljaWFyIGEgY29tdW5pY2HDp8OjbyBjb20gbyBjb21wdXRhZG9yIiwgIkRlZmluaXIgYSB2ZWxvY2lkYWRlIGRvIG1vdG9yIiwgIkNvbmZpZ3VyYXIgdW0gcGlubyBQV00iXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlF1YWwgcG9udHVhw6fDo28gw6kgdXNhZGEgcGFyYSBmaW5hbGl6YXIgdW1hIGluc3RydcOnw6NvIGVtIEMrKz8iLCAib3B0aW9ucyI6IFsiOiIsICIuIiwgIjsiLCAiLCJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiTyBxdWUgYWNvbnRlY2Ugc2UgZXNxdWVjZXJtb3MgZGUgZmVjaGFyIHVtYSBjaGF2ZSAnfScgbm8gY8OzZGlnbz8iLCAib3B0aW9ucyI6IFsiTyBjw7NkaWdvIHJvZGEgbm9ybWFsbWVudGUiLCAiRXJybyBkZSBjb21waWxhw6fDo28iLCAiTyBBcmR1aW5vIHRyYXZhIiwgIkFwZW5hcyBhIMO6bHRpbWEgZnWxw6NvIGZhbGhhIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJBIGZ1bsOnw6NvICdsY2QuY2xlYXIoKSBzeXJ2ZSBwYXJhOiIsICJvcHRpb25zIjogWyJEZXNsaWdhciBvIExDRCIsICJBY2VuZGVyIGEgbHV6IGRlIGZ1bmRvIiwgIkxpbXBhciB0b2RvcyBvcyBjYXJhY3RlcmVzIGRhIHRlbGEiLCAiUmVpbmljaWFyIG8gQXJkdWlubyJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiTyBxdWUgYSBmdW7Dp8OjbyAnbGNkLnNldEN1cnNvcigwLCAxKScgZmF6PyIsICJvcHRpb25zIjogWyJWYWkgcGFyYSBhIGNvbHVuYSAwLCBsaW5oYSAwIiwgIlZhaSBwYXJhIGEgY29sdW5hIDAsIGxpbmhhIDEgKHNlZ3VuZGEgbGluaGEpIiwgIkVzY3JldmUgJzAnIGUgJzEnIG5hIHRlbGEiLCAiTGltcGEgYSBsaW5oYSAxIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJQYXJhIGNvbmNhdGVuYXIgKGp1bnRhcikgdGV4dG8gZW0gdW1hIFN0cmluZywgdXNhbW9zIG8gb3BlcmFkb3I6IiwgIm9wdGlvbnMiOiBbIioiLCAiLSIsICIrIiwgIiUiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIk5vIHByb2pldG8gZGEgQ2F0cmFjYSwgcXVhbCBjb21wb25lbnRlIMOpIHVzYWRvIHBhcmEgZW50cmFkYSBkZSBzZW5oYT8iLCAib3B0aW9ucyI6IFsiTERSIiwgIlNlbnNvciBVbHRyYXNzw7RuaWNvIiwgIlRlY2xhZG8gTWF0cmljaWFsIDR4NCIsICJQb3RlbmNpw7RtZXRybyJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiUXVhbCBiaWJsaW90ZWNhIGZhY2lsaXRhIG8gdXNvIGRvIHRlY2xhZG8gbWF0cmljaWFsPyIsICJvcHRpb25zIjogWyJNYXRyaXguaCIsICJLZXlwYWQuaCIsICJCdXR0b24uaCIsICJJbnB1dC5oIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJTZSBhIHNlbmhhIGNvcnJldGEgw6kgJzEyMzQnIGUgbyB1c3XDoXJpbyBkaWdpdGEgJzEyMzQnLCBxdWFsIGZ1bsOnw6NvIGNvbXBhcmEgYXMgU3RyaW5ncz8iLCAib3B0aW9ucyI6IFsidGV4dG8uY29tcGFyZSgpIiwgInRleHRvLmNoZWNrKCkiLCAidGV4dG8uZXF1YWxzKCkiLCAidGV4dG8uaXMoKSJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiTm8gY8OzZGlnbyBkYSBDYXRyYWNhLCBhIHRlY2xhICcjJyBmb2kgcHJvZ3JhbWFkYSBwYXJhOiIsICJvcHRpb25zIjogWyJBcGFnYXIgYSBzZW5oYSIsICJEaWdpdGFyIG8gbsO6bWVybyB6ZXJvIiwgIkNvbmZpcm1hciAoRW50ZXIpIiwgIlJlaW5pY2lhciBvIHNpc3RlbWEiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIk5vIGPDs2RpZ28gZGEgQ2F0cmFjYSwgYSB0ZWNsYSAnKicgZm9pIHVzYWRhIHBhcmE6IiwgIm9wdGlvbnMiOiBbIkNvbmZpcm1hciIsICJDYW5jZWxhci9MaW1wYXIiLCAiTGlnYXIgbyBMRUQiLCAiRGlnaXRhciB1bWEgbGV0cmEiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gcXVlIMOpIHVtICdMQ0QgS2V5cGFkIFNoaWVsZCc/IiwgIm9wdGlvbnMiOiBbIlVtIGVzY3VkbyBkZSBwcm90ZcOnw6NvIGZpc2ljYSIsICJVbWEgcGxhY2EgcXVlIGFjb3BsYSBMQ0QgZSBib3TDtWVzIG5vIEFyZHVpbm8iLCAiVW0gdGlwbyBkZSBzZW5zb3IgZGUgdGVtcGVyYXR1cmEiLCAiVW0gc29mdHdhcmUgZGUgc2ltdWxhw6fDo28iXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlBhcmEgZXhpYmlyIHVtIGFzdGVyaXNjbyAnKicgYW8gaW52w6lzIGRvIG7Dum1lcm8gZGlnaXRhZG8gbmEgc2VuaGEsIHVzYW1vczoiLCAib3B0aW9ucyI6IFsibGNkLnByaW50KCcqJykiLCAibGNkLm5vRGlzcGxheSgpIiwgImxjZC5oaWRlKCkiLCAiU2VyaWFsLnByaW50KCcqJykiXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIlF1YWwgdmFyacOhdmVsIGZvaSB1c2FkYSBwYXJhIGFybWF6ZW5hciBhIHNlbmhhIGRpZ2l0YWRhPyIsICJvcHRpb25zIjogWyJpbnQiLCAiZmxvYXQiLCAiU3RyaW5nIiwgImNoYXIiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIk5vIHByb2pldG8gZGEgVHJhdmEgRWxldHJvbWFJbukuw6l0aWNhLCBvIHNpc3RlbWEgw6kgJ2JpZXN0w6F2ZWwnLiBPIHF1ZSBpc3NvIHNpZ25pZmljYT8iLCAib3B0aW9ucyI6IFsiVGVtIGRvaXMgbWljcm9jb250cm9sYWRvcmVzIiwgIkFsdGVybmEgZW50cmUgZG9pcyBlc3RhZG9zIGVzdMOhdmVpcyAoVHJhdmFkby9EZXN0cmF2YWRvKSIsICJGdW5jaW9uYSBjb20gZHVhcyBiYXRlcmlhcyIsICJTw7MgZnVuY2lvbmEgcG9yIDIgc2VndW5kb3MiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gb3BlcmFkb3IgdGVybsOhcmlvICdjb25kacOnw6NvID8gdmFsb3IxIDogdmFsb3IyJyBzdWJzdGl0dWkgcXVhbCBlc3RydXR1cmE/IiwgIm9wdGlvbnMiOiBbImZvciIsICJ3aGlsZSIsICJpZi4uLmVsc2Ugc2ltcGxlcyIsICJzd2l0Y2guLi5jYXNlIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJTZSAndHJhdmFfZGVzdHJhdmFkYScgw6kgZmFsc2UsIG8gcXVlICchdHJhdmFfZGVzdHJhdmFkYScgcmV0b3JuYT8iLCAib3B0aW9ucyI6IFsiZmFsc2UiLCAidHJ1ZSIsICJudWxsIiwgImVycm8iXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlBhcmEgbGltcGFyIGEgdmFSw6F2ZWwgJ3NlbmhhX2RpZ2l0YWRhJywgYXRyaWJ1w61tb3MgYSBlbGE6IiwgIm9wdGlvbnMiOiBbIjAiLCAibnVsbCIsICJcIlwiIChzdHJpbmcgdmF6aWEpIiwgImZhbHNlIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJRdWFudG9zIHBpbm9zIGRpZ2l0YWlzIH8ubyBuZWNlc3PDoXJpb3MgcGFyYSBjb250cm9sYXIgYXMgbGluaGFzIGRlIHVtIHRlY2xhZG8gNHg0PyIsICJvcHRpb25zIjogWyIyIiwgIjQiLCAiOCIsICIxNiJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiTyBtYXBlYW1lbnRvIGRhcyB0ZWNsYXMgZG8gdGVjbGFkbyBtYXRyaWNpYWwgw6kgZmVpdG8gdXNhbmRvOiIsICJvcHRpb25zIjogWyJVbSBhcnJheSBiaWRpbWVuc2lvbmFsIChtYXRyaXopIiwgIlVtYSBsaXN0YSBzaW1wbGVzIiwgIlVtYSB2YXJpw6F2ZWwgaW50IiwgIlVtIHNlbnNvciBhbmFsw7NnaWNvIl0sICJhIjogMCB9LAogICAgeyAicSI6ICJObyBwcm9qZXRvIGRhIFRyYXZhLCBvIFJlbMOpIGVtIGVzdGFkbyBISUdIIHNpZ25pZmljYToiLCAib3B0aW9ucyI6IFsiVHJhdmEgQWJlcnRhIiwgIlRyYXZhIEZlY2hhZGEgKERlc2xpZ2FkbykiLCAiQ3VydG8tY2lyY3VpdG8iLCAiTEVEIHF1ZWltYWRvIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJRdWFsIHNlbnNvciBmb2kgdXRpbGl6YWRvIHBhcmEgbyBBbGFybWUgZGUgSW50cnVzw6NvPyIsICJvcHRpb25zIjogWyJESFQxMSIsICJMRFIiLCAiSEMtU1IwNCAoVWx0cmFzc8O0bmljbykiLCAiTE0zNSJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiTyBwaW5vICdUcmlnJyBkbyBzZW5zb3IgdWx0cmFzc8O0bmljbyBzZXJ2ZSBwYXJhOiIsICJvcHRpb25zIjogWyJSZWNlYmVyIG8gZWNvIiwgIkVudmlhciBvIHB1bHNvIHNvbm9ybyIsICJBbGltZW50YXIgbyBzZW5zb3IiLCAiQXRlcnJhciBvIHNlbnNvciJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiTyBwaW5vICdFY2hvJyBkbyBzZW5zb3IgdWx0cmFzc8O0bmljbyBzZXJ2ZSBwYXJhOiIsICJvcHRpb25zIjogWyJFbnZpYXIgbyBzb20iLCAiUmVjZWJlciBvIHB1bHNvIHJlZmxldGlkbyIsICJDb25maWd1cmFyIGEgZGlzdMOibmNpYSIsICJMaWdhciBvIExFRCJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiQSB2ZWxvY2lkYWRlIGRvIHNvbSB1c2FkYSBubyBjw6FsY3VsbyBkYSBkaXN0w6JuY2lhIMOpIGFwcm94aW1hZGFtZW50ZToiLCAib3B0aW9ucyI6IFsiMzQwIG0vcyIsICIxMDAga20vaCIsICIzMDAuMDAwIGttL3MiLCAiMTAgbS9zIl0sICJhIjogMCB9LAogICAgeyAicSI6ICJQb3IgcXVlIGRpdmlkaW1vcyBvIHRlbXBvIGRlIHZpYWdlbSBkbyBzb20gcG9yIDIgbm8gY8OhbGN1bG8gZGEgZGlzdMOibmNpYT8iLCAib3B0aW9ucyI6IFsiUGFyYSBjb252ZXJ0ZXIgbWV0cm9zIGVtIGNlbnTDrW1ldHJvcyIsICJQb3JxdWUgbyBzb20gdmFpIGUgdm9sdGEiLCAiUGFyYSByZWR1emlyIG8gcnXDrWRvIiwgIsOJIHVtYSBjb25zdGFudGUgZG8gQXJkdWlubyJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiUXVhbCBmdW7Dp8OjbyBtZWRlIGEgZHVyYcOnw6NvIGRvIHB1bHNvIG5vIHBpbm8gRWNobz8iLCAib3B0aW9ucyI6IFsiZGlnaXRhbFJlYWQoKSIsICJhbmFsb2dSZWFkKCkiLCAicHVsc2VJbigpIiwgInRpbWUoKSJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiQSBmdW7Dp8OjbyAnZGVsYXlNaWNyb3NlY29uZHMoMTApJyDDqSB1c2FkYSBwYXJhOiIsICJvcHRpb25zIjogWyJQYXVzYXIgcG9yIDEwIHNlZ3VuZG9zIiwgIkdlcmFyIG8gcHVsc28gZGUgZGlzcGFybyBubyBUcmlnIiwgIkVzcGVyYXIgbyBMQ0QgbGlnYXIiLCAiUmVpbmljaWFyIG8gc2Vuc29yIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJObyBhbGFybWUsIHNlIGEgZGlzdMOibmNpYSBmb3IgbWVub3IgcXVlIG8gbGltaXRlLCBvIHF1ZSBhY29udGVjZT8iLCAib3B0aW9ucyI6IFsiTyBzaXN0ZW1hIGRlc2xpZ2EiLCAiTyBMRUQgYWNlbmRlIGUgbyBSZWzDqSBhdGl2YSIsICJPIGVyZHVpbm8gcmVpbmljaWEiLCAiTyBzZW5zb3IgcGFyYSBkZSBsZXIiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gc2Vuc29yIHVsdHJhc3PDtG5pY28gdXNhIG9uZGFzIHNvbm9yYXMgZGU6IiwgIm9wdGlvbnMiOiBbIkJhaXhhIGZyZXF1w6puY2lhIChncmF2ZXMpIiwgIkFsdGEgZnJlcXXDqm5jaWEgKGluYXVkw612ZWlzKSIsICJMdXogaW5mcmF2ZXJtZWxoYSIsICJSw6FkaW8gZnJlcXXDqm5jaWEiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gTcOzZHVsbyBkZSBSZWzDqSDDqSB1c2FkbyBubyBwcm9qZXRvIHBhcmE6IiwgIm9wdGlvbnMiOiBbIk1lZGlyIGEgZGlzdMOibmNpYSIsICJTaW11bGFyIHVtYSBzaXJlbmUgb3UgbMOibXBhZGEgZGUgYWx0YSBwb3TqbmNpYSIsICJBcm1hemVuYXIgZGFkb3MiLCAiU3Vic3RpdHVpciBvIEFyZHVpbm8iXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gcXVlIGFjb250ZWNlIGNvbSBvIHJlbMOpIHF1YW5kbyBlbnZpYW1vcyB1bSBzaW5hbCBMT1cgKGVtIG3Ds2R1bG9zIGF0aXZvLWJhaXhvKT8iLCAib3B0aW9ucyI6IFsiRWxlIGRlc2xpZ2EiLCAiRWxlIGxpZ2EgKGF0aXZhKSIsICJFbGUgcXVlaW1hIiwgIk5hZGEgYWNvbnRlY2UiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIkEgdmFSw6F2ZWwgJ2xvbmcnIMOpIHVzYWRhIHBhcmEgYXJtYXplbmFyIGEgZHVyYcOnw6NvIGRvIHB1bHNvIHBvcnF1ZToiLCAib3B0aW9ucyI6IFsiw4kgdW0gbsO6bWVybyBkZWNpbWFsIiwgIsOJIHVtIHRleHRvIiwgIlBvZGUgc2VyIHVtIG7Dum1lcm8gaW50ZWlybyBtdWl0byBncmFuZGUiLCAiw4kgbmVnYXRpdm8iXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlVtIExFRCBSR0IgcG9kZSBlbWl0aXI6IiwgIm9wdGlvbnMiOiBbIkFwZW5hcyBsdXogdmVybWVsaGEiLCAiQXBlbmFzIGx1eiBicmFuY2EiLCAiVsOhcmlhcyBjb3JlcyBjb21iaW5hbmRvIFZlcm1lbGhvLCBWZXJkZSBlIEF6dWwiLCAiU29tIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJQYXJhIGNvbnRyb2xhciBhIGludGVuc2lkYWRlIGRhcyBjb3JlcyBkbyBMRUQgUkdCLCB1c2Ftb3MgcXVhbCBmdW7Dp8Ojbz8iLCAib3B0aW9ucyI6IFsiZGlnaXRhbFdyaXRlKCkiLCAiYW5hbG9nV3JpdGUoKSAoUFdNKSIsICJkaWdpdGFsUmVhZCgpIiwgInRvbmUoKSJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiUGlub3MgUFdNIG5vIEFyZHVpbm8gc8OjbyBpZGVudGlmaWNhZG9zIHBvcjoiLCAib3B0aW9ucyI6IFsiVW1hIGxldHJhICdBJyIsICJVbSBzw61tYm9sbyAnficgb3UgYSBzaWdsYSBQV00iLCAiQSBjb3IgdmVybWVsaGEiLCAiTsOjbyB0w6ptIGlkZW50aWZpY2HDp8OjbyJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiQSBjb3IgQW1hcmVsYSBubyBMRUQgUkdCIMOpIGZvcm1hZGEgbWlzdHVyYW5kbzoiLCAib3B0aW9ucyI6IFsiVmVybWVsaG8gZSBBenVsIiwgIlZlcmRlIGUgQXp1bCIsICJWZXJtZWxobyBlIFZlcmRlIiwgIkFwZW5hcyBWZXJkZSJdLCAiYSI6IDIgfSwKICAgIHsgInEiOiAiTyBxdWUgc2lnbmlmaWNhICdEZWJvdW5jZScgbm8gY29udGV4dG8gZGUgYm90w7Vlcz8iLCAib3B0aW9ucyI6IFsiRmF6ZXIgbyBib3TDo28gcHVsYXIiLCAiVMOpY25pY2EgcGFyYSBldml0YXIgbGVpdHVyYXMgZmFsc2FzL3J1w61kbyBhbyBwcmVzc2lvbmFyIiwgIkxpZ2FyIG8gYm90w6NvIG5vIDVWIiwgIlF1ZWltYXIgbyBib3TDo28iXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gbW9kbyBJTlBVVF9QVUxMVVAgY29uZmlndXJhIG8gYm90w6NvIHBhcmE6IiwgIm9wdGlvbnMiOiBbIkxlciBISUdIIHF1YW5kbyBwcmVzc2lvbmFkbyIsICJMZXIgTE9XIHF1YW5kbyBwcmVzc2lvbmFkbyBlIHVzYXIgcmVzaXN0b3IgaW50ZXJmbyIsICJQcmVjaXNhciBkZSB1bSByZXNpc3RvciBleHRlcm5vIiwgIkZ1bmNpb25hciBjb21vIHNhw61kYSJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiQSBlc3RydXR1cmEgJ2VudW0nIGZvaSB1c2FkYSBubyBjw7NkaWdvIHBhcmE6IiwgIm9wdGlvbnMiOiBbIkNvbnRhciBuw7ptZXJvcyIsICJEZWZpbmlyIGVzdGFkb3Mgbm9tZWFkb3MgKExJVlJFLCBPQ1VQQURPLCBBVEVOQ0FPKSIsICJDcmlhciB1bSBsb29wIiwgIkNvbmZpZ3VyYXIgbyBMQ0QiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk9zIHZhbG9yZXMgZGUgUFdNIHZhcmlhbSBkZToiLCAib3B0aW9ucyI6IFsiMCBhIDEwMjMiLCAiMCBhIDEwMCIsICIwIGEgMjU1IiwgIi0xMjggYSAxMjciXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlNlIHVzYXJtb3MgJ2FuYWxvZ1dyaXRlKHBpbm8sIDApJywgbyBMRUQ6IiwgIm9wdGlvbnMiOiBbIkJyaWxoYSBhbyBtw6F4aW1vIiwgIlBpc2NhIiwgIkFwYWdhIiwgIk11ZGEgZGUgY29yIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJRdWFsIGEgdmFudGFnZW0gZGUgdXNhciBmdW7Dp8O1ZXMgKGNvbW8gc3RhdHVzTGl2cmUoKSkgbm8gY8OzZGlnbz8iLCAib3B0aW9ucyI6IFsiRGVpeGEgbyBjw7NkaWdvIG1haXMgbGVudG8iLCAiT3JnYW5pemEgZSBmYWNpbGl0YSBhIGxlaXR1cmEgZG8gY8OzZGlnbyIsICJHYXN0YSBtYWlzIG1lbcOzcmlhIiwgIk7Do28gdGVtIHZhbnRhZ2VtIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJPIHNlbnNvciBESFQxMSBtZWRlIHF1YWlzIGdyYW5kZXphcz8iLCAib3B0aW9ucyI6IFsiTHV6IGUgU29tIiwgIlRlbXBlcmF0dXJhIGUgVW1pZGFkZSIsICJEaXN0w6JuY2lhIGUgUHJlc2Vuw6dhIiwgIlByZXNzw6NvIGUgQWx0aXR1ZGUiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlF1YWwgbyBpbnRlcnZhbG8gbcOtbmltbyByZWNvbWVuZGFkbyBlbnRyZSBsZWl0dXJhcyBkbyBESFQxMT8iLCAib3B0aW9ucyI6IFsiMTAgbWlsaXNzZWd1bmRvcyIsICI1MDAgbWlsaXNzZWd1bmRvcyIsICIyIHNlZ3VuZG9zIiwgIjEgbWludXRvIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJBIGZ1bsOnw6NvICdpc25hbigpJyB2ZXJpZmljYToiLCAib3B0aW9ucyI6IFsiU2UgbyB2YWxvciDDqSB1bSBuw7ptZXJvIHbDoWxpZG8iLCAiU2UgbyB2YWxvciDDqSB6ZXJvIiwgIlNlIG8gc2Vuc29yIGVzdMOhIGRlc2xpZ2FkbyIsICJTZSDDqSB1bSBuw7ptZXJvIGludGVpcm8iXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIk5vIG1vbml0b3IgZGUgdGVtcGVyYXR1cmEsIG9zIHZhbG9yZXMgc8OjbyBleGliaWRvcyBlbSBxdWFsIHVuaWRhZGU/IiwgIm9wdGlvbnMiOiBbIkZhaHJlbmhlaXQiLCAiS2VsdmluIiwgIkNlbHNpdXMiLCAiVm9sdHMiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlBhcmEgZXhpYmlyIHVtYSB2YXJpw6F2ZWwgZmxvYXQgY29tIGFwZW5hcyAxIGNhc2EgZGVjaW1hbCBubyBMQ0QsIHVzYW1vczoiLCAib3B0aW9ucyI6IFsibGNkLnByaW50KHZhciwgMSkiLCAibGNkLnByaW50KHZhciwgMCkiLCAibGNkLmRlY2ltYWwodmFyKSIsICJsY2Qub25lKHZhcikiXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIlNlIGEgdW1pZGFkZSB1bHRyYXBhc3NhciBvIGxpbWl0ZSBjcsOtdGljbywgbyBzaXN0ZW1hOiIsICJvcHRpb25zIjogWyJEZXNsaWdhIG8gQXJkdWlubyIsICJBY2lvbmEgdW0gUmVsw6kgKEV4YXVzdG9yKSIsICJBcGFnYSBvIExDRCIsICJUb2NhIG3DumNpY2EiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlBhcmEgbGVyIGEgdGVtcGVyYXR1cmEgZG8gREhUMTEsIHVzYW1vcyBvIGNvbWFuZG86IiwgIm9wdGlvbnMiOiBbImRodC5yZWFkKCkiLCAiZGh0LmdldFRlbXAoKSIsICJkaHQucmVhZFRlbXBlcmF0dXJlKCkiLCAiYW5hbG9nUmVhZCgpIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJPIHF1ZSDDqSAnSGlzdGVyZXNlJyBubyBjb250cm9sZSBkZSB1bWlkYWRlPyIsICJvcHRpb25zIjogWyJVbSBlcnJvIGRvIHNlbnNvciIsICJVbWEgZmFpeGEgZGUgZGlZmVyZW7Dp2EgZW50cmUgbGlnYXIgZSBkZXNsaWdhciBwYXJhIGV2aXRhciBvc2NpbGHDp8OjbyIsICJVbSB0aXBvIGRlIGNhYm8iLCAiQSB2ZWxvY2lkYWRlIGRvIGNvb2xlciJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiTm8gcHJvamV0bywgbyBwaW5vIGRlIGRhZG9zIGRvIERIVDExIGZvaSBsaWdhZG8gbm8gcGlubyBkaWdpdGFsOiIsICJvcHRpb25zIjogWyIwIiwgIjEiLCAiNDAiLCAiQTAiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlNlIG8gc2Vuc29yIERIVDExIGZhbGhhciwgbyBjw7NkaWdvIGZvaSBwcm9ncmFtYWRvIHBhcmE6IiwgIm9wdGlvbnMiOiBbIlRyYXZhciIsICJFeGliaXIgJ0Vycm8gZGUgU2Vuc29yJyBubyBMQ0QiLCAiUmVpbmljaWFyIHNvemluaG8iLCAiSWdub3JhciBvIGVycm8iXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIkEgYmlibGlvdGVjYSBESFQuaCBzZXJ2ZSBwYXJhOiIsICJvcHRpb25zIjogWyJDb250cm9sYXIgbW90b3JlcyIsICJGYWNpbGl0YXIgYSBjb211bmljYcOnw6NvIGNvbSBzZW5zb3JlcyBESFQiLCAiTGVyIHRlY2xhZG9zIiwgIkdlcmFyIHNvbnMiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlVtaWRhZGUgQ3LDrXRpY2EgZm9pIGRlZmluaWRhIG5vIGPDs2RpZ28gY29tbzoiLCAib3B0aW9ucyI6IFsiVW1hIGNvbnN0YW50ZSBmbG9hdCIsICJVbWEgdmFyw6lhdmVsIGludCIsICJVbWEgU3RyaW5nIiwgIlVtIHBpbm8iXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIk8gcXVlIG8gY29tYW5kbyAnZGh0LmJlZ2luKCknIGZhej8iLCAib3B0aW9ucyI6IFsiTMOqIGEgdGVtcGVyYXR1cmEiLCAiSW5pY2lhbGl6YSBvIHNlbnNvciIsICJQYXJhIG8gc2Vuc29yIiwgIkNhbGlicmEgbyBzZW5zb3IiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gY29tcG9uZW50ZSBMRFIgw6kgdW0gdGlwbyBkZToiLCAib3B0aW9ucyI6IFsiTEVEIiwgIkNhcGFjaXRvciIsICJSZXNpc3RvciBxdWUgdmFyaWEgY29tIGEgbHV6IiwgIlRyYW5zaXN0b3IiXSwgImEiOiAyIH0sCiAgICB7ICJxIjogIlF1YW5kbyBhIGx1eiBpbmNpZGUgc29icmUgbyBMRFIsIHN1YSByZXNpc3TDqm5jaWE6IiwgIm9wdGlvbnMiOiBbIkF1bWVudGEiLCAiRGltaW51aSIsICJQZXJtYW5lY2UgaWd1YWwiLCAiUXVlaW1hIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJPIExEUiBkZXZlIHNlciBjb25lY3RhZG8gYSBxdWFsIHRpcG8gZGUgcGlubyBubyBBcmR1aW5vIHBhcmEgbWVkaXIgaW50ZW5zaWRhZGU/IiwgIm9wdGlvbnMiOiBbIkRpZ2l0YWwiLCAiUFdNIiwgIkFuYWzDs2dpY28gKEV4OiBBOCkiLCAiQWxpYW1lbnRhw6fDo28gYXBlbmFzIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJBIGZ1bsOnw6NvICdhbmFsb2dSZWFkKCknIHJldG9ybmEgdW0gdmFsb3IgZW50cmU6IiwgIm9wdGlvbnMiOiBbIjAgZSAyNTUiLCAiMCBlIDEwMjMiLCAiMCBlIDEiLCAiLTVWIGUgKzVWIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJQYXJhIGNvbnZlcnRlciBvIHZhbG9yIGJydXRvIGRvIExEUiAoMC0xMDIzKSBwYXJhIHBvcmNlbnRhZ2VtICgwLTEwMCksIHVzYW1vczoiLCAib3B0aW9ucyI6IFsiY29udmVydCgpIiwgIm1hcCgpIiwgInB1bHNlSW4oKSIsICJ0cmFuc2Zvcm0oKSJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiQSBmdW7Dp8OjbyAnY29uc3RyYWluKHZhbG9yLCAwLCAxMDApJyBzZXJ2ZSBwYXJhOiIsICJvcHRpb25zIjogWyJGb3LDp2FyIG8gdmFsb3IgYSBmaWNhciBlbnRyZSAwIGUgMTAwIiwgIlplcmFyIG8gdmFsb3IiLCAiTXVsdGlwbGljYXIgcG9yIDEwMCIsICJEaXZpZGlyIHBvciAxMDAiXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIk5vIHByb2pldG8gZGUgSWx1bWluYcOnw6NvIEF1dG9tw6F0aWNhLCBvIHF1ZSBhY29udGVjZSBzZSBvIGFtYmllbnRlIGVzY3VyZWNlcj8iLCAib3B0aW9ucyI6IFsiT3MgcmVsw6lzIGRlc2xpZ2FtIiwgIk9zIHJlbMOpcyBsaWdhbSBncmFkYXRpdmFtZW50ZSIsICJPIExDRCBhcGFnYSIsICJPIExEUiBwYXJhIGRlIGxlciJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiUGFyYSBjb250cm9sYXIgNCByZWzDqXMsIGZvaSB1dGlsaXphZG8gbm8gY8OzZGlnbzoiLCAib3B0aW9ucyI6IFsiNCB2YXJpw6F2ZWlzIHNvbHRhcyIsICJVbSBhcnJheSAodmV0b3IpIGRlIHBpbm9zIGUgdW0gbG9vcCBmb3IiLCAiNCBBcmR1aW5vcyIsICJVbWEgbWF0cml6IGRlIExFRHMiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk8gcXVlIMOpIHVtICdEaXZpc29yIGRlIFRlbnPDo28nIHVzYWRvIGNvbSBvIExEUj8iLCAib3B0aW9ucyI6IFsiVW1hIGZlcnJhbWVudGEgZGUgY29ydGUiLCAiVW0gY2lyY3VpdG8gY29tIDIgcmVzaXN0b3JlcyBwYXJhIGRpdmlkaXIgYSB2b2x0YWdlbSIsICJVbSBzb2Z0d2FyZSIsICJVbWEgYmF0ZXJpYSBleHRyYSJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiU2UgYSBsZWl0dXJhIGRvIExEUiBmb3IgbXVpdG8gaW5zdMOhdmVsLCBxdWFsIHTDqWNuaWNhIGZvaSBzdWdlcmlkYSBub3MgZGVzYWZpb3M/IiwgIm9wdGlvbnMiOiBbIk3DqWRpYSBNw7N2ZWwiLCAiVHJvY2FyIG8gQXJkdWlubyIsICJVbSBjYWIvIiwgIkF1bWVudGFyIGEgdm9sdGFnZW0iXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIk5vIGPDs2RpZ28sICdtYXAodmFsb3IsIE1JTiwgTUFYLCAwLCAxMDApJyBmYXogbyBxdcqlPyIsICJvcHRpb25zIjogWyJEZXNlbmhhIHVtIG1hcGEiLCAiRXNjYWxhIG8gdmFsb3IgZGUgdW1hIGZhaXhhIHBhcmEgb3V0cmEiLCAiUHJvY3VyYSB1bSB2YWxvciIsICJBcGFnYSBhIG1lbcOzcmlhIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJPICdGZWVkYmFjayB2aXN1YWwnIG5vIHByb2pldG8gZGUgaWx1bWluYcOnw6NvIGZvaSBmZWl0byBjb206IiwgIm9wdGlvbnMiOiBbIlVtIG1vdG9yIiwgIlVtYSBzaXJlbmUiLCAiVW0gTEVEIHBpc2NhbmRvIG91IERpc3BsYXkgTENEIiwgIkFxdWVjaW1lbnRvIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJPcyBsaW1pdGVzIGRlIGx1bWlub3NpZGFkZSBwYXJhIGFjaW9uYXIgb3MgcmVsw6lzIGZvcmFtIGRlZmluaWRvcyBjb21vOiIsICJvcHRpb25zIjogWyJDb25zdGFudGVzIHBlcmNlbnR1YWlzIiwgIlZhbG9yZXMgYWxlYXTDs3Jpb3MiLCAiU3RyaW5ncyIsICJGdW7Dp8O1ZXMiXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIlBhcmEgaW52ZXJ0ZXIgbyBlc3RhZG8gZGUgdW0gcGlubyBkaWdpdGFsIChUb2dnbGUpIHVzYW1vczoiLCAib3B0aW9ucyI6IFsiZGlnaXRhbFdyaXRlKHBpbm8sICFkaWdpdGFsUmVhZChwaW5vKSkiLCAiZGlnaXRhbFdyaXRlKHBpbm8sIDApIiwgImFuYWxvZ1dyaXRlKHBpbm8sIDI1NSkiLCAicGluTW9kZShwaW5vLCBPVVRQVVQpIl0sICJhIjogMCB9LAogICAgeyAicSI6ICJFbSB1bSBhbWJpZW50ZSB0b3RhbG1lbnRlIGVzY3VybywgbyB2YWxvciBsaWRvIHBlbG8gcGlubyBhbmFsw7NnaWNvIGRvIExEUiB0ZW5kZSBhIHNlcjoiLCAib3B0aW9ucyI6IFsiUHLDs3hpbW8gZG8gZXh0cmVtbyAoZGVwZW5kZW5kbyBkYSBtb250YWdlbSkiLCAiU2VtcHJlIHplcm8iLCAiQWxlYXTDs3JpbyIsICJTZW1wcmUgNTEyIl0sICJhIjogMCB9LAogICAgeyAicSI6ICJPIHF1ZSDDqSB1bSBSZWzDqT8iLCAib3B0aW9ucyI6IFsiVW0gc2Vuc29yIGRlIGx1eiIsICJVbSBpbnRlcnJ1cHRvciBlbGV0cm9tZWPDom5pY28gY29udHJvbGFkbyBlbGV0cmljYW1lbnRlIiwgIlVtIGdlcmFkb3IgZGUgZW5lcmdpYSIsICJVbSB0aXBvIGRlIG1lbcOzcmlhIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJQb3IgcXVlIHVzYW1vcyByZXNpc3RvcmVzIGVtIHPDqXJpZSBjb20gTEVEcz8iLCAib3B0aW9ucyI6IFsiUGFyYSBhdW1lbnRhciBvIGJyaWxobyIsICJQYXJhIGxpbWl0YXIgYSBjb3JyZW50ZSBlIG7Do28gcXVlaW1hciBvIExFRCIsICJQYXJhIG11ZGFyIGEgY29yIiwgIlBhcmEgaW52ZXJ0ZXIgYSBwb2xhcmlkYWRlIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJPIEFyZHVpbm8gTWVnYSwgdXNhZG8gbm9zIHByb2pldG9zLCDDqSBwcm9ncmFtYWRvIGVtIHF1YWwgbGluZ3VhZ2VtIGJhc2U/IiwgIm9wdGlvbnMiOiBbIlB5dGhvbiIsICJKYXZhIiwgIkMrKyIsICJIVE1MIl0sICJhIjogMiB9LAogICAgeyAicSI6ICJPIHF1ZSBzaWduaWZpY2EgR0NEPyIsICJvcHRpb25zIjogWyJHcmFuZGUiLCAiR3JvdW5kIChUZXJyYS9OZWdhdGl2bykiLCAiR2FuaG8iLCAiR2VyYWwiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIl8gcXVlIMOpIFZDQyBvdSA1Vj8iLCAib3B0aW9ucyI6IFsiTyBwaW5vIGRlIGRhZG9zIiwgIkEgYWxpbWVudGHDp8OjbyBwb3NpdGl2YSIsICJPIHRlcnJhIiwgIkEgZW50cmFkYSBhbmFsw7NnaWNhIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJRdWFsIGEgZnWxw6NvIGRvICdTZXJpYWwgTW9uaXRvcicgbmEgSURFIGRvIEFyZHVpbm8/IiwgIm9wdGlvbnMiOiBbIlZlciB2w61kZW9zIiwgIkV4aWJpciBkYWRvcyBlbnZpYWRvcyBwZWxvIEFyZHVpbm8gcGFyYSBvIFBDIiwgIkRlc2VuaGFyIGdyw6FmaWNvcyAzRCIsICJDb21waWxhciBvIGPDs2RpZ28iXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlVtYSB2YXJpw6F2ZWwgJ2NvbnN0IGludCcgcG9kZSB0ZXIgc2V1IHZhbG9yIGFsdGVyYWRvIGR1cmFudGUgbyBsb29wPyIsICJvcHRpb25zIjogWyJTaW0iLCAiTsOjbywgw6kgdW1hIGNvbnN0YW50ZSIsICLDgHMgdmV6ZXMiLCAiQXBlbmFzIHNlIHJlaW5pY2lhciJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiUXVhbCBhIGRpZmVyZW7Dp2EgZW50cmUgRGlnaXRhbCBlIEFuYWzDs2dpY28/IiwgIm9wdGlvbnMiOiBbIkRpZ2l0YWwgdGVtIDIgZXN0YWRvcyAoMC8xKSwgQW5hbMOzZ2ljbyB0ZW0gdmFsb3JlcyBjb250w61udW9zIiwgIk7Do28gaMOhIGRpZmVyZW7Dp2EiLCAiQW5hbMOzZ2ljbyDDqSBtZWxob3IiLCAiRGlnaXRhbCDDqSBwYXJhIMOhdWRpbyBhcGVuYXMiXSwgImEiOiAwIH0sCiAgICB7ICJxIjogIl8gcXVlIMOpIHVtICdQcm90b2JvYXJkJz8iLCAib3B0aW9ucyI6IFsiVW1hIHBsYWNhIGRlIGNpcmN1aXRvIGltcHJlc3NvIGZpbmFsIiwgIlVtYSBwbGFjYSBkZSBlbnNhaW8gcGFyYSBtb250YWdlbSBzZW0gc29sZGEiLCAiTyBwcm9jZXNzYWRvciBkbyBBcmR1aW5vIiwgIlVtYSBiYXRlcmlhIl0sICJhIjogMSB9LAogICAgeyAicSI6ICJQYXJhIHF1ZSBzZXJ2ZSBvIGJvdMOjbyAnUmVzZXQnIG5vIEFyZHVpbm8/IiwgIm9wdGlvbnMiOiBbIkFwYWdhciBvIGPDs2RpZ28iLCAiUmVpbmljaWFyIGEgZXhlY3XDp8OjbyBkbyBwcm9ncmFtYSBkbyBpbsOtY2lvIiwgIkRlc2xpZ2FyIGEgcGxhY2EiLCAiU2FsdmFyIG8gY8OzZGlnbyJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiTyBjb21hbmRvICdTZXJpYWwucHJpbnRsbigpJyBkaWZlcmUgZG8gJ1NlcmlhbC5wcmludCgpJyBwb3JxdWU6IiwgIm9wdGlvbnMiOiBbIkltcHJpbWUgY29sb3JpZG8iLCAiUHVsYSB1bWEgbGluaGEgYW8gZmluYWwiLCAiSW1wcmltZSBtYWlzIHLDoXBpZG8iLCAiSW1wcmltZSBhcGVuYXMgbsO6bWVyb3MiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIlF1YWwgYSByZXNvbHXDp8OjbyBwYWRyw6NvIGRvIGNvbnZlcnNvciBhbmFsw7NnaWNvLWRpZ2l0YWwgKEFEQykgZG8gQXJkdWlubyBNZWdhL1Vubz8iLCAib3B0aW9ucyI6IFsiOCBiaXRzICgwLTI1NSkiLCAiMTAgYml0cyAoMC0xMDIzKSIsICIxMiBiaXRzICgwLTQwOTUpIiwgIjE2IGJpdHMiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIl8gc2Vuc29yIERIVDExIMOpIGRpZ2l0YWwgb3UgYW5hbMOzZ2ljbz8iLCAib3B0aW9ucyI6IFsiQW5hbMOzZ2ljbyIsICJEaWdpdGFsIChlbnZpYSBkYWRvcyBjb2RpZmljYWRvcykiLCAiTWVjw6JuaWNvIiwgIk5lbmh1bSJdLCAiYSI6IDEgfSwKICAgIHsgInEiOiAiTyBxdWUgYWNvbnRlY2Ugc2UgbGlnYXJtb3MgdW0gTEVEIGludmVydGlkbz8iLCAib3B0aW9ucyI6IFsiRWxlIHBpc2NhIiwgIkVsZSBuw6NvIGFjZW5kZSIsICJFbGUgZXhwbG9kZSIsICJFbGUgbXVkYSBkZSBjb3IiXSwgImEiOiAxIH0sCiAgICB7ICJxIjogIk5hIG1ldG9kb2xvZ2lhIGRlIFJvdGHDp8OjbyBwb3IgRXN0YcOnw7VlcywgbyBvYmpldGl2byDDqToiLCAib3B0aW9ucyI6IFsiRmljYXIgcGFyYWRvIiwgIlBhc3NhciBwb3IgZGlmZXJlbnRlcyBwb250b3MgZGUgYXByZW5kaXphZ2VtIHJlYWxpemFuZG8gdGFyZWZhcyB2YXJpYWRhcyIsICJBcGVuYXMgY29waWFyIG8gY8OzZGlnbyIsICJDb21wZXRpciBjb20gb3MgY29sZWdhcyJdLCAiYSI6IDEgfQpd";
 
+    let questionBank = [];
     let currentQuestions = [];
     let userAnswers = {};
 
@@ -482,6 +359,14 @@
     }
 
     function generateQuiz() {
+        try {
+            const decodedString = atob(_secureData);
+            questionBank = JSON.parse(decodedString);
+        } catch (e) {
+            alert("Erro fatal: Banco de dados corrompido.");
+            return;
+        }
+
         const container = document.getElementById('quiz-container');
         container.innerHTML = '';
         userAnswers = {};
