@@ -3,6 +3,11 @@
    A ordem aqui deve corresponder à chave de respostas no arquivo HTML.
 */
 
+// CHAVE MESTRA DAS RESPOSTAS
+// Mapeamento: a=0, b=1, c=2, d=3
+// Cada letra corresponde à resposta correta da questão de mesmo índice no array abaixo.
+const _k = "bcacbdccbcbbcbbcbcbccbccbbacbcbabcbabccbbbbccbcbccbbbccbcbacabcbccbabcbcbabbbbabcaaabbcbbbbabbbbbbb";
+
 const fullQuestionBank = [
     // --- Arduino Básico ---
     { id: 0, q: "Qual função do Arduino roda apenas uma vez quando a placa é ligada?", options: ["loop()", "setup()", "main()", "start()"] },
