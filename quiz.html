@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Online</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- KaTeX (Matemática) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
+        .hidden { display: none !important; }
+        .block { display: block; }
+        
+        /* Proteção Anti-Cópia */
+        .no-select { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+
+        .question-card { transition: all 0.3s ease; }
+        .question-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        
+        /* Toast e Modal */
+        #custom-toast {
+            visibility: hidden; min-width: 300px; background-color: #fee2e2; color: #b91c1c;
+            text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 100;
+            left: 50%; top: 30px; transform: translateX(-50%); box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border-left: 5px solid #ef4444; opacity: 0; transition: opacity 0.5s, top 0.5s; font-weight: bold;
+        }
+        #custom-toast.show { visibility: visible; opacity: 1; top: 50px; }
+
+        @keyframes modalPop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-animate { animation: modalPop 0.2s ease-out; }
+
+        /* Play Overlay */
+        .play-overlay { transition: background-color 0.2s; }
+        .video-thumb:hover .play-overlay { background-color: rgba(0,0,0,0.3); }
+        .video-thumb:hover .play-icon { transform: scale(1.1); }
+
+        /* Animações */
+        @keyframes pulse-red { 0% { color: white; } 50% { color: #ffcccc; } 100% { color: white; } }
+        .timer-warning { animation: pulse-red 1s infinite; font-weight: bold; }
+
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); } 
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); } 
+            20%, 40%, 60%, 80% { transform: translateX(4px); } 
+        }
+        .penalty-shake { animation: shake 0.4s; background-color: #ef4444 !important; }
+
+        /* Loader */
+        #page-loader {
+            position: fixed; inset: 0; background: #f3f4f6; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .spinner {
+            border: 4px solid #e5e7eb; border-top: 4px solid #3b82f6;
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen py-8 px-4 sm:px-6 lg:px-8 no-select" oncontextmenu="return false;">
+
+    <!-- LOADER -->
+    <div id="page-loader">
+        <div class="spinner mb-4"></div>
+        <p class="text-gray-600 font-medium" id="loader-text">Carregando avaliação...</p>
+    </div>
+
+    <!-- TOAST -->
+    <div id="custom-toast"></div>
+
+    <!-- MODAL AVISO -->
+    <div id="custom-modal-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div id="custom-modal-box" class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 text-center modal-animate">
+            <div class="mb-4">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
+                    <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900" id="modal-title">Aviso</h3>
+                <p class="text-gray-600 mt-2 text-sm leading-relaxed" id="modal-text">Mensagem.</p>
+            </div>
+            <div class="flex justify-center gap-3" id="modal-actions"></div>
+        </div>
+    </div>
+
+    <!-- MODAL IMAGEM -->
+    <div id="image-modal-overlay" class="hidden fixed inset-0 bg-black bg-opacity-90 z-[300] flex items-center justify-center p-4 backdrop-blur-sm" onclick="closeMediaModal()">
+        <div class="relative max-w-6xl max-h-full flex flex-col items-center justify-center" onclick="event.stopPropagation()">
+            <button onclick="closeMediaModal()" class="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none" title="Fechar">
+                <svg class="h-10 w-10 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <img id="expanded-image" src="" alt="Imagem Ampliada" class="max-h-[85vh] max-w-full rounded-lg shadow-2xl border-4 border-white object-contain">
+        </div>
+    </div>
+
+    <!-- MODAL VÍDEO -->
+    <div id="video-modal-overlay" class="hidden fixed inset-0 bg-black bg-opacity-90 z-[300] flex items-center justify-center p-4 backdrop-blur-sm" onclick="closeMediaModal()">
+        <div class="relative w-full max-w-4xl aspect-video bg-black rounded-lg shadow-2xl border-4 border-gray-800" onclick="event.stopPropagation()">
+            <button onclick="closeMediaModal()" class="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none" title="Fechar">
+                <svg class="h-10 w-10 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            <div id="video-container" class="w-full h-full"></div>
+        </div>
+    </div>
+
+    <!-- TELA LOCKOUT -->
+    <div id="lockout-screen" class="hidden fixed inset-0 bg-gray-100 z-[150] flex items-center justify-center p-4">
+        <div class="max-w-lg w-full bg-white rounded-xl shadow-2xl overflow-hidden border-t-8 border-red-600">
+            <div class="p-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Acesso Bloqueado</h2>
+                <p class="text-gray-600 mb-6">Uma tentativa já foi iniciada. O reinício imediato não é permitido.</p>
+                <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                    <p class="text-sm text-red-800 font-medium">Você poderá tentar novamente em:</p>
+                    <p id="lock-timer" class="text-2xl font-mono font-bold text-red-600 mt-1">--:--</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-app-container" class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg relative hidden">
+        
+        <!-- BOAS VINDAS -->
+        <div id="welcome-screen" class="p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-blue-700" id="quiz-main-title">Avaliação Online</h1>
+                <p class="text-gray-600 mt-2 text-lg" id="quiz-sub-title">Leia as instruções abaixo</p>
+            </div>
+
+            <!-- QUADRO DE INSTRUÇÕES -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-600 p-6 mb-8 rounded-lg shadow-sm">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0"><span class="text-3xl">👋</span></div>
+                    <div class="ml-4">
+                        <h2 class="text-xl font-bold text-blue-900 mb-2">Bem-vindo(a)!</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">Siga o roteiro para realizar a avaliação:</p>
+                        <ol class="list-decimal list-inside space-y-2 text-sm text-gray-800 font-medium bg-white p-4 rounded border border-blue-100">
+                            <li><span class="text-blue-600 font-bold">Identificação:</span> Preencha Nome e Turma.</li>
+                            <li><span class="text-blue-600 font-bold">Atenção:</span> O tempo é limitado.</li>
+                            <li><span class="text-blue-600 font-bold">Segurança:</span> Não saia desta tela. Mudanças de aba geram penalidade.</li>
+                            <li><span class="text-blue-600 font-bold">Entrega:</span> Baixe o PDF ao final.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8 bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nome Completo</label>
+                        <input type="text" id="studentName" class="mt-1 w-full p-3 border rounded-md focus:ring-blue-500" placeholder="Digite seu nome...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Turma</label>
+                        <input type="text" id="studentClass" class="mt-1 w-full p-3 border rounded-md focus:ring-blue-500" placeholder="Ex: 1º Mecatrônica">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-yellow-50 border border-yellow-200 p-5 rounded-lg shadow-sm mb-8">
+                <h3 class="text-md font-bold text-red-700 mb-2">⚠️ Sistema Anti-Fraude</h3>
+                <ul class="text-sm text-gray-700 list-disc pl-5">
+                    <li><strong>Tentativa Única:</strong> Ao iniciar, o bloqueio de reinício será de <span id="lock-time-display">60</span> minutos.</li>
+                    <li><strong>Foco da Janela:</strong> Sair da aba gera penalidade.</li>
+                    <li><strong><span id="max-penalties-display">10</span> Penalidades = BLOQUEIO AUTOMÁTICO.</strong></li>
+                    <li><strong>Tempo Limite:</strong> <span id="time-limit-display">30</span> minutos.</li>
+                </ul>
+            </div>
+
+            <button onclick="startExam()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-lg text-lg transition transform hover:scale-[1.01]">
+                🚀 INICIAR AVALIAÇÃO
+            </button>
+        </div>
+
+        <!-- PROVA -->
+        <div id="exam-screen" class="hidden">
+            <div class="bg-blue-600 px-6 py-4 text-white flex flex-col md:flex-row justify-between items-center sticky top-0 z-50 shadow-md rounded-t-xl gap-4">
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold">Avaliação em Andamento</h1>
+                    <p class="text-blue-100 text-xs mt-1" id="student-display">Aluno: ...</p>
+                </div>
+                <div class="flex gap-4">
+                    <div id="penalty-box" class="bg-red-800 px-3 py-2 rounded-lg text-center min-w-[100px]">
+                        <p class="text-[10px] text-red-200 uppercase">Penalidades</p>
+                        <div class="text-lg font-mono font-bold"><span id="penalty-display">0</span>/<span class="max-penalties-text">10</span></div>
+                    </div>
+                    <div class="bg-blue-800 px-3 py-2 rounded-lg text-center min-w-[100px]">
+                        <p class="text-[10px] text-blue-200 uppercase">Tempo</p>
+                        <div id="timer-display" class="text-lg font-mono font-bold">00:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quiz-container" class="p-6 space-y-6 bg-gray-50 min-h-[500px]"></div>
+
+            <div class="p-6 bg-white border-t border-gray-200 flex justify-end gap-4 rounded-b-xl">
+                <button onclick="finishQuiz()" id="btn-finish" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow">Finalizar</button>
+                <button onclick="generatePDF()" id="btn-pdf" class="hidden bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow flex items-center gap-2">📄 Baixar Comprovante</button>
+            </div>
+            
+            <div id="result-area" class="hidden p-6 bg-yellow-50 text-center border-t border-yellow-200">
+                <h3 class="text-2xl font-bold text-gray-800">Nota: <span id="score-display" class="text-blue-600"></span>/100</h3>
+            </div>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // --- CONFIGURAÇÕES PADRÃO (Serão sobrescritas pelo arquivo carregado) ---
+    let MAX_PENALTIES = 10;
+    let TIME_LIMIT_SECONDS = 30 * 60; 
+    let SESSION_LOCK_TIME_MS = 60 * 60 * 1000;
+    let QUIZ_TITLE = "Avaliação de Recuperação";
+    let storageKey = 'arduino_quiz_lock';
+
+    // Variáveis de Estado
+    let fullQuestionBank = [];
+    let _k = "";
+    let currentQuestions = [];
+    let userAnswers = {};
+    let isExamStarted = false;
+    let isLocked = false;
+    let penaltyCount = 0;
+    let timerInterval;
+    let timeElapsed = 0;
+
+    // --- FUNÇÕES GLOBAIS (Expostas ao Window) ---
+
+    window.onload = async function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const quizId = urlParams.get('id') || 'questions';
+        storageKey = `quiz_lock_${quizId}`;
+
+        // Tenta carregar da Nuvem (Se for um ID longo) ou Local (Se for nome de arquivo)
+        let loaded = false;
+        if(quizId.length > 15) { // Supõe que é ID do Firestore
+             loaded = await loadFromCloud(quizId);
+        }
+
+        if(!loaded) {
+            loadFromScript(quizId);
+        }
+    };
+
+    async function loadFromCloud(docId) {
+        try {
+            if (typeof __firebase_config === 'undefined') return false;
+            const app = initializeApp(JSON.parse(__firebase_config));
+            const db = getFirestore(app);
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'quizzes', docId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                applyQuizData(data.title, data.key, data.questions, data.config);
+                return true;
+            }
+        } catch (e) {
+            console.error("Erro nuvem:", e);
+        }
+        return false;
+    }
+
+    function loadFromScript(scriptName) {
+        const script = document.createElement('script');
+        script.src = `${scriptName}.js`;
+        script.onload = () => {
+            // Pega as variáveis globais definidas pelo arquivo .js
+            if (typeof window.fullQuestionBank !== 'undefined') {
+                const config = (typeof window.quizConfig !== 'undefined') ? window.quizConfig : null;
+                const title = (typeof window.quizTitle !== 'undefined') ? window.quizTitle : "Avaliação";
+                const key = (typeof window._k !== 'undefined') ? window._k : "";
+                applyQuizData(title, key, window.fullQuestionBank, config);
+            } else {
+                showError("Arquivo de prova inválido ou vazio.");
+            }
+        };
+        script.onerror = () => showError(`Prova não encontrada: ${scriptName}.js`);
+        document.head.appendChild(script);
+    }
+
+    function applyQuizData(title, key, questions, config) {
+        QUIZ_TITLE = title;
+        _k = key;
+        fullQuestionBank = questions;
+
+        if (config) {
+            if(config.maxPenalties) MAX_PENALTIES = parseInt(config.maxPenalties);
+            if(config.timeLimitMinutes) TIME_LIMIT_SECONDS = parseInt(config.timeLimitMinutes) * 60;
+            if(config.lockTimeMinutes) SESSION_LOCK_TIME_MS = parseInt(config.lockTimeMinutes) * 60 * 1000;
+        }
+
+        // Atualiza UI
+        document.getElementById('quiz-main-title').textContent = QUIZ_TITLE;
+        document.title = QUIZ_TITLE;
+        document.querySelectorAll('.max-penalties-text').forEach(el => el.textContent = MAX_PENALTIES);
+        document.getElementById('max-penalties-display').textContent = MAX_PENALTIES;
+        document.getElementById('time-limit-display').textContent = Math.floor(TIME_LIMIT_SECONDS / 60);
+        document.getElementById('lock-time-display').textContent = Math.floor(SESSION_LOCK_TIME_MS / 60000);
+
+        // Remove Loader
+        document.getElementById('page-loader').classList.add('hidden');
+        document.getElementById('main-app-container').classList.remove('hidden');
+        
+        checkSessionLock();
+    }
+
+    function showError(msg) {
+        document.getElementById('loader-text').innerHTML = `<span class="text-red-600 font-bold">${msg}</span>`;
+        document.querySelector('.spinner').style.display = 'none';
+    }
+
+    // --- FUNÇÕES EXPOSTAS PARA O HTML ---
+    window.startExam = function() {
+        const name = document.getElementById('studentName').value.trim();
+        const turma = document.getElementById('studentClass').value.trim();
+
+        if (!name || !turma) {
+            showToast("Por favor, preencha Nome e Turma.");
+            return;
+        }
+
+        showModal(`Você tem certeza?\nO tempo de ${Math.floor(TIME_LIMIT_SECONDS/60)} minutos iniciará.\nInfrações permitidas: ${MAX_PENALTIES}.`, () => {
+            setSessionLock();
+            document.getElementById('student-display').textContent = `Aluno: ${name} (${turma})`;
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('exam-screen').classList.remove('hidden');
+            document.getElementById('exam-screen').classList.add('block');
+            
+            isExamStarted = true;
+            generateQuizCards();
+            startTimer();
+            window.scrollTo(0, 0);
+        }, true);
+    };
+
+    window.finishQuiz = function() {
+        if (!isLocked && Object.keys(userAnswers).length < 20) {
+            showModal("Ainda existem questões em branco.\nDeseja finalizar?", () => executeFinish(), true);
+        } else {
+            executeFinish();
+        }
+    };
+
+    window.generatePDF = async function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        const name = document.getElementById('studentName').value;
+        const turma = document.getElementById('studentClass').value;
+        const score = document.getElementById('score-display').textContent;
+        const now = new Date();
+        
+        // Hash simples
+        const authString = `${name}-${score}-${timeElapsed}-${penaltyCount}-${now.getTime()}`;
+        let hash = 0;
+        for (let i = 0; i < authString.length; i++) hash = ((hash << 5) - hash) + authString.charCodeAt(i) | 0;
+        const authCode = "AUTH-" + Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
+
+        doc.setFillColor(37, 99, 235);
+        doc.rect(0, 0, 210, 40, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(18);
+        doc.text("Relatório de Avaliação", 105, 25, null, null, "center");
+        
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(10);
+        doc.text(`Prova: ${QUIZ_TITLE}`, 20, 50);
+        doc.text(`Aluno: ${name}`, 20, 60);
+        doc.text(`Turma: ${turma}`, 20, 70);
+        doc.text(`Data: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`, 20, 80);
+        
+        doc.setFontSize(14);
+        doc.text(`Nota: ${score}/100`, 20, 100);
+        doc.setFontSize(10);
+        doc.text(`Tempo: ${document.getElementById('timer-display').textContent}`, 120, 100);
+        
+        if(penaltyCount > 0) {
+            doc.setTextColor(200, 0, 0);
+            doc.text(`Penalidades: ${penaltyCount}`, 20, 110);
+        } else {
+            doc.setTextColor(0, 128, 0);
+            doc.text("Conduta Limpa", 20, 110);
+        }
+
+        doc.setTextColor(100, 100, 100);
+        doc.text("Autenticação:", 105, 130, null, null, "center");
+        doc.setFont("courier", "bold");
+        doc.text(authCode, 105, 135, null, null, "center");
+
+        doc.save(`Relatorio_${name.replace(/\s+/g, '_')}.pdf`);
+    };
+
+    window.openImageModal = (src) => {
+        document.getElementById('expanded-image').src = src;
+        document.getElementById('image-modal-overlay').classList.remove('hidden');
+    };
+
+    window.openVideoModal = (videoId) => {
+        const container = document.getElementById('video-container');
+        container.innerHTML = `<iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        document.getElementById('video-modal-overlay').classList.remove('hidden');
+    };
+
+    window.closeMediaModal = () => {
+        document.getElementById('image-modal-overlay').classList.add('hidden');
+        document.getElementById('video-modal-overlay').classList.add('hidden');
+        document.getElementById('video-container').innerHTML = "";
+    };
+
+    window.saveAnswer = (idx, val) => { userAnswers[idx] = val; };
+
+    // --- FUNÇÕES INTERNAS ---
+
+    function generateQuizCards() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        userAnswers = {};
+
+        // Embaralha e pega 20 questões (ou menos se o banco for menor)
+        const limit = Math.min(20, fullQuestionBank.length);
+        const shuffled = fullQuestionBank.sort(() => 0.5 - Math.random());
+        currentQuestions = shuffled.slice(0, limit);
+
+        currentQuestions.forEach((qObj, index) => {
+            const div = document.createElement('div');
+            div.className = 'bg-white p-6 rounded-lg border shadow-sm mb-4 question-card';
+            
+            let mediaHtml = '';
+            if (qObj.video) {
+                const vidId = getYoutubeId(qObj.video);
+                if(vidId) mediaHtml = `<div class="mb-4 flex justify-center group"><div class="relative cursor-pointer video-thumb rounded-lg overflow-hidden shadow-md border border-gray-200 w-full max-w-md aspect-video bg-black" onclick="openVideoModal('${vidId}')"><img src="https://img.youtube.com/vi/${vidId}/mqdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"><div class="absolute inset-0 flex items-center justify-center"><div class="play-overlay bg-red-600 text-white rounded-full p-3 shadow-lg transform transition-transform group-hover:scale-110"><svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div></div>`;
+            } else if (qObj.image) {
+                mediaHtml = `<div class="mb-4 flex justify-center"><img src="${qObj.image}" class="max-h-60 rounded border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity" onclick="openImageModal('${qObj.image}')"></div>`;
+            }
+
+            let opts = '';
+            qObj.options.forEach((opt, i) => {
+                opts += `<label class="flex items-center space-x-3 p-2 rounded hover:bg-blue-50 cursor-pointer"><input type="radio" name="q${index}" value="${i}" class="h-5 w-5 text-blue-600" onchange="saveAnswer(${index}, ${i})"><span class="text-gray-700">${opt}</span></label>`;
+            });
+
+            div.innerHTML = `<h3 class="text-lg font-semibold text-gray-800 mb-3">${index + 1}. ${qObj.q}</h3>${mediaHtml}<div class="space-y-2">${opts}</div><div id="feedback-${index}" class="mt-2 font-bold hidden"></div>`;
+            container.appendChild(div);
+        });
+
+        if (window.renderMathInElement) {
+            renderMathInElement(container, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+        }
+    }
+
+    function startTimer() {
+        const display = document.getElementById('timer-display');
+        timerInterval = setInterval(() => {
+            if (isLocked) return clearInterval(timerInterval);
+            timeElapsed++;
+            const m = Math.floor(timeElapsed / 60).toString().padStart(2, '0');
+            const s = (timeElapsed % 60).toString().padStart(2, '0');
+            display.textContent = `${m}:${s}`;
+            if (timeElapsed >= TIME_LIMIT_SECONDS) lockQuiz("Tempo esgotado!");
+        }, 1000);
+    }
+
+    function executeFinish() {
+        isLocked = true;
+        clearInterval(timerInterval);
+        let score = 0;
+        
+        // Calcula nota proporcional (Total 100)
+        const pointsPerQuestion = 100 / currentQuestions.length;
+
+        currentQuestions.forEach((q, i) => {
+            const correct = getCorrectAnswerIndex(q.id); // Usa ID original para buscar resposta na chave
+            const feedback = document.getElementById(`feedback-${i}`);
+            feedback.classList.remove('hidden');
+            document.getElementsByName(`q${i}`).forEach(inp => inp.disabled = true);
+
+            if (userAnswers[i] === correct) {
+                score += pointsPerQuestion;
+                feedback.innerHTML = "<span class='text-green-600'>✅ Correto</span>";
+                if(userAnswers[i] !== undefined) document.querySelector(`input[name="q${i}"][value="${userAnswers[i]}"]`).parentElement.classList.add('bg-green-100');
+            } else {
+                feedback.innerHTML = "<span class='text-red-600'>❌ Incorreto</span>";
+                if(userAnswers[i] !== undefined) document.querySelector(`input[name="q${i}"][value="${userAnswers[i]}"]`).parentElement.classList.add('bg-red-100');
+            }
+        });
+
+        document.getElementById('score-display').textContent = Math.round(score);
+        document.getElementById('result-area').classList.remove('hidden');
+        document.getElementById('btn-finish').classList.add('hidden');
+        document.getElementById('btn-pdf').classList.remove('hidden');
+        document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+        
+        window.onbeforeunload = null;
+        localStorage.removeItem(storageKey); 
+    }
+
+    // --- HELPERS ---
+    function getCorrectAnswerIndex(questionId) {
+        return _k.charCodeAt(questionId) - 97; 
+    }
+    
+    function getYoutubeId(url) {
+        const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    // --- SISTEMA ANTI-FRAUDE ---
+    function addPenalty(reason) {
+        if (!isExamStarted || isLocked || document.getElementById('btn-finish').classList.contains('hidden')) return;
+        penaltyCount++;
+        document.getElementById('penalty-display').textContent = penaltyCount;
+        
+        if (penaltyCount >= MAX_PENALTIES) lockQuiz("Muitas penalidades detectadas!");
+        else showToast(`⚠️ PENALIDADE (${penaltyCount}/${MAX_PENALTIES}): ${reason}`);
+    }
+
+    function lockQuiz(msg) {
+        isLocked = true;
+        clearInterval(timerInterval);
+        document.querySelectorAll('input').forEach(i => i.disabled = true);
+        showModal(`${msg}\n\nO formulário foi bloqueado. Finalize agora.`);
+    }
+
+    // Event Listeners
+    document.addEventListener("visibilitychange", () => { if(document.hidden && isExamStarted && !isLocked) addPenalty("Saiu da aba."); });
+    window.addEventListener("blur", () => {
+        const modals = ['custom-modal-overlay', 'image-modal-overlay', 'video-modal-overlay'];
+        const isModalOpen = modals.some(id => !document.getElementById(id).classList.contains('hidden'));
+        const isIframe = document.activeElement && document.activeElement.tagName === 'IFRAME';
+        
+        if(isExamStarted && !isLocked && !document.getElementById('btn-finish').classList.contains('hidden') && !isModalOpen && !isIframe) {
+            addPenalty("Janela perdeu o foco.");
+        }
+    });
+
+    // Sessão e Bloqueio
+    function checkSessionLock() {
+        const stored = localStorage.getItem(storageKey);
+        if (stored) {
+            const session = JSON.parse(stored);
+            const diff = Date.now() - session.timestamp;
+            if (diff < SESSION_LOCK_TIME_MS) {
+                document.getElementById('main-app-container').classList.add('hidden');
+                document.getElementById('lockout-screen').classList.remove('hidden');
+                const unlock = session.timestamp + SESSION_LOCK_TIME_MS;
+                setInterval(() => {
+                    const rem = unlock - Date.now();
+                    if (rem <= 0) { localStorage.removeItem(storageKey); location.reload(); }
+                    else {
+                        const m = Math.floor((rem % 3600000) / 60000).toString().padStart(2,'0');
+                        const s = Math.floor((rem % 60000) / 1000).toString().padStart(2,'0');
+                        document.getElementById('lock-timer').textContent = `${m}:${s}`;
+                    }
+                }, 1000);
+            } else { localStorage.removeItem(storageKey); }
+        }
+    }
+
+    function setSessionLock() {
+        localStorage.setItem(storageKey, JSON.stringify({ timestamp: Date.now() }));
+    }
+
+    // UI Utils
+    function showToast(msg) {
+        const t = document.getElementById("custom-toast");
+        t.textContent = msg; t.className = "show";
+        if(toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => t.className = "", 4000);
+    }
+
+    function showModal(msg, onConfirm, isConfirm) {
+        const ov = document.getElementById('custom-modal-overlay');
+        document.getElementById('modal-text').innerHTML = msg.replace(/\n/g, '<br>');
+        const act = document.getElementById('modal-actions');
+        act.innerHTML = "";
+        
+        const b1 = document.createElement("button");
+        b1.textContent = isConfirm ? "Sim, continuar" : "Entendi";
+        b1.className = "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded";
+        b1.onclick = () => { ov.classList.add('hidden'); if(onConfirm) onConfirm(); };
+        act.appendChild(b1);
+
+        if(isConfirm) {
+            const b2 = document.createElement("button");
+            b2.textContent = "Cancelar";
+            b2.className = "bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded";
+            b2.onclick = () => ov.classList.add('hidden');
+            act.appendChild(b2);
+        }
+        ov.classList.remove('hidden');
+    }
+
+    window.closeMediaModal = () => {
+        document.getElementById('image-modal-overlay').classList.add('hidden');
+        document.getElementById('video-modal-overlay').classList.add('hidden');
+        document.getElementById('video-container').innerHTML = "";
+    }
+</script>
+</body>
+</html>
