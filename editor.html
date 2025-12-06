@@ -18,9 +18,12 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
+    <!-- Input de Arquivo (Oculto) -->
+    <input type="file" id="fileInput" accept=".js" class="hidden" onchange="handleFileUpload(this)">
+
     <!-- Cabeçalho -->
     <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <i data-lucide="file-json" class="h-8 w-8"></i>
                 <div>
@@ -28,8 +31,15 @@
                     <p class="text-xs text-indigo-200">Para o Quiz de Rotação por Estações</p>
                 </div>
             </div>
-            <div class="flex gap-3">
-                <span class="bg-indigo-700 px-3 py-1 rounded text-sm font-mono">Total: <span id="q-count">0</span></span>
+            
+            <div class="flex gap-3 items-center">
+                <span class="bg-indigo-700 px-3 py-1 rounded text-sm font-mono mr-2">Total: <span id="q-count">0</span></span>
+                
+                <!-- Botão de Upload -->
+                <button onclick="document.getElementById('fileInput').click()" class="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold py-2 px-4 rounded transition-colors border border-indigo-400">
+                    <i data-lucide="upload" class="h-4 w-4"></i>
+                    Carregar questions.js
+                </button>
             </div>
         </div>
     </header>
@@ -37,6 +47,30 @@
     <!-- Área Principal -->
     <main class="flex-grow max-w-5xl mx-auto w-full px-4 py-8">
         
+        <!-- INSTRUÇÕES LATEX -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded shadow-sm">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <i data-lucide="function-square" class="h-6 w-6 text-blue-600"></i>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-bold text-blue-800">Dica: Fórmulas Matemáticas (LaTeX)</h3>
+                    <div class="mt-2 text-sm text-blue-700">
+                        <p class="mb-2">Você pode usar códigos LaTeX para exibir fórmulas matemáticas nas perguntas ou alternativas. O quiz usa a biblioteca KaTeX.</p>
+                        <ul class="list-disc pl-5 space-y-1 mb-2">
+                            <li><strong>Na mesma linha:</strong> Use <code>$ ... $</code>. Ex: <code>$E=mc^2$</code></li>
+                            <li><strong>Bloco centralizado:</strong> Use <code>$$ ... $$</code>.</li>
+                        </ul>
+                        <div class="bg-white p-3 rounded border border-blue-200 text-gray-800 font-mono text-xs">
+                            <strong>⚠️ IMPORTANTE:</strong> Como este gerador cria um arquivo JavaScript, você deve usar <span class="text-red-600 font-bold">DUAS barras invertidas (\\)</span> para os comandos LaTeX.<br><br>
+                            Exemplo Fração: <code>$\\frac{1}{2}$</code> (correto) em vez de <code>$\frac{1}{2}$</code> (errado).<br>
+                            Exemplo Ohm: <code>$10\\Omega$</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Lista de Questões -->
         <div id="questions-container" class="space-y-6">
             <!-- As questões serão inseridas aqui via JS -->
@@ -46,7 +80,7 @@
         <div id="empty-state" class="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl mt-6 hidden">
             <i data-lucide="clipboard-list" class="h-12 w-12 mx-auto text-gray-400 mb-3"></i>
             <h3 class="text-lg font-medium text-gray-900">Nenhuma questão ainda</h3>
-            <p class="text-gray-500 mb-4">Comece adicionando a primeira pergunta da sua prova.</p>
+            <p class="text-gray-500 mb-4">Comece adicionando a primeira pergunta ou carregue um arquivo existente.</p>
             <button onclick="addQuestion()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 <i data-lucide="plus" class="h-4 w-4 mr-2"></i> Adicionar Questão
             </button>
@@ -70,7 +104,7 @@
             </div>
             <button onclick="generateAndDownload()" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                 <i data-lucide="download" class="h-5 w-5"></i>
-                Gerar questions.js
+                Baixar questions.js
             </button>
         </div>
     </div>
@@ -91,8 +125,34 @@
                     <textarea rows="2" class="q-text w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="Ex: Qual a função do comando pinMode?"></textarea>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Imagem -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">URL da Imagem (Opcional)</label>
+                        <input type="text" class="q-image w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm" placeholder="https://exemplo.com/imagem.png" oninput="updateImagePreview(this)">
+                        <!-- Área de Preview Imagem -->
+                        <div class="q-image-preview hidden mt-2 p-2 border border-gray-100 rounded bg-gray-50 text-center">
+                            <img src="" alt="Preview" class="max-h-40 mx-auto rounded shadow-sm object-contain">
+                        </div>
+                    </div>
+
+                    <!-- Vídeo (Novo) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">URL do Vídeo YouTube (Opcional)</label>
+                        <input type="text" class="q-video w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm" placeholder="https://www.youtube.com/watch?v=... ou Shorts" oninput="updateVideoPreview(this)">
+                        <div class="flex flex-col gap-1 mt-1">
+                            <p class="text-xs text-gray-400">Aceita links de Vídeos normais e Shorts.</p>
+                            <p class="text-xs text-yellow-600 font-medium bg-yellow-50 p-1 rounded">⚠️ Se der erro, é bloqueio do YouTube local. No servidor funcionará.</p>
+                        </div>
+                        <!-- Área de Preview Vídeo -->
+                        <div class="q-video-preview hidden mt-2 p-2 border border-gray-100 rounded bg-gray-50 text-center">
+                            <iframe class="w-full h-40 mx-auto rounded shadow-sm" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Alternativas -->
-                <div class="space-y-3">
+                <div class="space-y-3 border-t border-gray-100 pt-4">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Alternativas (Marque a correta)</label>
                     
                     <!-- Opção A -->
@@ -141,9 +201,127 @@
 
         let questionCount = 0;
 
-        // Ao carregar, adiciona uma questão vazia
+        // Ao carregar, adiciona uma questão vazia se não houver upload
         window.onload = function() {
-            addQuestion();
+            if(document.getElementById('questions-container').children.length === 0) {
+                addQuestion();
+            }
+        }
+
+        // --- Helper: Extrair ID do YouTube (Versão Robusta) ---
+        function getYoutubeId(url) {
+            if (!url) return null;
+            // Suporta: youtu.be, youtube.com/watch?v=, youtube.com/embed/, youtube.com/shorts/
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+            const match = url.match(regExp);
+            // IDs do YouTube geralmente têm 11 caracteres
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // --- Função de Preview de Imagem ---
+        function updateImagePreview(input) {
+            const url = input.value.trim();
+            const container = input.closest('.mb-6').querySelector('.q-image-preview');
+            const img = container.querySelector('img');
+
+            if (url) {
+                img.src = url;
+                img.onerror = function() { container.classList.add('hidden'); };
+                img.onload = function() { container.classList.remove('hidden'); };
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        // --- Função de Preview de Vídeo (Atualizada) ---
+        function updateVideoPreview(input) {
+            const url = input.value.trim();
+            const container = input.closest('.mb-6').querySelector('.q-video-preview');
+            const iframe = container.querySelector('iframe');
+            const videoId = getYoutubeId(url);
+
+            if (videoId) {
+                // Usa youtube.com padrão para maior compatibilidade
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+                iframe.src = "";
+            }
+        }
+
+        // --- Lógica de Upload e Parse ---
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                parseAndLoadContent(content);
+            };
+            reader.readAsText(file);
+            input.value = '';
+        }
+
+        function parseAndLoadContent(content) {
+            try {
+                const kMatch = content.match(/const\s+_k\s*=\s*"([a-d]+)"/);
+                if (!kMatch) throw new Error("Chave de respostas (_k) não encontrada.");
+                const loadedKey = kMatch[1];
+
+                const bankMatch = content.match(/const\s+fullQuestionBank\s*=\s*(\[[\s\S]*?\]);/);
+                if (!bankMatch) throw new Error("Banco de questões (fullQuestionBank) não encontrado.");
+                
+                const loadedQuestions = JSON.parse(bankMatch[1]);
+                const container = document.getElementById('questions-container');
+                container.innerHTML = ''; 
+
+                const charToIndex = { 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
+
+                loadedQuestions.forEach((qObj, index) => {
+                    addQuestion(false); 
+                    const card = container.lastElementChild;
+
+                    // Preenche campos
+                    card.querySelector('.q-text').value = qObj.q;
+                    
+                    if (qObj.image) {
+                        const imgInput = card.querySelector('.q-image');
+                        imgInput.value = qObj.image;
+                        updateImagePreview(imgInput);
+                    }
+
+                    if (qObj.video) {
+                        const vidInput = card.querySelector('.q-video');
+                        vidInput.value = qObj.video;
+                        updateVideoPreview(vidInput);
+                    }
+
+                    const optionInputs = card.querySelectorAll('.q-option');
+                    if (qObj.options && qObj.options.length >= 4) {
+                        qObj.options.forEach((opt, i) => {
+                            if(optionInputs[i]) optionInputs[i].value = opt;
+                        });
+                    }
+
+                    if (index < loadedKey.length) {
+                        const correctChar = loadedKey[index];
+                        const correctIndex = charToIndex[correctChar];
+                        if (correctIndex !== undefined) {
+                            const radios = card.querySelectorAll('input[type="radio"]');
+                            if (radios[correctIndex]) radios[correctIndex].checked = true;
+                        }
+                    }
+                });
+
+                alert("Arquivo carregado com sucesso! " + loadedQuestions.length + " questões importadas.");
+                updateCounter();
+
+            } catch (e) {
+                alert("Erro ao ler o arquivo: " + e.message + "\nCertifique-se de que é um arquivo questions.js válido.");
+                console.error(e);
+            }
         }
 
         function updateCounter() {
@@ -151,10 +329,8 @@
             questionCount = cards.length;
             document.getElementById('q-count').textContent = questionCount;
             
-            // Atualiza números e names dos radios
             cards.forEach((card, index) => {
                 card.querySelector('.q-number').textContent = index + 1;
-                // Importante: garante que o radio button group seja único por questão
                 const radios = card.querySelectorAll('input[type="radio"]');
                 radios.forEach(radio => {
                     radio.name = `correct_q_${index}`;
@@ -169,25 +345,24 @@
             }
         }
 
-        function addQuestion() {
+        function addQuestion(scroll = true) {
             const container = document.getElementById('questions-container');
             const template = document.getElementById('question-template');
             const clone = template.content.cloneNode(true);
             
             container.appendChild(clone);
             
-            // Re-inicializa ícones nos novos elementos
             lucide.createIcons();
             
-            // Scroll suave para a nova questão
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            if(scroll) {
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
             
             updateCounter();
         }
 
         function removeQuestion(btn) {
             if(!confirm("Tem certeza que deseja remover esta questão?")) return;
-            
             const card = btn.closest('.question-card');
             card.remove();
             updateCounter();
@@ -204,23 +379,20 @@
             let fullQuestionBank = [];
             let keyString = "";
             let hasError = false;
-
-            // Mapeamento de índice para letra (0->a, 1->b, etc)
             const indexToChar = ['a', 'b', 'c', 'd'];
 
             cards.forEach((card, index) => {
                 if(hasError) return;
 
                 const qText = card.querySelector('.q-text').value.trim();
+                const qImage = card.querySelector('.q-image').value.trim();
+                const qVideo = card.querySelector('.q-video').value.trim();
                 const optionInputs = card.querySelectorAll('.q-option');
                 const correctInput = card.querySelector('input[type="radio"]:checked');
 
-                // Validação Básica
                 if (!qText) {
                     alert(`A questão ${index + 1} está sem enunciado.`);
                     card.scrollIntoView({behavior: 'smooth', block: 'center'});
-                    card.classList.add('ring-2', 'ring-red-500');
-                    setTimeout(() => card.classList.remove('ring-2', 'ring-red-500'), 2000);
                     hasError = true;
                     return;
                 }
@@ -246,22 +418,26 @@
                     return;
                 }
 
-                // Constrói o objeto
-                fullQuestionBank.push({
+                const qObj = {
                     id: index,
                     q: qText,
                     options: options
-                });
+                };
 
-                // Constrói a chave
+                if (qImage) qObj.image = qImage;
+                if (qVideo) qObj.video = qVideo;
+
+                fullQuestionBank.push(qObj);
+
                 const correctIndex = parseInt(correctInput.value);
                 keyString += indexToChar[correctIndex];
             });
 
             if (hasError) return;
 
-            // Conteúdo do Arquivo JS
-            const fileContent = `/* BANCO DE QUESTÕES GERADO EM ${new Date().toLocaleDateString()} */
+            const fileContent = `/* BANCO DE QUESTÕES - ARDUINO
+   Este arquivo contém as perguntas, opções e a chave de respostas da avaliação.
+*/
 
 // CHAVE MESTRA DAS RESPOSTAS
 // Mapeamento: a=0, b=1, c=2, d=3
@@ -270,7 +446,6 @@ const _k = "${keyString}";
 const fullQuestionBank = ${JSON.stringify(fullQuestionBank, null, 4)};
 `;
 
-            // Criação do Blob e Download
             const blob = new Blob([fileContent], { type: 'text/javascript' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
