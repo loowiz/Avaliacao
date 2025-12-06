@@ -25,20 +25,20 @@
     <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <i data-lucide="file-json" class="h-8 w-8"></i>
+                <i data-lucide="file-edit" class="h-8 w-8"></i>
                 <div>
-                    <h1 class="text-xl font-bold">Gerador de Questões</h1>
-                    <p class="text-xs text-indigo-200">Para o Quiz de Rotação por Estações</p>
+                    <h1 class="text-xl font-bold">Editor de Questões</h1>
+                    <p class="text-xs text-indigo-200">Crie provas personalizadas para o Quiz</p>
                 </div>
             </div>
             
             <div class="flex gap-3 items-center">
-                <span class="bg-indigo-700 px-3 py-1 rounded text-sm font-mono mr-2">Total: <span id="q-count">0</span></span>
+                <span class="bg-indigo-700 px-3 py-1 rounded text-sm font-mono mr-2">Questões: <span id="q-count">0</span></span>
                 
                 <!-- Botão de Upload -->
                 <button onclick="document.getElementById('fileInput').click()" class="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold py-2 px-4 rounded transition-colors border border-indigo-400">
                     <i data-lucide="upload" class="h-4 w-4"></i>
-                    Carregar questions.js
+                    Importar .js
                 </button>
             </div>
         </div>
@@ -47,428 +47,458 @@
     <!-- Área Principal -->
     <main class="flex-grow max-w-5xl mx-auto w-full px-4 py-8">
         
-        <!-- INSTRUÇÕES LATEX -->
-        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded shadow-sm">
-            <div class="flex items-start">
-                <div class="flex-shrink-0">
-                    <i data-lucide="function-square" class="h-6 w-6 text-blue-600"></i>
+        <!-- CONFIGURAÇÃO DA PROVA -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
+            <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i data-lucide="settings" class="h-5 w-5 text-indigo-600"></i> Configurações da Avaliação
+            </h2>
+            
+            <div class="space-y-4">
+                <!-- Título -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Título da Avaliação</label>
+                    <input type="text" id="quiz-title-input" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-lg font-semibold text-indigo-700" placeholder="Ex: Avaliação de Robótica - 1º Bimestre" value="Avaliação Online">
                 </div>
-                <div class="ml-3">
-                    <h3 class="text-lg font-bold text-blue-800">Dica: Fórmulas Matemáticas (LaTeX)</h3>
-                    <div class="mt-2 text-sm text-blue-700">
-                        <p class="mb-2">Você pode usar códigos LaTeX para exibir fórmulas matemáticas nas perguntas ou alternativas. O quiz usa a biblioteca KaTeX.</p>
-                        <ul class="list-disc pl-5 space-y-1 mb-2">
-                            <li><strong>Na mesma linha:</strong> Use <code>$ ... $</code>. Ex: <code>$E=mc^2$</code></li>
-                            <li><strong>Bloco centralizado:</strong> Use <code>$$ ... $$</code>.</li>
-                        </ul>
-                        <div class="bg-white p-3 rounded border border-blue-200 text-gray-800 font-mono text-xs">
-                            <strong>⚠️ IMPORTANTE:</strong> Como este gerador cria um arquivo JavaScript, você deve usar <span class="text-red-600 font-bold">DUAS barras invertidas (\\)</span> para os comandos LaTeX.<br><br>
-                            Exemplo Fração: <code>$\\frac{1}{2}$</code> (correto) em vez de <code>$\frac{1}{2}$</code> (errado).<br>
-                            Exemplo Ohm: <code>$10\\Omega$</code>
+
+                <!-- Regras (Grid de 3) -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" title="Número de infrações antes do bloqueio">Máx. Penalidades</label>
+                        <div class="relative">
+                            <input type="number" id="conf-penalties" class="w-full p-2 pl-9 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500" value="10" min="1">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="alert-triangle" class="h-4 w-4 text-gray-400"></i>
+                            </div>
                         </div>
                     </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" title="Tempo total para realizar a prova">Tempo de Prova (min)</label>
+                        <div class="relative">
+                            <input type="number" id="conf-time" class="w-full p-2 pl-9 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="30" min="1">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="clock" class="h-4 w-4 text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" title="Tempo de espera para tentar novamente">Bloqueio de Retentativa (min)</label>
+                        <div class="relative">
+                            <input type="number" id="conf-lock" class="w-full p-2 pl-9 border border-gray-300 rounded-lg focus:ring-gray-500 focus:border-gray-500" value="60" min="0">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i data-lucide="lock" class="h-4 w-4 text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                    <i data-lucide="info" class="h-3 w-3"></i> Essas configurações serão salvas no arquivo da prova.
+                </p>
+            </div>
+        </div>
+
+        <!-- Dicas -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded shadow-sm">
+            <div class="flex items-start">
+                <div class="flex-shrink-0"><i data-lucide="lightbulb" class="h-5 w-5 text-blue-600"></i></div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-bold text-blue-800">Dicas de Edição</h3>
+                    <ul class="list-disc pl-5 space-y-1 mt-1 text-sm text-blue-700">
+                        <li>Use <strong>LaTeX</strong> para fórmulas com <code>$ ... $</code> (Ex: <code>$R = V/I$</code>). 
+                            <span class="text-xs bg-white px-1 rounded border border-blue-200 ml-1 text-red-600 font-mono">Use \\ duas vezes nas fórmulas!</span>
+                        </li>
+                        <li>Cole links do <strong>YouTube</strong> para adicionar vídeos explicativos.</li>
+                        <li>Defina regras rígidas de tempo e penalidade para avaliações sérias, ou mais brandas para exercícios.</li>
+                    </ul>
                 </div>
             </div>
         </div>
 
         <!-- Lista de Questões -->
-        <div id="questions-container" class="space-y-6">
-            <!-- As questões serão inseridas aqui via JS -->
-        </div>
+        <div id="questions-container" class="space-y-6"></div>
 
-        <!-- Botão Adicionar (Vazio) -->
+        <!-- Estado Vazio -->
         <div id="empty-state" class="text-center py-12 border-2 border-dashed border-gray-300 rounded-xl mt-6 hidden">
             <i data-lucide="clipboard-list" class="h-12 w-12 mx-auto text-gray-400 mb-3"></i>
-            <h3 class="text-lg font-medium text-gray-900">Nenhuma questão ainda</h3>
-            <p class="text-gray-500 mb-4">Comece adicionando a primeira pergunta ou carregue um arquivo existente.</p>
-            <button onclick="addQuestion()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <i data-lucide="plus" class="h-4 w-4 mr-2"></i> Adicionar Questão
+            <h3 class="text-lg font-medium text-gray-900">Banco vazio</h3>
+            <p class="text-gray-500 mb-4">Adicione questões manualmente ou importe um arquivo.</p>
+            <button onclick="addQuestion()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+                <i data-lucide="plus" class="h-4 w-4 mr-2"></i> Nova Questão
             </button>
         </div>
 
-        <!-- Botão Flutuante de Adicionar -->
         <div class="mt-8 flex justify-center pb-24">
             <button onclick="addQuestion()" class="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-8 rounded-full shadow-sm hover:bg-gray-50 hover:shadow-md transition-all transform hover:-translate-y-1">
-                <i data-lucide="plus-circle" class="h-5 w-5 text-indigo-600"></i>
-                Adicionar Nova Questão
+                <i data-lucide="plus-circle" class="h-5 w-5 text-indigo-600"></i> Adicionar Nova Questão
             </button>
         </div>
 
     </main>
 
-    <!-- Barra de Ações Inferior -->
+    <!-- Barra Inferior -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-40">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <div class="text-sm text-gray-500 hidden sm:block">
-                Preencha todas as perguntas e selecione a alternativa correta.
+        <div class="max-w-5xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="text-sm text-gray-500 hidden sm:block">Verifique o gabarito antes de salvar.</div>
+            
+            <div class="flex gap-3 w-full sm:w-auto">
+                <!-- Botão Download (Arquivo Local) -->
+                <button onclick="generateAndDownload()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg shadow transition-colors">
+                    <i data-lucide="download" class="h-5 w-5"></i>
+                    Baixar .js
+                </button>
+
+                <!-- Botão Nuvem (Servidor) -->
+                <button id="btn-cloud" onclick="saveToCloud()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-colors relative overflow-hidden opacity-50 cursor-not-allowed" title="Requer configuração do Firebase">
+                    <div class="flex items-center gap-2 relative z-10">
+                        <i data-lucide="cloud-upload" class="h-5 w-5"></i>
+                        Salvar na Nuvem
+                    </div>
+                </button>
             </div>
-            <button onclick="generateAndDownload()" class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                <i data-lucide="download" class="h-5 w-5"></i>
-                Baixar questions.js
-            </button>
         </div>
     </div>
 
-    <!-- Template da Questão (Hidden) -->
+    <!-- Template da Questão -->
     <template id="question-template">
         <div class="question-card card-enter bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group">
             <div class="bg-gray-50 px-6 py-3 border-b border-gray-100 flex justify-between items-center handle cursor-move">
                 <span class="font-bold text-gray-700 text-lg">Questão <span class="q-number">1</span></span>
-                <button onclick="removeQuestion(this)" class="text-gray-400 hover:text-red-500 transition-colors p-1 rounded hover:bg-red-50" title="Remover questão">
+                <button onclick="removeQuestion(this)" class="text-gray-400 hover:text-red-500 transition-colors p-1 rounded hover:bg-red-50" title="Excluir">
                     <i data-lucide="trash-2" class="h-5 w-5"></i>
                 </button>
             </div>
             <div class="p-6">
-                <!-- Enunciado -->
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Enunciado da Pergunta</label>
-                    <textarea rows="2" class="q-text w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="Ex: Qual a função do comando pinMode?"></textarea>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Enunciado</label>
+                    <textarea rows="2" class="q-text w-full p-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors" placeholder="Digite a pergunta aqui..."></textarea>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <!-- Imagem -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">URL da Imagem (Opcional)</label>
-                        <input type="text" class="q-image w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm" placeholder="https://exemplo.com/imagem.png" oninput="updateImagePreview(this)">
-                        <!-- Área de Preview Imagem -->
-                        <div class="q-image-preview hidden mt-2 p-2 border border-gray-100 rounded bg-gray-50 text-center">
-                            <img src="" alt="Preview" class="max-h-40 mx-auto rounded shadow-sm object-contain">
-                        </div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Imagem (URL)</label>
+                        <input type="text" class="q-image w-full p-2 border border-gray-300 rounded-lg text-sm" placeholder="https://..." oninput="updateMediaPreview(this, 'image')">
+                        <div class="preview-box hidden mt-2 p-2 bg-gray-50 border rounded text-center"><img src="" class="max-h-32 mx-auto object-contain"></div>
                     </div>
-
-                    <!-- Vídeo (Novo) -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">URL do Vídeo YouTube (Opcional)</label>
-                        <input type="text" class="q-video w-full p-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-sm" placeholder="https://www.youtube.com/watch?v=... ou Shorts" oninput="updateVideoPreview(this)">
-                        <div class="flex flex-col gap-1 mt-1">
-                            <p class="text-xs text-gray-400">Aceita links de Vídeos normais e Shorts.</p>
-                        </div>
-                        <!-- Área de Preview Vídeo -->
-                        <div class="q-video-preview hidden mt-2 p-2 border border-gray-100 rounded bg-gray-50 text-center">
-                            <iframe class="w-full h-40 mx-auto rounded shadow-sm" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Vídeo YouTube (URL)</label>
+                        <input type="text" class="q-video w-full p-2 border border-gray-300 rounded-lg text-sm" placeholder="https://youtube.com/..." oninput="updateMediaPreview(this, 'video')">
+                        <div class="preview-box hidden mt-2 p-2 bg-gray-50 border rounded text-center"><iframe class="w-full h-32" frameborder="0"></iframe></div>
                     </div>
                 </div>
-
-                <!-- Alternativas -->
-                <div class="space-y-3 border-t border-gray-100 pt-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Alternativas (Marque a correta)</label>
-                    
-                    <!-- Opção A -->
-                    <div class="flex items-center gap-3 p-2 rounded-lg border border-transparent hover:bg-gray-50 focus-within:bg-indigo-50 focus-within:border-indigo-200 transition-colors">
-                        <div class="flex items-center h-5">
-                            <input type="radio" name="correct_TEMP" value="0" class="q-correct h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 cursor-pointer">
-                        </div>
-                        <span class="text-gray-400 font-mono font-bold w-6">A)</span>
-                        <input type="text" class="q-option w-full bg-transparent border-0 border-b border-gray-300 focus:border-indigo-500 focus:ring-0 text-gray-800 placeholder-gray-400" placeholder="Alternativa 1">
-                    </div>
-
-                    <!-- Opção B -->
-                    <div class="flex items-center gap-3 p-2 rounded-lg border border-transparent hover:bg-gray-50 focus-within:bg-indigo-50 focus-within:border-indigo-200 transition-colors">
-                        <div class="flex items-center h-5">
-                            <input type="radio" name="correct_TEMP" value="1" class="q-correct h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 cursor-pointer">
-                        </div>
-                        <span class="text-gray-400 font-mono font-bold w-6">B)</span>
-                        <input type="text" class="q-option w-full bg-transparent border-0 border-b border-gray-300 focus:border-indigo-500 focus:ring-0 text-gray-800 placeholder-gray-400" placeholder="Alternativa 2">
-                    </div>
-
-                    <!-- Opção C -->
-                    <div class="flex items-center gap-3 p-2 rounded-lg border border-transparent hover:bg-gray-50 focus-within:bg-indigo-50 focus-within:border-indigo-200 transition-colors">
-                        <div class="flex items-center h-5">
-                            <input type="radio" name="correct_TEMP" value="2" class="q-correct h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 cursor-pointer">
-                        </div>
-                        <span class="text-gray-400 font-mono font-bold w-6">C)</span>
-                        <input type="text" class="q-option w-full bg-transparent border-0 border-b border-gray-300 focus:border-indigo-500 focus:ring-0 text-gray-800 placeholder-gray-400" placeholder="Alternativa 3">
-                    </div>
-
-                    <!-- Opção D -->
-                    <div class="flex items-center gap-3 p-2 rounded-lg border border-transparent hover:bg-gray-50 focus-within:bg-indigo-50 focus-within:border-indigo-200 transition-colors">
-                        <div class="flex items-center h-5">
-                            <input type="radio" name="correct_TEMP" value="3" class="q-correct h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 cursor-pointer">
-                        </div>
-                        <span class="text-gray-400 font-mono font-bold w-6">D)</span>
-                        <input type="text" class="q-option w-full bg-transparent border-0 border-b border-gray-300 focus:border-indigo-500 focus:ring-0 text-gray-800 placeholder-gray-400" placeholder="Alternativa 4">
-                    </div>
-                </div>
+                <div class="space-y-3 border-t border-gray-100 pt-4 alternatives-container"></div>
             </div>
         </div>
     </template>
 
-    <script>
-        // Inicializa ícones
-        lucide.createIcons();
+    <!-- Script Principal -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        let questionCount = 0;
+        // --- INICIALIZAÇÃO SEGURA DO FIREBASE ---
+        const userConfig = null; 
+        let db, appId;
+        let firebaseAvailable = false;
 
-        // Ao carregar, adiciona uma questão vazia se não houver upload
-        window.onload = function() {
-            if(document.getElementById('questions-container').children.length === 0) {
-                addQuestion();
+        try {
+            let configToUse = null;
+            if (typeof __firebase_config !== 'undefined' && typeof __app_id !== 'undefined') {
+                configToUse = JSON.parse(__firebase_config);
+                appId = __app_id;
+            } else if (userConfig) {
+                configToUse = userConfig;
+                appId = 'custom-app';
+            }
+
+            if (configToUse) {
+                const app = initializeApp(configToUse);
+                const auth = getAuth(app);
+                db = getFirestore(app);
+                signInAnonymously(auth).then(() => {
+                    firebaseAvailable = true;
+                    enableCloudButton();
+                }).catch((e) => console.warn("Auth falhou:", e));
+            }
+        } catch (e) { console.log("Modo Offline"); }
+
+        function enableCloudButton() {
+            const btn = document.getElementById('btn-cloud');
+            if(btn) {
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('hover:bg-indigo-700');
+                btn.innerHTML = `<div class="flex items-center gap-2 relative z-10"><i data-lucide="cloud-upload" class="h-5 w-5"></i> Salvar na Nuvem</div>`;
+                if(window.lucide) window.lucide.createIcons();
             }
         }
 
-        // --- Helper: Extrair ID do YouTube (Versão Robusta) ---
-        function getYoutubeId(url) {
+        // --- Funções Globais ---
+        window.onload = function() {
+            if(window.lucide) window.lucide.createIcons();
+            if(document.getElementById('questions-container').children.length === 0) addQuestion();
+        }
+
+        window.getYoutubeId = function(url) {
             if (!url) return null;
-            // Suporta: youtu.be, youtube.com/watch?v=, youtube.com/embed/, youtube.com/shorts/
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
             const match = url.match(regExp);
-            // IDs do YouTube geralmente têm 11 caracteres
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        // --- Função de Preview de Imagem ---
-        function updateImagePreview(input) {
+        window.updateMediaPreview = function(input, type) {
             const url = input.value.trim();
-            const container = input.closest('.mb-6').querySelector('.q-image-preview');
-            const img = container.querySelector('img');
-
-            if (url) {
-                img.src = url;
-                img.onerror = function() { container.classList.add('hidden'); };
-                img.onload = function() { container.classList.remove('hidden'); };
-            } else {
-                container.classList.add('hidden');
+            const container = input.nextElementSibling;
+            if (type === 'image') {
+                const img = container.querySelector('img');
+                if (url) {
+                    img.src = url;
+                    img.onload = () => container.classList.remove('hidden');
+                    img.onerror = () => container.classList.add('hidden');
+                } else { container.classList.add('hidden'); }
+            } else if (type === 'video') {
+                const iframe = container.querySelector('iframe');
+                const vidId = window.getYoutubeId(url);
+                if (vidId) {
+                    iframe.src = `https://www.youtube.com/embed/${vidId}`;
+                    container.classList.remove('hidden');
+                } else { container.classList.add('hidden'); }
             }
         }
 
-        // --- Função de Preview de Vídeo (Atualizada) ---
-        function updateVideoPreview(input) {
-            const url = input.value.trim();
-            const container = input.closest('.mb-6').querySelector('.q-video-preview');
-            const iframe = container.querySelector('iframe');
-            const videoId = getYoutubeId(url);
+        window.addQuestion = function(scroll = true) {
+            const container = document.getElementById('questions-container');
+            const template = document.getElementById('question-template');
+            const clone = template.content.cloneNode(true);
+            const altContainer = clone.querySelector('.alternatives-container');
+            
+            ['A', 'B', 'C', 'D'].forEach((letter, i) => {
+                const div = document.createElement('div');
+                div.className = "flex items-center gap-3 p-2 rounded-lg border border-transparent hover:bg-gray-50 focus-within:bg-indigo-50 transition-colors";
+                div.innerHTML = `
+                    <div class="flex items-center h-5">
+                        <input type="radio" name="correct_TEMP" value="${i}" class="q-correct h-5 w-5 text-indigo-600 border-gray-300 focus:ring-indigo-500 cursor-pointer">
+                    </div>
+                    <span class="text-gray-400 font-mono font-bold w-6">${letter})</span>
+                    <input type="text" class="q-option w-full bg-transparent border-0 border-b border-gray-300 focus:border-indigo-500 focus:ring-0 text-gray-800 placeholder-gray-400" placeholder="Alternativa ${i+1}">
+                `;
+                altContainer.appendChild(div);
+            });
 
-            if (videoId) {
-                // Usa youtube.com padrão para maior compatibilidade
-                iframe.src = `https://www.youtube.com/embed/${videoId}`;
-                container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-                iframe.src = "";
+            container.appendChild(clone);
+            if(window.lucide) window.lucide.createIcons();
+            window.updateCounter();
+            if(scroll) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        window.removeQuestion = function(btn) {
+            if(confirm("Remover esta questão?")) {
+                btn.closest('.question-card').remove();
+                window.updateCounter();
             }
         }
 
-        // --- Lógica de Upload e Parse ---
-        function handleFileUpload(input) {
+        window.updateCounter = function() {
+            const cards = document.querySelectorAll('.question-card');
+            document.getElementById('q-count').textContent = cards.length;
+            cards.forEach((card, index) => {
+                card.querySelector('.q-number').textContent = index + 1;
+                card.querySelectorAll('input[type="radio"]').forEach(r => r.name = `correct_q_${index}`);
+            });
+            document.getElementById('empty-state').classList.toggle('hidden', cards.length > 0);
+        }
+
+        window.handleFileUpload = function(input) {
             const file = input.files[0];
             if (!file) return;
-
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const content = e.target.result;
-                parseAndLoadContent(content);
-            };
+            reader.onload = (e) => window.parseContent(e.target.result);
             reader.readAsText(file);
             input.value = '';
         }
 
-        function parseAndLoadContent(content) {
+        window.parseContent = function(content) {
             try {
-                const kMatch = content.match(/const\s+_k\s*=\s*"([a-d]+)"/);
-                if (!kMatch) throw new Error("Chave de respostas (_k) não encontrada.");
-                const loadedKey = kMatch[1];
+                // Extração de configurações gerais
+                const titleMatch = content.match(/const\s+quizTitle\s*=\s*"(.*?)";/);
+                if (titleMatch) document.getElementById('quiz-title-input').value = titleMatch[1];
 
+                // Extração do objeto de configuração complexo
+                const configMatch = content.match(/const\s+quizConfig\s*=\s*(\{[\s\S]*?\});/);
+                if (configMatch) {
+                    const config = JSON.parse(configMatch[1]);
+                    if(config.maxPenalties) document.getElementById('conf-penalties').value = config.maxPenalties;
+                    if(config.timeLimitMinutes) document.getElementById('conf-time').value = config.timeLimitMinutes;
+                    if(config.lockTimeMinutes !== undefined) document.getElementById('conf-lock').value = config.lockTimeMinutes;
+                }
+
+                const kMatch = content.match(/const\s+_k\s*=\s*"([a-d]+)"/);
                 const bankMatch = content.match(/const\s+fullQuestionBank\s*=\s*(\[[\s\S]*?\]);/);
-                if (!bankMatch) throw new Error("Banco de questões (fullQuestionBank) não encontrado.");
                 
+                if (!kMatch || !bankMatch) throw new Error("Arquivo inválido ou corrompido.");
+
+                const loadedKey = kMatch[1];
                 const loadedQuestions = JSON.parse(bankMatch[1]);
                 const container = document.getElementById('questions-container');
-                container.innerHTML = ''; 
+                container.innerHTML = '';
+                const charToIdx = { 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
 
-                const charToIndex = { 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
-
-                loadedQuestions.forEach((qObj, index) => {
-                    addQuestion(false); 
+                loadedQuestions.forEach((q, i) => {
+                    window.addQuestion(false); 
                     const card = container.lastElementChild;
-
-                    // Preenche campos
-                    card.querySelector('.q-text').value = qObj.q;
+                    card.querySelector('.q-text').value = q.q;
                     
-                    if (qObj.image) {
-                        const imgInput = card.querySelector('.q-image');
-                        imgInput.value = qObj.image;
-                        updateImagePreview(imgInput);
+                    if(q.image) {
+                        const inp = card.querySelector('.q-image');
+                        inp.value = q.image;
+                        window.updateMediaPreview(inp, 'image');
+                    }
+                    if(q.video) {
+                        const inp = card.querySelector('.q-video');
+                        inp.value = q.video;
+                        window.updateMediaPreview(inp, 'video');
                     }
 
-                    if (qObj.video) {
-                        const vidInput = card.querySelector('.q-video');
-                        vidInput.value = qObj.video;
-                        updateVideoPreview(vidInput);
-                    }
+                    const opts = card.querySelectorAll('.q-option');
+                    q.options.forEach((opt, idx) => { if(opts[idx]) opts[idx].value = opt; });
 
-                    const optionInputs = card.querySelectorAll('.q-option');
-                    if (qObj.options && qObj.options.length >= 4) {
-                        qObj.options.forEach((opt, i) => {
-                            if(optionInputs[i]) optionInputs[i].value = opt;
-                        });
-                    }
-
-                    if (index < loadedKey.length) {
-                        const correctChar = loadedKey[index];
-                        const correctIndex = charToIndex[correctChar];
-                        if (correctIndex !== undefined) {
-                            const radios = card.querySelectorAll('input[type="radio"]');
-                            if (radios[correctIndex]) radios[correctIndex].checked = true;
-                        }
+                    if (i < loadedKey.length) {
+                        const correctIdx = charToIdx[loadedKey[i]];
+                        const radios = card.querySelectorAll('input[type="radio"]');
+                        if(radios[correctIdx]) radios[correctIdx].checked = true;
                     }
                 });
-
-                alert("Arquivo carregado com sucesso! " + loadedQuestions.length + " questões importadas.");
-                updateCounter();
-
+                alert("Importado com sucesso!");
             } catch (e) {
-                alert("Erro ao ler o arquivo: " + e.message + "\nCertifique-se de que é um arquivo questions.js válido.");
-                console.error(e);
+                alert("Erro ao importar: " + e.message);
             }
         }
 
-        function updateCounter() {
+        window.getQuizData = function() {
+            const title = document.getElementById('quiz-title-input').value.trim() || "Avaliação";
+            const maxPenalties = parseInt(document.getElementById('conf-penalties').value) || 10;
+            const timeLimit = parseInt(document.getElementById('conf-time').value) || 30;
+            const lockTime = parseInt(document.getElementById('conf-lock').value) || 60;
+
             const cards = document.querySelectorAll('.question-card');
-            questionCount = cards.length;
-            document.getElementById('q-count').textContent = questionCount;
-            
-            cards.forEach((card, index) => {
-                card.querySelector('.q-number').textContent = index + 1;
-                const radios = card.querySelectorAll('input[type="radio"]');
-                radios.forEach(radio => {
-                    radio.name = `correct_q_${index}`;
-                });
-            });
-
-            const emptyState = document.getElementById('empty-state');
-            if (questionCount === 0) {
-                emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
-            }
-        }
-
-        function addQuestion(scroll = true) {
-            const container = document.getElementById('questions-container');
-            const template = document.getElementById('question-template');
-            const clone = template.content.cloneNode(true);
-            
-            container.appendChild(clone);
-            
-            lucide.createIcons();
-            
-            if(scroll) {
-                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }
-            
-            updateCounter();
-        }
-
-        function removeQuestion(btn) {
-            if(!confirm("Tem certeza que deseja remover esta questão?")) return;
-            const card = btn.closest('.question-card');
-            card.remove();
-            updateCounter();
-        }
-
-        function generateAndDownload() {
-            const cards = document.querySelectorAll('.question-card');
-            
             if (cards.length === 0) {
-                alert("Adicione pelo menos uma questão antes de gerar.");
-                return;
+                alert("Adicione pelo menos uma questão.");
+                return null;
             }
 
-            let fullQuestionBank = [];
-            let keyString = "";
-            let hasError = false;
-            const indexToChar = ['a', 'b', 'c', 'd'];
+            let bank = [];
+            let key = "";
+            let error = false;
+            const idxToChar = ['a', 'b', 'c', 'd'];
 
-            cards.forEach((card, index) => {
-                if(hasError) return;
-
+            cards.forEach((card, i) => {
+                if(error) return;
                 const qText = card.querySelector('.q-text').value.trim();
-                const qImage = card.querySelector('.q-image').value.trim();
-                const qVideo = card.querySelector('.q-video').value.trim();
-                const optionInputs = card.querySelectorAll('.q-option');
-                const correctInput = card.querySelector('input[type="radio"]:checked');
-
-                if (!qText) {
-                    alert(`A questão ${index + 1} está sem enunciado.`);
-                    card.scrollIntoView({behavior: 'smooth', block: 'center'});
-                    hasError = true;
+                const correct = card.querySelector('input[type="radio"]:checked');
+                
+                if(!qText || !correct) {
+                    alert(`Verifique a questão ${i+1}.`);
+                    card.scrollIntoView({behavior: 'smooth'});
+                    error = true;
                     return;
                 }
 
                 let options = [];
-                let optionsComplete = true;
-                optionInputs.forEach(opt => {
-                    if(!opt.value.trim()) optionsComplete = false;
-                    options.push(opt.value.trim());
+                card.querySelectorAll('.q-option').forEach(opt => {
+                    if(opt.value.trim()) options.push(opt.value.trim());
                 });
 
-                if (!optionsComplete) {
-                    alert(`Preencha todas as alternativas da questão ${index + 1}.`);
-                    card.scrollIntoView({behavior: 'smooth', block: 'center'});
-                    hasError = true;
+                if(options.length < 2) {
+                    alert(`A questão ${i+1} precisa de alternativas.`);
+                    error = true;
                     return;
                 }
 
-                if (!correctInput) {
-                    alert(`Selecione a alternativa correta para a questão ${index + 1}.`);
-                    card.scrollIntoView({behavior: 'smooth', block: 'center'});
-                    hasError = true;
-                    return;
-                }
+                const qObj = { id: i, q: qText, options: options };
+                const img = card.querySelector('.q-image').value.trim();
+                const vid = card.querySelector('.q-video').value.trim();
+                if(img) qObj.image = img;
+                if(vid) qObj.video = vid;
 
-                const qObj = {
-                    id: index,
-                    q: qText,
-                    options: options
-                };
-
-                if (qImage) qObj.image = qImage;
-                if (qVideo) qObj.video = qVideo;
-
-                fullQuestionBank.push(qObj);
-
-                const correctIndex = parseInt(correctInput.value);
-                keyString += indexToChar[correctIndex];
+                bank.push(qObj);
+                key += idxToChar[parseInt(correct.value)];
             });
 
-            if (hasError) return;
+            if(error) return null;
+            return { 
+                title, 
+                config: { maxPenalties, timeLimitMinutes: timeLimit, lockTimeMinutes: lockTime },
+                key, 
+                bank 
+            };
+        }
 
-            const fileContent = `/* BANCO DE QUESTÕES - ARDUINO
-   Este arquivo contém as perguntas, opções e a chave de respostas da avaliação.
-*/
+        window.generateAndDownload = function() {
+            const data = window.getQuizData();
+            if(!data) return;
 
-// CHAVE MESTRA DAS RESPOSTAS
-// Mapeamento: a=0, b=1, c=2, d=3
-const _k = "${keyString}";
+            const content = `/* GERADO EM ${new Date().toLocaleDateString()} */
+const quizTitle = "${data.title}";
+const _k = "${data.key}";
 
-const fullQuestionBank = ${JSON.stringify(fullQuestionBank, null, 4)};
+// Configurações da Prova
+const quizConfig = ${JSON.stringify(data.config, null, 4)};
+
+const fullQuestionBank = ${JSON.stringify(data.bank, null, 4)};
 `;
 
-            const blob = new Blob([fileContent], { type: 'text/javascript' });
-            const url = window.URL.createObjectURL(blob);
+            const blob = new Blob([content], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'questions.js';
+            a.download = data.title.toLowerCase().replace(/[^a-z0-9]/g, '_') + '.js';
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
+        }
 
-            // Feedback Visual
-            const btn = document.querySelector('button[onclick="generateAndDownload()"]');
+        window.saveToCloud = async function() {
+            if (!firebaseAvailable) {
+                alert("Configuração de nuvem não detectada. Use o botão 'Baixar .js'.");
+                return;
+            }
+
+            const btn = document.getElementById('btn-cloud');
             const originalText = btn.innerHTML;
-            btn.innerHTML = `<i data-lucide="check" class="h-5 w-5"></i> Sucesso!`;
-            btn.classList.remove('bg-green-600', 'hover:bg-green-700');
-            btn.classList.add('bg-indigo-600');
-            lucide.createIcons();
             
-            setTimeout(() => {
-                btn.innerHTML = originalText;
-                btn.classList.add('bg-green-600', 'hover:bg-green-700');
-                btn.classList.remove('bg-indigo-600');
-                lucide.createIcons();
-            }, 3000);
+            const data = window.getQuizData();
+            if(!data) return;
+
+            btn.innerHTML = `<i data-lucide="loader" class="h-5 w-5 animate-spin"></i> Salvando...`;
+            if(window.lucide) window.lucide.createIcons();
+            btn.disabled = true;
+
+            try {
+                const docRef = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'quizzes'), {
+                    title: data.title,
+                    config: data.config,
+                    key: data.key,
+                    questions: data.bank,
+                    createdAt: new Date()
+                });
+
+                btn.innerHTML = `<i data-lucide="check" class="h-5 w-5"></i> Salvo!`;
+                btn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                btn.classList.add('bg-green-600');
+                if(window.lucide) window.lucide.createIcons();
+
+                prompt("Prova salva com sucesso!\n\nCopie o ID abaixo para usar no link do Quiz (ex: quiz_arduino.html?id=SEU_ID):", docRef.id);
+
+            } catch (e) {
+                console.error(e);
+                alert("Erro ao salvar: " + e.message);
+                btn.innerHTML = `<i data-lucide="alert-circle" class="h-5 w-5"></i> Erro`;
+            } finally {
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                    btn.classList.remove('bg-green-600');
+                    btn.disabled = false;
+                    if(window.lucide) window.lucide.createIcons();
+                }, 3000);
+            }
         }
     </script>
 </body>
