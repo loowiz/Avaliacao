@@ -290,7 +290,7 @@
     // --- CONFIGURAÇÃO GLOBAL ---
     const MAX_PENALTIES = 10;
     const TIME_LIMIT_SECONDS = 30 * 60; // 30 minutos de prova
-    const SESSION_LOCK_TIME_MS = 60 * 60 * 1000; // 1 hora de bloqueio após iniciar
+    const SESSION_LOCK_TIME_MS = 0 * 60 * 1000; // 1 hora de bloqueio após iniciar
     const STORAGE_KEY = 'arduino_quiz_lock'; // Chave para salvar no navegador
 
     let currentQuestions = [];
@@ -756,4 +756,5 @@
     }
 </script>
 </body>
+
 </html>
