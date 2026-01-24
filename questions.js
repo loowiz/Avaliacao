@@ -1,4 +1,4 @@
-/* BANCO DE QUESTÕES - GERADO PELO EDITOR */
+/* BANCO DE QUESTÕES (CRIPTOGRAFADO) - GERADO PELO EDITOR SEGURO */
 
 const examConfig = {
     title: "Avaliação Diagnóstica - 3º Semestre",
@@ -13,37 +13,35 @@ const examConfig = {
     }
 };
 
-const _k = "bbbbabbbbbbbbbbbbbbbbbbbbbabbbbabbbbbbbbbbbbbbbbbbbbbbbcbabbbabbbbbbcbbbbbbbbbbbbbaabbabbbbbabbbbbbbbbbbbbbbbbbcbbbbbbbbcbbbbbabdbccdcbdacadbabdabdbadbccbbcbabdbbababdbddbcbaabb";
+const _k = "MVACEVEQPChRGj0iQkE9MCctIyo8UFNRVzFSABBQFj4pUBs8IkNAPTAnLCMrPVFTUFcwUQEQUBc9KVAYPCFDQD0wJywgKzxQU1BXMlEBEFIWPSpSGz0iQkE9MScvIys9UFJQVDJQARFREDwoURo9IkJBPTAnLSMqPFBTUVcxUgAQUBY+KVAbPCJDQD0wJywjKz1RU1BXMFEBEFAXPSlQGDwhQ0A9MCcsICs8UFNQVzJRARBSFj0qUhs9IkJBPTEnLyMrPVBSUFQ=";
 
 const fullQuestionBank = [
     {
         "id": 0,
-        "q": "Qual o principal objetivo da Indústria 4.0?",
         "difficulty": "easy",
+        "q": "Qual o principal objetivo da Indústria 4.0?",
         "options": [
             "Aumento da mão de obra manual",
             "Digitalização e integração de processos",
             "Uso exclusivo de máquinas a vapor",
             "Redução da segurança digital"
-        ],
-        "image": "https://www.citisystems.com.br/wp-content/uploads/2016/02/industria-4.0.png"
+        ]
     },
     {
         "id": 1,
-        "q": "O que caracteriza a 'Virtualização' na Indústria 4.0?",
         "difficulty": "easy",
+        "q": "O que caracteriza a 'Virtualização' na Indústria 4.0?",
         "options": [
             "Cópia física de documentos",
             "Criação de uma cópia virtual da fábrica através de sensores",
             "Uso de papéis para monitoramento",
             "Desligamento de computadores"
-        ],
-        "image": "https://www.skymsen.com/ckfinder/userfiles/images/trabalhador%20de%20ind%C3%BAstria%20usando%20realidade%20aumentada.jpg"
+        ]
     },
     {
         "id": 2,
-        "q": "No hardware, qual a função da memória RAM?",
         "difficulty": "easy",
+        "q": "No hardware, qual a função da memória RAM?",
         "options": [
             "Armazenar dados permanentemente",
             "Armazenamento temporário para processamento rápido",
@@ -53,8 +51,8 @@ const fullQuestionBank = [
     },
     {
         "id": 3,
-        "q": "Qual das opções abaixo é uma tecnologia habilitadora da Indústria 4.0?",
         "difficulty": "medium",
+        "q": "Qual das opções abaixo é uma tecnologia habilitadora da Indústria 4.0?",
         "options": [
             "Prensa manual",
             "Big Data e Analytics",
@@ -64,8 +62,8 @@ const fullQuestionBank = [
     },
     {
         "id": 4,
-        "q": "O que é 'Cloud Computing'?",
         "difficulty": "medium",
+        "q": "O que é 'Cloud Computing'?",
         "options": [
             "Computação em nuvem (servidores remotos)",
             "Previsão do tempo industrial",
@@ -75,8 +73,8 @@ const fullQuestionBank = [
     },
     {
         "id": 5,
-        "q": "Qual a principal vulnerabilidade em redes Wi-Fi industriais?",
         "difficulty": "hard",
+        "q": "Qual a principal vulnerabilidade em redes Wi-Fi industriais?",
         "options": [
             "Falta de cabos",
             "Interceptação de dados sem criptografia",
@@ -86,8 +84,8 @@ const fullQuestionBank = [
     },
     {
         "id": 6,
-        "q": "No Excel, qual função soma um intervalo de células?",
         "difficulty": "easy",
+        "q": "No Excel, qual função soma um intervalo de células?",
         "options": [
             "=MEDIA()",
             "=SOMA()",
@@ -97,8 +95,8 @@ const fullQuestionBank = [
     },
     {
         "id": 7,
-        "q": "O que é 'Interoperabilidade'?",
         "difficulty": "medium",
+        "q": "O que é 'Interoperabilidade'?",
         "options": [
             "Capacidade de sistemas operarem de forma isolada",
             "Capacidade de diversos sistemas se comunicarem e trabalharem juntos",
@@ -108,8 +106,8 @@ const fullQuestionBank = [
     },
     {
         "id": 8,
-        "q": "O termo 'Cybersecurity' refere-se a:",
         "difficulty": "medium",
+        "q": "O termo 'Cybersecurity' refere-se a:",
         "options": [
             "Segurança física da portaria",
             "Proteção de sistemas e dados contra ataques digitais",
@@ -119,8 +117,8 @@ const fullQuestionBank = [
     },
     {
         "id": 9,
-        "q": "Qual dispositivo mobile é comumente usado para leitura de manuais em campo?",
         "difficulty": "easy",
+        "q": "Qual dispositivo mobile é comumente usado para leitura de manuais em campo?",
         "options": [
             "Servidor rack",
             "Tablet",
@@ -130,8 +128,8 @@ const fullQuestionBank = [
     },
     {
         "id": 10,
-        "q": "O que define a 'Descentralização' na fábrica inteligente?",
         "difficulty": "hard",
+        "q": "O que define a 'Descentralização' na fábrica inteligente?",
         "options": [
             "Decisões tomadas apenas pela diretoria",
             "Sistemas ciberfísicos tomam decisões autónomas",
@@ -141,8 +139,8 @@ const fullQuestionBank = [
     },
     {
         "id": 11,
-        "q": "Qual extensão de arquivo é padrão para planilhas eletrônicas?",
         "difficulty": "easy",
+        "q": "Qual extensão de arquivo é padrão para planilhas eletrónicas?",
         "options": [
             ".docx",
             ".xlsx",
@@ -152,8 +150,8 @@ const fullQuestionBank = [
     },
     {
         "id": 12,
-        "q": "O que é 'Inteligência Artificial'?",
         "difficulty": "medium",
+        "q": "O que é 'Inteligência Artificial'?",
         "options": [
             "Uso de robôs pneumáticos",
             "Sistemas que simulam capacidades humanas de aprendizado",
@@ -163,8 +161,8 @@ const fullQuestionBank = [
     },
     {
         "id": 13,
-        "q": "Na segurança digital, um 'Firewall' serve para:",
         "difficulty": "medium",
+        "q": "Na segurança digital, um 'Firewall' serve para:",
         "options": [
             "Apagar incêndios",
             "Filtrar o tráfego de rede e bloquear acessos não autorizados",
@@ -174,8 +172,8 @@ const fullQuestionBank = [
     },
     {
         "id": 14,
-        "q": "O que é 'Manufatura Aditiva'?",
         "difficulty": "medium",
+        "q": "O que é 'Manufatura Aditiva'?",
         "options": [
             "Subtração de material",
             "Impressão 3D",
@@ -185,8 +183,8 @@ const fullQuestionBank = [
     },
     {
         "id": 15,
-        "q": "No Windows, qual atalho alterna entre janelas abertas?",
         "difficulty": "easy",
+        "q": "No Windows, qual atalho alterna entre janelas abertas?",
         "options": [
             "Ctrl + C",
             "Alt + Tab",
@@ -196,8 +194,8 @@ const fullQuestionBank = [
     },
     {
         "id": 16,
-        "q": "O termo 'IoT' significa?",
         "difficulty": "medium",
+        "q": "O termo 'IoT' significa:",
         "options": [
             "Indústria de Transmissão",
             "Internet das Coisas",
@@ -207,8 +205,8 @@ const fullQuestionBank = [
     },
     {
         "id": 17,
-        "q": "Qual a função do Sistema Operacional?",
         "difficulty": "easy",
+        "q": "Qual a função do Sistema Operacional?",
         "options": [
             "Gerar eletricidade",
             "Gerenciar o hardware e fornecer interface ao usuário",
@@ -218,8 +216,8 @@ const fullQuestionBank = [
     },
     {
         "id": 18,
-        "q": "O que é um 'Software Open Source'?",
         "difficulty": "medium",
+        "q": "O que é um 'Software Open Source'?",
         "options": [
             "Software muito caro",
             "Software com código-fonte aberto e gratuito",
@@ -229,8 +227,8 @@ const fullQuestionBank = [
     },
     {
         "id": 19,
-        "q": "Na Indústria 4.0, 'Sistemas Ciberfísicos' são:",
         "difficulty": "hard",
+        "q": "Na Indústria 4.0, 'Sistemas Ciberfísicos' são:",
         "options": [
             "Apenas robôs físicos",
             "Integração entre computação, redes e processos físicos",
@@ -240,8 +238,8 @@ const fullQuestionBank = [
     },
     {
         "id": 20,
-        "q": "O que é 'Phishing'?",
         "difficulty": "medium",
+        "q": "O que é 'Phishing'?",
         "options": [
             "Pesca esportiva",
             "Técnica de enganar usuários para roubar senhas",
@@ -251,8 +249,8 @@ const fullQuestionBank = [
     },
     {
         "id": 21,
-        "q": "Qual dispositivo é um periférico de entrada?",
         "difficulty": "easy",
+        "q": "Qual dispositivo é um periférico de entrada?",
         "options": [
             "Monitor",
             "Teclado",
@@ -262,8 +260,8 @@ const fullQuestionBank = [
     },
     {
         "id": 22,
-        "q": "No PowerPoint, para que serve o 'Slide Mestre'?",
         "difficulty": "medium",
+        "q": "No PowerPoint, para que serve o 'Slide Mestre'?",
         "options": [
             "Apresentar o slide final",
             "Definir o padrão visual para todos os slides",
@@ -273,8 +271,8 @@ const fullQuestionBank = [
     },
     {
         "id": 23,
-        "q": "O que é 'Realidade Aumentada'?",
         "difficulty": "hard",
+        "q": "O que é 'Realidade Aumentada'?",
         "options": [
             "Ver o mundo em 3D",
             "Sobreposição de elementos virtuais à visão do mundo real",
@@ -284,8 +282,8 @@ const fullQuestionBank = [
     },
     {
         "id": 24,
-        "q": "O que significa 'Backup'?",
         "difficulty": "easy",
+        "q": "O que significa 'Backup'?",
         "options": [
             "Reiniciar o PC",
             "Cópia de segurança dos dados",
@@ -295,20 +293,19 @@ const fullQuestionBank = [
     },
     {
         "id": 25,
-        "q": "Qual a principal característica de um 'Smartglass'?",
         "difficulty": "hard",
+        "q": "Qual a principal característica de um 'Smartglass'?",
         "options": [
             "Proteção contra UV",
             "Exibição de informações em lentes transparentes",
             "Lente de aumento simples",
             "Sensor de temperatura"
-        ],
-        "image": "https://www.abioptica.com.br/wp-content/uploads/2017/03/Luxottica-e-Essilor.jpg"
+        ]
     },
     {
         "id": 26,
-        "q": "O que é 'Edge Computing'?",
         "difficulty": "hard",
+        "q": "O que é 'Edge Computing'?",
         "options": [
             "Computação na borda (processamento próximo à origem do dado)",
             "Computação apenas no centro da rede",
@@ -318,8 +315,8 @@ const fullQuestionBank = [
     },
     {
         "id": 27,
-        "q": "No Excel, o símbolo '$' em uma fórmula (ex: $A$1) serve para:",
         "difficulty": "medium",
+        "q": "No Excel, o símbolo '$' em uma fórmula (ex: $A$1) serve para:",
         "options": [
             "Indicar valor em dinheiro",
             "Fixar a referência da célula (referência absoluta)",
@@ -329,20 +326,19 @@ const fullQuestionBank = [
     },
     {
         "id": 28,
-        "q": "O que é 'Cobot'?",
         "difficulty": "medium",
+        "q": "O que é 'Cobot'?",
         "options": [
             "Robô gigante",
             "Robô colaborativo que trabalha junto ao humano",
             "Robô de combate",
             "Software de desenho"
-        ],
-        "image": "https://a.storyblok.com/f/169662/1125x1500/d81c866521/png-ur3e_01_r.png/m/fit-in/343x480"
+        ]
     },
     {
         "id": 29,
-        "q": "Qual a função da GPU?",
         "difficulty": "hard",
+        "q": "Qual a função da GPU?",
         "options": [
             "Processar textos",
             "Processamento gráfico e cálculos paralelos",
@@ -352,20 +348,19 @@ const fullQuestionBank = [
     },
     {
         "id": 30,
-        "q": "Qual a unidade de medida da resistência elétrica?",
         "difficulty": "easy",
+        "q": "Qual a unidade de medida da resistência elétrica?",
         "options": [
             "Volt",
             "Ohm",
             "Ampere",
             "Watt"
-        ],
-        "image": "https://pcbwayfile.s3.us-west-2.amazonaws.com/web/23/07/14/1651268215687t.jpg"
+        ]
     },
     {
         "id": 31,
-        "q": "Pela Lei de Ohm, se aumentarmos a tensão em um resistor fixo, a corrente:",
         "difficulty": "easy",
+        "q": "Pela Lei de Ohm, se aumentarmos a tensão em um resistor fixo, a corrente:",
         "options": [
             "Aumenta",
             "Diminui",
@@ -375,8 +370,8 @@ const fullQuestionBank = [
     },
     {
         "id": 32,
-        "q": "O que é um circuito em série?",
         "difficulty": "medium",
+        "q": "O que é um circuito em série?",
         "options": [
             "Vários caminhos para a corrente",
             "Apenas um caminho para a corrente",
@@ -386,8 +381,8 @@ const fullQuestionBank = [
     },
     {
         "id": 33,
-        "q": "Qual a unidade de medida da potência elétrica?",
         "difficulty": "easy",
+        "q": "Qual a unidade de medida da potência elétrica?",
         "options": [
             "Joule",
             "Watt",
@@ -397,20 +392,19 @@ const fullQuestionBank = [
     },
     {
         "id": 34,
-        "q": "Um multímetro na função Ohmímetro deve ser usado com o circuito:",
         "difficulty": "medium",
+        "q": "Um multímetro na função Ohmímetro deve ser usado com o circuito:",
         "options": [
             "Ligado",
             "Desenergizado",
             "Em curto-circuito",
             "Com carga máxima"
-        ],
-        "image": "https://proesi.cdn.magazord.com.br/img/2025/02/produto/23119/414219-b-et-1649-multimetro-digital-cat-iii-true-rms-minipa.jpg?ims=fit-in/600x600/filters:fill(white)"
+        ]
     },
     {
         "id": 35,
-        "q": "O que é Corrente Alternada (CA)?",
         "difficulty": "medium",
+        "q": "O que é Corrente Alternada (CA)?",
         "options": [
             "Corrente que flui em um só sentido",
             "Corrente que varia de sentido e magnitude periodicamente",
@@ -420,8 +414,8 @@ const fullQuestionBank = [
     },
     {
         "id": 36,
-        "q": "Qual a frequência da rede elétrica residencial no Brasil?",
         "difficulty": "easy",
+        "q": "Qual a frequência da rede elétrica residencial no Brasil?",
         "options": [
             "50 Hz",
             "60 Hz",
@@ -431,8 +425,8 @@ const fullQuestionBank = [
     },
     {
         "id": 37,
-        "q": "O que é um Transformador?",
         "difficulty": "medium",
+        "q": "O que é um Transformador?",
         "options": [
             "Dispositivo que converte CA em CC",
             "Dispositivo que altera níveis de tensão e corrente via eletromagnetismo",
@@ -442,8 +436,8 @@ const fullQuestionBank = [
     },
     {
         "id": 38,
-        "q": "Qual componente armazena energia em um campo elétrico?",
         "difficulty": "medium",
+        "q": "Qual componente armazena energia em um campo elétrico?",
         "options": [
             "Resistor",
             "Capacitor",
@@ -453,8 +447,8 @@ const fullQuestionBank = [
     },
     {
         "id": 39,
-        "q": "Qual componente armazena energia em um campo magnético?",
         "difficulty": "medium",
+        "q": "Qual componente armazena energia em um campo magnético?",
         "options": [
             "Diodo",
             "Indutor",
@@ -464,8 +458,8 @@ const fullQuestionBank = [
     },
     {
         "id": 40,
-        "q": "O que acontece se ligarmos um capacitor eletrolítico com a polaridade invertida?",
         "difficulty": "hard",
+        "q": "O que acontece se ligarmos um capacitor eletrolítico com a polaridade invertida?",
         "options": [
             "Ele funciona melhor",
             "Ele pode explodir ou danificar-se",
@@ -475,8 +469,8 @@ const fullQuestionBank = [
     },
     {
         "id": 41,
-        "q": "Qual a função do Diodo?",
         "difficulty": "easy",
+        "q": "Qual a função do Diodo?",
         "options": [
             "Amplificar sinal",
             "Permitir a passagem de corrente em apenas um sentido",
@@ -486,8 +480,8 @@ const fullQuestionBank = [
     },
     {
         "id": 42,
-        "q": "O que é um LED?",
         "difficulty": "easy",
+        "q": "O que é um LED?",
         "options": [
             "Lâmpada de calor",
             "Diodo Emissor de Luz",
@@ -497,30 +491,30 @@ const fullQuestionBank = [
     },
     {
         "id": 43,
-        "q": "O que faz um Transistor em modo de chaveamento?",
         "difficulty": "medium",
+        "q": "O que faz um Transistor em modo de chaveamento?",
         "options": [
             "Varia a resistência continuamente",
-            "Funciona como um interruptor eletrônico (Liga/Desliga)",
+            "Funciona como um interruptor eletrónico (Liga/Desliga)",
             "Converte calor em luz",
             "Mede pressão"
         ]
     },
     {
         "id": 44,
-        "q": "Assinale a alternativa correta sobre uma das Leis de Kirchhoff:",
         "difficulty": "medium",
+        "q": "A Primeira Lei de Kirchhoff diz que:",
         "options": [
-            "A soma das tensões em uma malha é infinita",
-            "A soma das correntes que entram em um nó é igual à que saem dele",
+            "A soma das tensões em uma malha é zero",
+            "A soma das correntes que entram em um nó é igual à que saem",
             "V = R.I",
             "P = V.I"
         ]
     },
     {
         "id": 45,
-        "q": "O que é o Efeito Joule?",
         "difficulty": "medium",
+        "q": "O que é o Efeito Joule?",
         "options": [
             "Transformação de luz em som",
             "Transformação de energia elétrica em calor",
@@ -530,8 +524,8 @@ const fullQuestionBank = [
     },
     {
         "id": 46,
-        "q": "Qual o valor decimal do binário 1010?",
         "difficulty": "easy",
+        "q": "Qual o valor decimal do binário 1010?",
         "options": [
             "5",
             "10",
@@ -541,8 +535,8 @@ const fullQuestionBank = [
     },
     {
         "id": 47,
-        "q": "Qual porta lógica resulta em '1' apenas se todas as entradas forem '1'?",
         "difficulty": "medium",
+        "q": "Qual porta lógica resulta em '1' apenas se todas as entradas forem '1'?",
         "options": [
             "OR",
             "AND",
@@ -552,8 +546,8 @@ const fullQuestionBank = [
     },
     {
         "id": 48,
-        "q": "Qual porta lógica resulta em '1' se qualquer uma das entradas for '1'?",
         "difficulty": "medium",
+        "q": "Qual porta lógica resulta em '1' se qualquer uma das entradas for '1'?",
         "options": [
             "AND",
             "OR",
@@ -563,32 +557,30 @@ const fullQuestionBank = [
     },
     {
         "id": 49,
-        "q": "O que é um Osciloscópio?",
         "difficulty": "hard",
+        "q": "O que é um Osciloscópio?",
         "options": [
             "Mede apenas resistência",
             "Instrumento para visualizar formas de onda no tempo",
             "Gerador de energia",
             "Sensor de umidade"
-        ],
-        "image": "https://blog.instrusul.com.br/wp-content/uploads/2018/11/oscilosc%C3%B3pio.jpg"
+        ]
     },
     {
         "id": 50,
-        "q": "Qual a função do retificador em ponte?",
         "difficulty": "medium",
+        "q": "Qual a função do retificador em ponte?",
         "options": [
             "Transformar CC em CA",
             "Transformar CA em CC (Onda completa)",
             "Cortar o sinal",
             "Filtrar ruídos"
-        ],
-        "image": "https://www.usinainfo.com.br/img/cms/ponte%20retificadora%20diodo-fw.png"
+        ]
     },
     {
         "id": 51,
-        "q": "Em um circuito paralelo de resistores, a tensão em cada resistor é:",
         "difficulty": "medium",
+        "q": "Em um circuito paralelo de resistores, a tensão em cada resistor é:",
         "options": [
             "Diferente",
             "A mesma para todos",
@@ -598,8 +590,8 @@ const fullQuestionBank = [
     },
     {
         "id": 52,
-        "q": "O que significa 'RMS' em uma tensão alternada?",
         "difficulty": "medium",
+        "q": "O que significa 'RMS' em uma tensão alternada?",
         "options": [
             "Valor Máximo",
             "Valor Eficaz",
@@ -609,8 +601,8 @@ const fullQuestionBank = [
     },
     {
         "id": 53,
-        "q": "Qual componente é usado para proteção contra sobrecorrente?",
         "difficulty": "easy",
+        "q": "Qual componente é usado para proteção contra sobrecorrente?",
         "options": [
             "Resistor",
             "Fusível",
@@ -620,8 +612,8 @@ const fullQuestionBank = [
     },
     {
         "id": 54,
-        "q": "O que é um MOSFET?",
         "difficulty": "hard",
+        "q": "O que é um MOSFET?",
         "options": [
             "Um tipo de relé",
             "Um transistor de efeito de campo de metal-óxido-semicondutor",
@@ -631,8 +623,8 @@ const fullQuestionBank = [
     },
     {
         "id": 55,
-        "q": "Qual a base do sistema Hexadecimal?",
         "difficulty": "easy",
+        "q": "Qual a base do sistema Hexadecimal?",
         "options": [
             "2",
             "10",
@@ -642,8 +634,8 @@ const fullQuestionBank = [
     },
     {
         "id": 56,
-        "q": "O que é um Flip-Flop?",
         "difficulty": "hard",
+        "q": "O que é um Flip-Flop?",
         "options": [
             "Um tipo de calçado",
             "Um circuito digital capaz de armazenar 1 bit",
@@ -653,8 +645,8 @@ const fullQuestionBank = [
     },
     {
         "id": 57,
-        "q": "O que define o Fator de Potência?",
         "difficulty": "medium",
+        "q": "O que define o Fator de Potência?",
         "options": [
             "Relação entre potência ativa e aparente",
             "Soma das resistências",
@@ -664,20 +656,19 @@ const fullQuestionBank = [
     },
     {
         "id": 58,
-        "q": "Qual o símbolo químico do silício, principal material semicondutor?",
         "difficulty": "easy",
+        "q": "Qual o símbolo químico do silício, principal material semicondutor?",
         "options": [
             "S",
             "Si",
             "Sl",
             "Sc"
-        ],
-        "image": "https://acdmin.com.br/wp-content/uploads/2023/10/IMG_BLOG_-_MI_12-1024x576.webp"
+        ]
     },
     {
         "id": 59,
-        "q": "O que é um curto-circuito?",
         "difficulty": "medium",
+        "q": "O que é um curto-circuito?",
         "options": [
             "Circuitos com alta resistência",
             "Caminho de baixa resistência que desvia a corrente",
@@ -687,8 +678,8 @@ const fullQuestionBank = [
     },
     {
         "id": 60,
-        "q": "Qual a unidade de frequência?",
         "difficulty": "easy",
+        "q": "Qual a unidade de frequência?",
         "options": [
             "Henry",
             "Hertz",
@@ -698,8 +689,8 @@ const fullQuestionBank = [
     },
     {
         "id": 61,
-        "q": "Em CA, a reatância capacitiva diminui quando a frequência:",
         "difficulty": "hard",
+        "q": "Em CA, a reatância capacitiva diminui quando a frequência:",
         "options": [
             "Aumenta",
             "Diminui",
@@ -709,8 +700,8 @@ const fullQuestionBank = [
     },
     {
         "id": 62,
-        "q": "O que é um Diodo Zener?",
         "difficulty": "medium",
+        "q": "O que é um Diodo Zener?",
         "options": [
             "Diodo que emite luz azul",
             "Diodo projetado para operar na região de ruptura (regulação)",
@@ -720,19 +711,19 @@ const fullQuestionBank = [
     },
     {
         "id": 63,
-        "q": "Qual o valor da constante de tempo em um circuito RC?",
         "difficulty": "hard",
+        "q": "Qual o valor da constante de tempo em um circuito RC?",
         "options": [
-            "$R + C$",
-            "$R \\cdot C$",
-            "$\\frac{R}{C}$",
-            "$\\frac{C}{R}"
+            "R + C",
+            "R * C",
+            "R / C",
+            "C / R"
         ]
     },
     {
         "id": 64,
-        "q": "O que é Indução Eletromagnética?",
         "difficulty": "medium",
+        "q": "O que é Indução Eletromagnética?",
         "options": [
             "Criação de calor pelo fio",
             "Geração de tensão em um condutor imerso em campo magnético variável",
@@ -742,8 +733,8 @@ const fullQuestionBank = [
     },
     {
         "id": 65,
-        "q": "O que é um Amplificador Operacional (Op-Amp)?",
         "difficulty": "hard",
+        "q": "O que é um Amplificador Operacional (Op-Amp)?",
         "options": [
             "Motor elétrico",
             "Circuito integrado de alto ganho usado em processamento de sinais",
@@ -753,8 +744,8 @@ const fullQuestionBank = [
     },
     {
         "id": 66,
-        "q": "O que é um Tiristor (SCR)?",
         "difficulty": "hard",
+        "q": "O que é um Tiristor (SCR)?",
         "options": [
             "Transistor de baixa potência",
             "Semicondutor que funciona como chave controlada para grandes cargas",
@@ -764,8 +755,8 @@ const fullQuestionBank = [
     },
     {
         "id": 67,
-        "q": "Qual a função do 'GND' (Ground)?",
         "difficulty": "easy",
+        "q": "Qual a função do 'GND' (Ground)?",
         "options": [
             "Aumentar a tensão",
             "Ponto de referência zero de um circuito",
@@ -775,8 +766,8 @@ const fullQuestionBank = [
     },
     {
         "id": 68,
-        "q": "No sistema binário, o que é um 'Byte'?",
         "difficulty": "easy",
+        "q": "No sistema binário, o que é um 'Byte'?",
         "options": [
             "1 bit",
             "4 bits",
@@ -786,19 +777,19 @@ const fullQuestionBank = [
     },
     {
         "id": 69,
-        "q": "O que é uma 'Tabela Verdade'?",
         "difficulty": "medium",
+        "q": "O que é uma 'Tabela Verdade'?",
         "options": [
-            "Lista de combinações de níveis lógicos",
-            "Tabela que mostra as saídas de um circuito lógico para todas as combinações de entradas",
+            "Lista de preços",
+            "Tabela que mostra as saídas de um circuito lógico para todas as entradas",
             "Manual do fabricante",
             "Gráfico de temperatura"
         ]
     },
     {
         "id": 70,
-        "q": "O que é um Varistor?",
         "difficulty": "medium",
+        "q": "O que é um Varistor?",
         "options": [
             "Resistor que varia com a luz",
             "Resistor que varia com a tensão (proteção contra surtos)",
@@ -808,8 +799,8 @@ const fullQuestionBank = [
     },
     {
         "id": 71,
-        "q": "Qual a principal diferença entre MOSFET e BJT?",
         "difficulty": "hard",
+        "q": "Qual a principal diferença entre MOSFET e BJT?",
         "options": [
             "Tamanho",
             "Controle por tensão vs controle por corrente",
@@ -819,8 +810,8 @@ const fullQuestionBank = [
     },
     {
         "id": 72,
-        "q": "O que é um Optoacoplador?",
         "difficulty": "medium",
+        "q": "O que é um Optoacoplador?",
         "options": [
             "Lente de aumento",
             "Componente que transfere sinais via luz, isolando eletricamente",
@@ -830,8 +821,8 @@ const fullQuestionBank = [
     },
     {
         "id": 73,
-        "q": "Qual a unidade de medida da indutância?",
         "difficulty": "easy",
+        "q": "Qual a unidade de medida da indutância?",
         "options": [
             "Farad",
             "Henry",
@@ -841,8 +832,19 @@ const fullQuestionBank = [
     },
     {
         "id": 74,
-        "q": "O que faz um Inversor (porta lógica)?",
+        "difficulty": "hard",
+        "q": "O que é Ressonância em circuitos RLC?",
+        "options": [
+            "Quando o circuito para",
+            "Quando a reatância indutiva é igual à capacitiva",
+            "Quando a bateria acaba",
+            "Quando o resistor queima"
+        ]
+    },
+    {
+        "id": 75,
         "difficulty": "medium",
+        "q": "O que faz um Inversor (porta lógica)?",
         "options": [
             "Soma entradas",
             "Inverte o nível lógico (0 vira 1 e vice-versa)",
@@ -851,9 +853,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 75,
-        "q": "Qual a tensão de pico de uma rede 220V RMS?",
+        "id": 76,
         "difficulty": "hard",
+        "q": "Qual a tensão de pico de uma rede 220V RMS?",
         "options": [
             "220V",
             "311V",
@@ -862,20 +864,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 76,
-        "q": "O que é um Termistor NTC?",
+        "id": 77,
         "difficulty": "medium",
+        "q": "O que é um Termistor NTC?",
         "options": [
-            "Resistor que aumenta resistência com o aumento do calor",
-            "Resistor que diminui resistência com o aumento do calor",
+            "Resistor que aumenta resistência com calor",
+            "Resistor que diminui resistência com calor",
             "Resistor fixo",
             "Sensor de luz"
         ]
     },
     {
-        "id": 77,
-        "q": "Qual a função de um capacitor de filtro em uma fonte?",
+        "id": 78,
         "difficulty": "hard",
+        "q": "Qual a função de um capacitor de filtro em uma fonte?",
         "options": [
             "Aumentar a tensão",
             "Reduzir a oscilação (ripple) da tensão retificada",
@@ -884,21 +886,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 78,
-        "q": "O que é um Gerador de Funções?",
+        "id": 79,
         "difficulty": "hard",
+        "q": "O que é um Gerador de Funções?",
         "options": [
             "Calculadora",
             "Equipamento que gera sinais elétricos (senoidal, quadrada, etc)",
             "Fonte de bancada",
             "Multímetro"
-        ],
-        "image": "https://cdn.signumtechs.com/image/cache/catalog/Departamentos/Geradores%20de%20Sinais/gerador-de-funcoes-arbitrarias-siglent-serie-sdg1000X-1-600x400.jpg"
+        ]
     },
     {
-        "id": 79,
-        "q": "O que é o sistema BCD?",
+        "id": 80,
         "difficulty": "easy",
+        "q": "O que é o sistema BCD?",
         "options": [
             "Código de barras",
             "Decimal Codificado em Binário",
@@ -907,9 +908,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 80,
-        "q": "O que é um Multiplexador (MUX)?",
+        "id": 81,
         "difficulty": "hard",
+        "q": "O que é um Multiplexador (MUX)?",
         "options": [
             "Inversor de tensão",
             "Dispositivo que seleciona uma de várias entradas para uma única saída",
@@ -918,9 +919,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 81,
-        "q": "O que é a Lei de Faraday?",
+        "id": 82,
         "difficulty": "medium",
+        "q": "O que é a Lei de Faraday?",
         "options": [
             "Lei do calor",
             "Lei da indução eletromagnética",
@@ -929,9 +930,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 82,
-        "q": "O que é um PWM?",
+        "id": 83,
         "difficulty": "medium",
+        "q": "O que é um PWM?",
         "options": [
             "Modulação por largura de pulso",
             "Potência Watt Média",
@@ -940,33 +941,31 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 83,
-        "q": "Qual a sequência de cores do resistor de 1k Ohm (tolerância 5%)?",
+        "id": 84,
         "difficulty": "medium",
+        "q": "Qual a cor do resistor de 1k Ohm (tolerância 5%)?",
         "options": [
             "Marrom, Preto, Vermelho, Ouro",
             "Marrom, Preto, Laranja, Ouro",
             "Vermelho, Vermelho, Vermelho, Ouro",
             "Preto, Marrom, Vermelho, Ouro"
-        ],
-        "image": "https://blog.fazedores.com/wp-content/uploads/2019/06/codigo_de_cores.png"
+        ]
     },
     {
-        "id": 84,
-        "q": "O que é uma Matriz de Contatos (Protoboard)?",
+        "id": 85,
         "difficulty": "medium",
+        "q": "O que é uma Matriz de Contatos (Protoboard)?",
         "options": [
             "Placa soldada",
             "Placa para prototipagem rápida sem solda",
             "Manual de esquemas",
             "Sensor de toque"
-        ],
-        "image": "https://codificados.com.br/wp-content/uploads/2021/01/protoboard-830-furos-sbase-mp-830_6933-rotated.jpg"
+        ]
     },
     {
-        "id": 85,
-        "q": "O que é Impedância?",
+        "id": 86,
         "difficulty": "hard",
+        "q": "O que é Impedância?",
         "options": [
             "Apenas resistência",
             "Oposição total ao fluxo de CA (Resistência + Reatância)",
@@ -975,9 +974,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 86,
-        "q": "O que é um ADC?",
+        "id": 87,
         "difficulty": "medium",
+        "q": "O que é um ADC?",
         "options": [
             "Conversor Analógico para Digital",
             "Alimentação de Corrente",
@@ -986,9 +985,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 87,
-        "q": "O que é o código ASCII?",
+        "id": 88,
         "difficulty": "easy",
+        "q": "O que é o código ASCII?",
         "options": [
             "Protocolo de internet",
             "Padrão de codificação de caracteres",
@@ -997,9 +996,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 88,
-        "q": "Qual componente é usado para 'ceifar' picos de tensão?",
+        "id": 89,
         "difficulty": "medium",
+        "q": "Qual componente é usado para 'ceifar' picos de tensão?",
         "options": [
             "Capacitor",
             "Diodo Zener",
@@ -1008,9 +1007,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 89,
-        "q": "O que é um sistema Trifásico?",
+        "id": 90,
         "difficulty": "medium",
+        "q": "O que é um sistema Trifásico?",
         "options": [
             "Um fio com 3 tensões",
             "Conjunto de três tensões alternadas defasadas de 120 graus",
@@ -1019,9 +1018,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 90,
-        "q": "O que é a Tensão de Linha?",
+        "id": 91,
         "difficulty": "easy",
+        "q": "O que é a Tensão de Linha?",
         "options": [
             "Tensão entre fase e neutro",
             "Tensão entre duas fases",
@@ -1030,9 +1029,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 91,
-        "q": "Qual a vantagem do sistema trifásico na indústria?",
+        "id": 92,
         "difficulty": "medium",
+        "q": "Qual a vantagem do sistema trifásico na indústria?",
         "options": [
             "Fios mais finos",
             "Motores mais eficientes e transmissão de potência constante",
@@ -1041,9 +1040,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 92,
-        "q": "O que é a Potência Ativa?",
+        "id": 93,
         "difficulty": "easy",
+        "q": "O que é a Potência Ativa?",
         "options": [
             "Potência que gera calor ou trabalho (Watts)",
             "Potência de reserva",
@@ -1052,9 +1051,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 93,
-        "q": "O que é a Potência Reativa?",
+        "id": 94,
         "difficulty": "easy",
+        "q": "O que é a Potência Reativa?",
         "options": [
             "Potência útil",
             "Potência necessária para criar campos magnéticos (VAr)",
@@ -1063,9 +1062,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 94,
-        "q": "Qual componente corrige o Fator de Potência?",
+        "id": 95,
         "difficulty": "medium",
+        "q": "Qual componente corrige o Fator de Potência?",
         "options": [
             "Resistor",
             "Banco de Capacitores",
@@ -1074,9 +1073,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 95,
-        "q": "O que é uma Bobina?",
+        "id": 96,
         "difficulty": "easy",
+        "q": "O que é uma Bobina?",
         "options": [
             "Um pedaço de carvão",
             "Fio enrolado que cria campo magnético (Indutor)",
@@ -1085,9 +1084,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 96,
-        "q": "O que é um Relé Eletromecânico?",
+        "id": 97,
         "difficulty": "easy",
+        "q": "O que é um Relé Eletromecânico?",
         "options": [
             "Interruptor manual",
             "Interruptor acionado por uma bobina eletromagnética",
@@ -1096,9 +1095,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 97,
-        "q": "O que é a Lei de Lenz?",
+        "id": 98,
         "difficulty": "medium",
+        "q": "O que é a Lei de Lenz?",
         "options": [
             "Lei do som",
             "Lei que diz que o sentido da corrente induzida se opõe à variação do fluxo",
@@ -1107,9 +1106,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 98,
-        "q": "Qual função do Arduino roda apenas uma vez no início?",
+        "id": 99,
         "difficulty": "easy",
+        "q": "Qual a cor padrão do condutor Neutro conforme NBR 5410?",
+        "options": [
+            "Verde",
+            "Azul Claro",
+            "Preto",
+            "Vermelho"
+        ]
+    },
+    {
+        "id": 100,
+        "difficulty": "easy",
+        "q": "Qual função do Arduino roda apenas uma vez no início?",
         "options": [
             "loop()",
             "setup()",
@@ -1118,9 +1128,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 99,
-        "q": "Qual função do Arduino executa repetidamente?",
+        "id": 101,
         "difficulty": "easy",
+        "q": "Qual função do Arduino executa repetidamente?",
         "options": [
             "setup()",
             "loop()",
@@ -1129,9 +1139,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 100,
-        "q": "Como declarar o pino 13 como saída no Arduino?",
+        "id": 102,
         "difficulty": "easy",
+        "q": "Como declarar o pino 13 como saída no Arduino?",
         "options": [
             "pinMode(13, INPUT)",
             "pinMode(13, OUTPUT)",
@@ -1140,9 +1150,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 101,
-        "q": "Qual comando lê um sinal digital (0 ou 1) em um pino?",
+        "id": 103,
         "difficulty": "easy",
+        "q": "Qual comando lê um sinal digital (0 ou 1) em um pino?",
         "options": [
             "analogRead()",
             "digitalRead()",
@@ -1151,9 +1161,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 102,
-        "q": "Qual comando envia um valor PWM (0 a 255) para um pino?",
+        "id": 104,
         "difficulty": "medium",
+        "q": "Qual comando envia um valor PWM (0 a 255) para um pino?",
         "options": [
             "digitalWrite()",
             "analogWrite()",
@@ -1162,9 +1172,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 103,
-        "q": "O que faz o comando 'Serial.begin(9600)'?",
+        "id": 105,
         "difficulty": "easy",
+        "q": "O que faz o comando 'Serial.begin(9600)'?",
         "options": [
             "Liga o motor",
             "Inicia a comunicação serial a 9600 bps",
@@ -1173,9 +1183,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 104,
-        "q": "Qual o valor máximo retornado por 'analogRead()'?",
+        "id": 106,
         "difficulty": "medium",
+        "q": "Qual o valor máximo retornado por 'analogRead()'?",
         "options": [
             "255",
             "1023",
@@ -1184,9 +1194,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 105,
-        "q": "O que significa 'HIGH' em um pino digital do Arduino?",
+        "id": 107,
         "difficulty": "easy",
+        "q": "O que significa 'HIGH' em um pino digital de 5V?",
         "options": [
             "0V",
             "5V",
@@ -1195,9 +1205,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 106,
-        "q": "Para que serve o comando 'delay(500)'?",
+        "id": 108,
         "difficulty": "easy",
+        "q": "Para que serve o comando 'delay(500)'?",
         "options": [
             "Pausa o código por 500 segundos",
             "Pausa o código por 500 milissegundos",
@@ -1206,9 +1216,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 107,
-        "q": "Qual é o operador da função 'E lógico' em C++?",
+        "id": 109,
         "difficulty": "medium",
+        "q": "Qual the operador de 'E lógico' em C++?",
         "options": [
             "||",
             "&&",
@@ -1217,9 +1227,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 108,
-        "q": "Qual é o operador da função 'OU lógico' em C++?",
+        "id": 110,
         "difficulty": "medium",
+        "q": "Qual the operador de 'OU lógico' em C++?",
         "options": [
             "&&",
             "||",
@@ -1228,9 +1238,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 109,
-        "q": "Como comentar uma linha no código Arduino?",
+        "id": 111,
         "difficulty": "easy",
+        "q": "Como comentar uma linha no código Arduino?",
         "options": [
             "# comentário",
             "// comentário",
@@ -1239,9 +1249,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 110,
-        "q": "O que acontece se esquecer o ';' ao final de uma linha?",
+        "id": 112,
         "difficulty": "easy",
+        "q": "O que acontece se esquecer o ';' ao final de uma linha?",
         "options": [
             "Nada",
             "Erro de compilação",
@@ -1250,9 +1260,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 111,
-        "q": "Qual tipo de variável armazena apenas 'true' ou 'false'?",
+        "id": 113,
         "difficulty": "medium",
+        "q": "Qual tipo de variável armazena apenas 'true' ou 'false'?",
         "options": [
             "int",
             "float",
@@ -1261,9 +1271,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 112,
-        "q": "O que faz o comando 'digitalWrite(10, LOW)'?",
+        "id": 114,
         "difficulty": "medium",
+        "q": "O que faz o comando 'digitalWrite(10, LOW)'?",
         "options": [
             "Liga o pino 10",
             "Desliga (0V) o pino 10",
@@ -1272,9 +1282,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 113,
-        "q": "Como comparar se duas variáveis são iguais?",
+        "id": 115,
         "difficulty": "medium",
+        "q": "O que é 'PWM'?",
+        "options": [
+            "Potência Máxima",
+            "Modulação por Largura de Pulso",
+            "Protocolo de Rede",
+            "Motor de Passo"
+        ]
+    },
+    {
+        "id": 116,
+        "difficulty": "medium",
+        "q": "Como comparar se duas variáveis são iguais?",
         "options": [
             "=",
             "==",
@@ -1283,9 +1304,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 114,
-        "q": "Para que serve a biblioteca '#include <Servo.h>'?",
+        "id": 117,
         "difficulty": "medium",
+        "q": "Para que serve a biblioteca '#include <Servo.h>'?",
         "options": [
             "Controlar LEDs",
             "Controlar Servo Motores",
@@ -1294,9 +1315,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 115,
-        "q": "O que faz a função 'map(valor, 0, 1023, 0, 255)'?",
+        "id": 118,
         "difficulty": "hard",
+        "q": "O que faz a função 'map(valor, 0, 1023, 0, 255)'?",
         "options": [
             "Cria um mapa",
             "Converte proporcionalmente uma escala em outra",
@@ -1305,9 +1326,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 116,
-        "q": "Qual a finalidade do Monitor Serial?",
+        "id": 119,
         "difficulty": "medium",
+        "q": "Qual a finalidade do Monitor Serial?",
         "options": [
             "Ver vídeos",
             "Trocar dados entre PC e Arduino para depuração",
@@ -1316,9 +1337,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 117,
-        "q": "O que é um 'void' em uma função?",
+        "id": 120,
         "difficulty": "easy",
+        "q": "O que é um 'void' em uma função?",
         "options": [
             "Um erro",
             "Indica que a função não retorna valor",
@@ -1327,9 +1348,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 118,
-        "q": "O que faz o comando 'if(botao == HIGH) { ... }'?",
+        "id": 121,
         "difficulty": "medium",
+        "q": "O que faz o comando 'if(botao == HIGH) { ... }'?",
         "options": [
             "Repete o código",
             "Executa o bloco apenas se a condição for verdadeira",
@@ -1338,9 +1359,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 119,
-        "q": "O que é uma 'String' no código?",
+        "id": 122,
         "difficulty": "easy",
+        "q": "O que é uma 'String' no código?",
         "options": [
             "Um número",
             "Uma cadeia de caracteres (texto)",
@@ -1349,20 +1370,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 120,
-        "q": "Qual pino do Arduino Uno suporta PWM?",
+        "id": 123,
         "difficulty": "hard",
+        "q": "Qual pino do Arduino Uno suporta PWM?",
         "options": [
-            "Todos os pinos suportam",
-            "Nenhum pino suporta",
-            "Todos os pinos com um sinal ~",
-            "Todos os pinos marcados com uma letra P"
+            "Pino 2",
+            "Pino 3",
+            "Pino 4",
+            "Pino 7"
         ]
     },
     {
-        "id": 121,
-        "q": "Como incrementar a variável 'cont' em 1?",
+        "id": 124,
         "difficulty": "easy",
+        "q": "Como incrementar a variável 'cont' em 1?",
         "options": [
             "cont + 1",
             "cont++",
@@ -1371,20 +1392,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 122,
-        "q": "O que faz o comando 'else { ... }'?",
+        "id": 125,
         "difficulty": "medium",
+        "q": "O que faz o comando 'else { ... }'?",
         "options": [
             "Repete o 'if'",
-            "Executa o bloco se a condição do 'if' for falsa",
+            "Executa se a condição do 'if' for falsa",
             "Para o código",
             "Lê sensores"
         ]
     },
     {
-        "id": 123,
-        "q": "Qual comando lê a temperatura de um DHT11 (usando biblioteca)?",
+        "id": 126,
         "difficulty": "hard",
+        "q": "Qual comando lê a temperatura de um DHT11 (usando biblioteca)?",
         "options": [
             "dht.read()",
             "dht.readTemperature()",
@@ -1393,9 +1414,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 124,
-        "q": "O que é o 'Baud Rate'?",
+        "id": 127,
         "difficulty": "medium",
+        "q": "O que é o 'Baud Rate'?",
         "options": [
             "Velocidade do motor",
             "Velocidade de transmissão serial (bits por segundo)",
@@ -1404,9 +1425,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 125,
-        "q": "Como declarar um array de 3 inteiros?",
+        "id": 128,
         "difficulty": "hard",
+        "q": "Como declarar um array de 3 inteiros?",
         "options": [
             "int x = 3",
             "int x[3]",
@@ -1415,9 +1436,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 126,
-        "q": "O que faz 'Serial.println(\"Oi\")'?",
+        "id": 129,
         "difficulty": "medium",
+        "q": "O que faz 'Serial.println(\"Oi\")'?",
         "options": [
             "Escreve 'Oi' e pula linha",
             "Apaga o texto",
@@ -1426,9 +1447,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 127,
-        "q": "Qual o primeiro índice de um array em C++?",
+        "id": 130,
         "difficulty": "easy",
+        "q": "Qual o primeiro índice de um array em C++?",
         "options": [
             "1",
             "0",
@@ -1437,20 +1458,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 128,
-        "q": "Para que serve a estrutura 'for(int i=0; i<10; i++)'?",
+        "id": 131,
         "difficulty": "hard",
+        "q": "Para que serve a estrutura 'for(int i=0; i<10; i++)'?",
         "options": [
             "Testar condição",
-            "Configurar pinos",
+            "Repetir um bloco 10 vezes",
             "Criar um delay",
-            "Repetir um bloco 10 vezes"
+            "Configurar pinos"
         ]
     },
     {
-        "id": 129,
-        "q": "O que é 'Input Pullup'?",
+        "id": 132,
         "difficulty": "medium",
+        "q": "O que é 'Input Pullup'?",
         "options": [
             "Pino de saída forte",
             "Entrada com resistor interno ligado ao 5V",
@@ -1459,53 +1480,53 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 130,
-        "q": "Qual comando lê a distância de um sensor ultrassônico?",
+        "id": 133,
         "difficulty": "hard",
+        "q": "Qual comando lê a distância de um sensor ultrassônico?",
         "options": [
             "digitalRead()",
-            "analogRead()",
             "pulseIn() no pino Echo",
+            "analogRead()",
             "readDistance()"
         ]
     },
     {
-        "id": 131,
-        "q": "Como declarar uma constante em C++?",
+        "id": 134,
         "difficulty": "medium",
+        "q": "Como declarar uma constante em C++?",
         "options": [
             "var x = 10",
-            "fix x = 10",
             "const int x = 10",
+            "fix x = 10",
             "let x = 10"
         ]
     },
     {
-        "id": 132,
-        "q": "O que faz o operador '!' (ex: !estado)?",
+        "id": 135,
         "difficulty": "hard",
+        "q": "O que faz o operador '!' (ex: !estado)?",
         "options": [
             "Soma 1",
-            "Deleta o valor",
+            "Inverte o valor lógico (NÃO)",
             "Confirma o valor",
-            "Inverte o valor lógico (NÃO)"
+            "Deleta o valor"
         ]
     },
     {
-        "id": 133,
-        "q": "Qual tipo de variável armazena um único caractere?",
+        "id": 136,
         "difficulty": "medium",
+        "q": "Qual tipo de variável armazena um único caractere?",
         "options": [
             "int",
-            "String",
             "char",
+            "String",
             "byte"
         ]
     },
     {
-        "id": 134,
-        "q": "Para que serve 'switch(x) { case 1: ... }'?",
+        "id": 137,
         "difficulty": "hard",
+        "q": "Para que serve 'switch(x) { case 1: ... }'?",
         "options": [
             "Repetir código",
             "Selecionar um bloco entre várias opções",
@@ -1514,64 +1535,64 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 135,
-        "q": "O que faz 'float temp = 25.5'?",
+        "id": 138,
         "difficulty": "medium",
+        "q": "O que faz 'float temp = 25.5'?",
         "options": [
             "Armazena texto",
-            "Armazena cor",
+            "Armazena número com casa decimal",
             "Armazena inteiro",
-            "Armazena número com casa decimal"
+            "Armazena cor"
         ]
     },
     {
-        "id": 136,
-        "q": "O que é 'Debounce' em botões?",
+        "id": 139,
         "difficulty": "hard",
+        "q": "O que é 'Debounce' em botões?",
         "options": [
-            "Técnica para ignorar ruídos elétricos no clique",
             "Apertar forte",
+            "Técnica para ignorar ruídos elétricos no clique",
             "Ligar no GND",
             "Mudar de cor"
         ]
     },
     {
-        "id": 137,
-        "q": "Como encerrar um loop 'for' prematuramente?",
+        "id": 140,
         "difficulty": "hard",
+        "q": "Como encerrar um loop 'for' prematuramente?",
         "options": [
             "stop",
-            "exit",
             "break",
+            "exit",
             "return"
         ]
     },
     {
-        "id": 138,
-        "q": "O que faz 'pow(2, 3)'?",
+        "id": 141,
         "difficulty": "hard",
+        "q": "O que faz 'pow(2, 3)'?",
         "options": [
-            "Calcula 2 elevado a 3",
             "Soma 2 e 3",
+            "Calcula 2 elevado a 3",
             "Multiplica 2 por 3",
             "Divide 2 por 3"
         ]
     },
     {
-        "id": 139,
-        "q": "Para que serve 'random(1, 10)'?",
+        "id": 142,
         "difficulty": "medium",
+        "q": "Para que serve 'random(1, 10)'?",
         "options": [
             "Lê sensor",
-            "Pausa o código",
+            "Gera um número aleatório entre 1 e 9",
             "Define o brilho",
-            "Gera um número aleatório entre 1 e 9"
+            "Pausa o código"
         ]
     },
     {
-        "id": 140,
-        "q": "O que é o 'Arduino IDE'?",
+        "id": 143,
         "difficulty": "easy",
+        "q": "O que é o 'Arduino IDE'?",
         "options": [
             "A placa física",
             "O software usado para escrever e carregar o código",
@@ -1580,20 +1601,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 141,
-        "q": "O que faz o botão 'Verify' na IDE?",
+        "id": 144,
         "difficulty": "medium",
+        "q": "O que faz o botão 'Verify' na IDE?",
         "options": [
-            "Compila e verifica erros no código",
             "Manda para a placa",
+            "Compila e verifica erros no código",
             "Apaga o código",
             "Formata o PC"
         ]
     },
     {
-        "id": 142,
-        "q": "O que faz o botão 'Upload' na IDE?",
+        "id": 145,
         "difficulty": "medium",
+        "q": "O que faz o botão 'Upload' na IDE?",
         "options": [
             "Salva no Google Drive",
             "Compila e envia o programa para o Arduino",
@@ -1602,20 +1623,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 143,
-        "q": "Qual biblioteca controla telas LCD via I2C?",
+        "id": 146,
         "difficulty": "hard",
+        "q": "Qual biblioteca controla telas LCD via I2C?",
         "options": [
             "<LCD.h>",
-            "<Screen.h>",
+            "<LiquidCrystal_I2C.h>",
             "<Display.h>",
-            "<LiquidCrystal_I2C.h>"
+            "<Screen.h>"
         ]
     },
     {
-        "id": 144,
-        "q": "Como limpar a tela do LCD?",
+        "id": 147,
         "difficulty": "medium",
+        "q": "Como limpar a tela do LCD?",
         "options": [
             "lcd.clear()",
             "lcd.clean()",
@@ -1624,9 +1645,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 145,
-        "q": "O que faz 'lcd.setCursor(0, 1)'?",
+        "id": 148,
         "difficulty": "hard",
+        "q": "O que faz 'lcd.setCursor(0, 1)'?",
         "options": [
             "Escreve 0 e 1",
             "Posiciona o cursor na coluna 0, linha 1 (2ª linha)",
@@ -1635,20 +1656,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 146,
-        "q": "Qual o limite de memória flash do Arduino Uno?",
+        "id": 149,
         "difficulty": "hard",
+        "q": "Qual o limite de memória flash do Arduino Uno?",
         "options": [
             "1 TB",
-            "32 MB",
+            "32 KB",
             "4 GB",
-            "32 KB"
+            "1 MB"
         ]
     },
     {
-        "id": 147,
-        "q": "Qual a principal finalidade da norma NR-12?",
+        "id": 150,
         "difficulty": "easy",
+        "q": "Qual a principal finalidade da norma NR-12?",
         "options": [
             "Economia de energia",
             "Segurança no trabalho em máquinas e equipamentos",
@@ -1657,31 +1678,31 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 148,
-        "q": "O que é um Botão de Emergência?",
+        "id": 151,
         "difficulty": "easy",
+        "q": "O que é um Botão de Emergência?",
         "options": [
-            "Dispositivo de parada imediata com trava mecânica",
             "Botão de ligar",
+            "Dispositivo de parada imediata com trava mecânica",
             "Campainha",
             "Reset do PC"
         ]
     },
     {
-        "id": 149,
-        "q": "Para que serve a Cortina de Luz na NR-12?",
+        "id": 152,
         "difficulty": "hard",
+        "q": "Para que serve a Cortina de Luz na NR-12?",
         "options": [
             "Decorar a fábrica",
-            "Bloquear o sol",
+            "Detectar a intrusão de membros em áreas de risco",
             "Iluminar o painel",
-            "Detectar a intrusão de membros em áreas de risco"
+            "Bloquear o sol"
         ]
     },
     {
-        "id": 150,
-        "q": "O que é um Relé de Segurança?",
+        "id": 153,
         "difficulty": "medium",
+        "q": "O que é um Relé de Segurança?",
         "options": [
             "Relé comum",
             "Relé com redundância para monitorar dispositivos de parada",
@@ -1690,31 +1711,31 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 151,
-        "q": "Qual a cor padrão do condutor de Aterramento (PE)?",
+        "id": 154,
         "difficulty": "easy",
+        "q": "Qual a cor padrão do condutor de Aterramento (PE)?",
         "options": [
             "Azul",
-            "Preto",
             "Verde ou Verde-Amarelo",
+            "Preto",
             "Branco"
         ]
     },
     {
-        "id": 152,
-        "q": "O que é um Sensor Indutivo?",
+        "id": 155,
         "difficulty": "medium",
+        "q": "O que é um Sensor Indutivo?",
         "options": [
             "Detecta plástico",
-            "Mede calor",
             "Detecta objetos metálicos sem contato",
+            "Mede calor",
             "Mede som"
         ]
     },
     {
-        "id": 153,
-        "q": "O que é um Sensor Capacitivo?",
+        "id": 156,
         "difficulty": "medium",
+        "q": "O que é um Sensor Capacitivo?",
         "options": [
             "Detecta apenas metal",
             "Detecta diversos materiais (metais, líquidos, grãos)",
@@ -1723,9 +1744,42 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 154,
-        "q": "O que faz uma Válvula Solenoide?",
+        "id": 157,
+        "difficulty": "hard",
+        "q": "Para que serve um Inversor de Frequência?",
+        "options": [
+            "Carregar bateria",
+            "Controlar velocidade e torque de motores AC",
+            "Aumentar a tensão",
+            "Inverter a cor"
+        ]
+    },
+    {
+        "id": 158,
         "difficulty": "medium",
+        "q": "O que é um Motor de Passo?",
+        "options": [
+            "Motor de alta velocidade",
+            "Motor que se move em incrementos discretos (passos)",
+            "Motor a diesel",
+            "Motor de polia"
+        ]
+    },
+    {
+        "id": 159,
+        "difficulty": "medium",
+        "q": "O que é um Servo Motor?",
+        "options": [
+            "Motor comum",
+            "Motor de alta precisão com feedback de posição",
+            "Motor de 12V",
+            "Gerador"
+        ]
+    },
+    {
+        "id": 160,
+        "difficulty": "medium",
+        "q": "O que faz uma Válvula Solenoide?",
         "options": [
             "Mede pressão",
             "Controlar o fluxo de ar/fluido via sinal elétrico",
@@ -1734,20 +1788,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 155,
-        "q": "O que é um Atuador Pneumático?",
+        "id": 161,
         "difficulty": "medium",
+        "q": "O que é um Atuador Pneumático?",
         "options": [
             "Motor elétrico",
-            "Bomba de água",
             "Dispositivo que transforma energia do ar em movimento",
+            "Bomba de água",
             "Válvula manual"
         ]
     },
     {
-        "id": 156,
-        "q": "Para que serve o conjunto FRL?",
+        "id": 162,
         "difficulty": "medium",
+        "q": "Para que serve o conjunto FRL?",
         "options": [
             "Ligar o motor",
             "Filtro, Regulador e Lubrificador de ar comprimido",
@@ -1756,20 +1810,42 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 157,
-        "q": "O que é um Contator?",
-        "difficulty": "medium",
+        "id": 163,
+        "difficulty": "hard",
+        "q": "O que é a Manutenção Preditiva?",
         "options": [
-            "Chave eletromecânica para manobra de motores",
+            "Consertar após quebrar",
+            "Monitoramento para prever falhas antes que ocorram",
+            "Troca agendada",
+            "Limpeza"
+        ]
+    },
+    {
+        "id": 164,
+        "difficulty": "medium",
+        "q": "O que é a Manutenção Preventiva?",
+        "options": [
+            "Consertar após quebrar",
+            "Intervenções agendadas para evitar falhas",
+            "Pintura",
+            "Troca de óleo"
+        ]
+    },
+    {
+        "id": 165,
+        "difficulty": "medium",
+        "q": "O que é um Contator?",
+        "options": [
             "Calculadora",
+            "Chave eletromecânica para manobra de motores",
             "Sensor",
             "Fusível"
         ]
     },
     {
-        "id": 158,
-        "q": "Para que serve o Relé Térmico?",
+        "id": 166,
         "difficulty": "easy",
+        "q": "Para que serve o Relé Térmico?",
         "options": [
             "Medir calor",
             "Proteger o motor contra sobrecarga",
@@ -1778,20 +1854,31 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 159,
-        "q": "O que é um Disjuntor Motor?",
+        "id": 167,
         "difficulty": "hard",
+        "q": "O que é um Disjuntor Motor?",
         "options": [
             "Motor pequeno",
-            "Dispositivo de proteção térmica",
+            "Dispositivo de proteção térmica e magnética para motores",
             "Sensor",
-            "Dispositivo de proteção térmica e magnética para motores"
+            "Botão"
         ]
     },
     {
-        "id": 160,
-        "q": "O que é um Diagrama de Potência?",
+        "id": 168,
+        "difficulty": "hard",
+        "q": "Qual a função do Soft-Starter?",
+        "options": [
+            "Partida rápida",
+            "Partida suave de motores para evitar picos de corrente",
+            "Software",
+            "Sensor"
+        ]
+    },
+    {
+        "id": 169,
         "difficulty": "medium",
+        "q": "O que é um Diagrama de Potência?",
         "options": [
             "Lista de nomes",
             "Desenho da parte de força de um sistema elétrico",
@@ -1800,9 +1887,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 161,
-        "q": "O que é um Diagrama de Comando?",
+        "id": 170,
         "difficulty": "medium",
+        "q": "O que é um Diagrama de Comando?",
         "options": [
             "Foto do painel",
             "Desenho da lógica de controle de um sistema",
@@ -1811,20 +1898,42 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 162,
-        "q": "O que é um Borne?",
+        "id": 171,
         "difficulty": "easy",
+        "q": "O que é um Borne?",
         "options": [
-            "Ponto de conexão para fios dentro de um painel",
             "Um parafuso",
+            "Ponto de conexão para fios dentro de um painel",
             "Tipo de sensor",
             "Motor"
         ]
     },
     {
-        "id": 163,
-        "q": "O que é um Manômetro?",
+        "id": 172,
+        "difficulty": "medium",
+        "q": "Para que serve a Anilha na instalação?",
+        "options": [
+            "Isolar o fio",
+            "Identificar os cabos conforme o projeto",
+            "Amarrar fios",
+            "Pintar"
+        ]
+    },
+    {
+        "id": 173,
+        "difficulty": "medium",
+        "q": "O que é um Terminal Ilhós?",
+        "options": [
+            "Um furo",
+            "Terminal crimpado para garantir bom contato elétrico",
+            "Pilha",
+            "Sensor"
+        ]
+    },
+    {
+        "id": 174,
         "difficulty": "easy",
+        "q": "O que é um Manômetro?",
         "options": [
             "Mede calor",
             "Mede pressão de fluidos",
@@ -1833,9 +1942,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 164,
-        "q": "O que faz a Válvula 3/2 vias?",
+        "id": 175,
         "difficulty": "medium",
+        "q": "O que faz a Válvula 3/2 vias?",
         "options": [
             "Tem 3 vias e 2 posições",
             "Tem 2 vias e 3 posições",
@@ -1844,9 +1953,42 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 165,
-        "q": "O que é o Intertravamento Elétrico?",
+        "id": 176,
+        "difficulty": "easy",
+        "q": "O que é um Trilho DIN?",
+        "options": [
+            "Pista de corrida",
+            "Suporte metálico padrão para fixar componentes no painel",
+            "Cabo de rede",
+            "Mangueira"
+        ]
+    },
+    {
+        "id": 177,
+        "difficulty": "medium",
+        "q": "Para que serve a Canaleta no painel?",
+        "options": [
+            "Drenar água",
+            "Organizar e conduzir a fiação internamente",
+            "Proteger contra sol",
+            "Esfriar"
+        ]
+    },
+    {
+        "id": 178,
+        "difficulty": "medium",
+        "q": "O que é uma Prensa-Cabo?",
+        "options": [
+            "Um alicate",
+            "Acessório para fixar e vedar a entrada de cabos no painel",
+            "Ferramenta",
+            "Terminal"
+        ]
+    },
+    {
+        "id": 179,
         "difficulty": "hard",
+        "q": "O que é o Intertravamento Elétrico?",
         "options": [
             "Trancar o painel",
             "Lógica que impede o acionamento simultâneo de dispositivos",
@@ -1855,20 +1997,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 166,
-        "q": "Para que serve o Multímetro na manutenção?",
+        "id": 180,
         "difficulty": "easy",
+        "q": "Para que serve o Multímetro na manutenção?",
         "options": [
             "Medir peças",
-            "Medir tensão",
+            "Medir tensão, corrente e resistência",
             "Aparafusar",
-            "Medir tensão, corrente e resistência"
+            "Limpar"
         ]
     },
     {
-        "id": 167,
-        "q": "O que é um Termostato?",
+        "id": 181,
         "difficulty": "medium",
+        "q": "O que é um Termostato?",
         "options": [
             "Motor",
             "Dispositivo que controla a temperatura",
@@ -1877,31 +2019,53 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 168,
-        "q": "O que é um Sensor de Proximidade Ótico?",
+        "id": 182,
         "difficulty": "medium",
+        "q": "O que é um Sensor de Proximidade Ótico?",
         "options": [
             "Detecta som",
-            "Mede peso",
+            "Detecta objetos via luz (infravermelho/laser)",
             "Detecta metal",
-            "Detecta objetos via luz (infravermelho/laser)"
+            "Mede peso"
         ]
     },
     {
-        "id": 169,
-        "q": "Qual a função do Fusível?",
+        "id": 183,
+        "difficulty": "hard",
+        "q": "O que é a Carga de Trabalho em ergonomia?",
+        "options": [
+            "Peso das caixas",
+            "Esforço físico e mental exigido do trabalhador",
+            "Preço do serviço",
+            "Horas extras"
+        ]
+    },
+    {
+        "id": 184,
         "difficulty": "easy",
+        "q": "Qual a função do Fusível?",
         "options": [
             "Aumentar tensão",
-            "Sensor",
+            "Proteger contra curto-circuito (rompe o filamento)",
             "Ligar luz",
-            "Proteger contra curto-circuito (rompe o filamento)"
+            "Sensor"
         ]
     },
     {
-        "id": 170,
-        "q": "O que é um Engate Rápido?",
+        "id": 185,
+        "difficulty": "hard",
+        "q": "O que é um Encoder na manutenção?",
+        "options": [
+            "Computador",
+            "Sensor que informa a posição rotativa do motor",
+            "Válvula",
+            "Motor"
+        ]
+    },
+    {
+        "id": 186,
         "difficulty": "easy",
+        "q": "O que é um Engate Rápido?",
         "options": [
             "Cabo USB",
             "Conexão rápida para mangueiras pneumáticas",
@@ -1910,20 +2074,42 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 171,
-        "q": "O que faz o Regulador de Pressão?",
+        "id": 187,
         "difficulty": "medium",
+        "q": "O que faz o Regulador de Pressão?",
         "options": [
             "Aumenta o fluxo",
-            "Corta o ar",
             "Mantém a pressão de saída estável e ajustada",
+            "Corta o ar",
             "Gera som"
         ]
     },
     {
-        "id": 172,
-        "q": "Para que serve a Lubrificação no ar comprimido?",
+        "id": 188,
+        "difficulty": "hard",
+        "q": "O que é um Diagrama Unifilar?",
+        "options": [
+            "Muitos fios",
+            "Representação simplificada com uma linha para o sistema",
+            "Foto",
+            "Manual"
+        ]
+    },
+    {
+        "id": 189,
         "difficulty": "medium",
+        "q": "O que é a Ordem de Serviço (OS)?",
+        "options": [
+            "Nota fiscal",
+            "Documento que autoriza e descreve a tarefa de manutenção",
+            "Lista de nomes",
+            "Regra"
+        ]
+    },
+    {
+        "id": 190,
+        "difficulty": "medium",
+        "q": "Para que serve a Lubrificação no ar comprimido?",
         "options": [
             "Gerar energia",
             "Reduzir atrito e desgaste em cilindros e válvulas",
@@ -1932,9 +2118,53 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 173,
-        "q": "O que é o EPI?",
+        "id": 191,
+        "difficulty": "medium",
+        "q": "O que é um CLP Compacto?",
+        "options": [
+            "CLP gigante",
+            "CLP com entradas e saídas fixas no corpo",
+            "CLP de papel",
+            "Pilha"
+        ]
+    },
+    {
+        "id": 192,
+        "difficulty": "medium",
+        "q": "O que é uma IHM?",
+        "options": [
+            "Interface de Hardware",
+            "Interface Homem-Máquina (tela de controle)",
+            "Impressora",
+            "Motor"
+        ]
+    },
+    {
+        "id": 193,
         "difficulty": "easy",
+        "q": "O que é Manutenção Corretiva?",
+        "options": [
+            "Evitar falhas",
+            "Intervenção após a ocorrência da falha",
+            "Pintura",
+            "Troca agendada"
+        ]
+    },
+    {
+        "id": 194,
+        "difficulty": "easy",
+        "q": "Para que serve a NR-10?",
+        "options": [
+            "Segurança em Altura",
+            "Segurança em instalações e serviços em eletricidade",
+            "Pintura",
+            "EPI"
+        ]
+    },
+    {
+        "id": 195,
+        "difficulty": "easy",
+        "q": "O que é o EPI?",
         "options": [
             "Equipamento de Proteção Individual",
             "Escola de Programação",
@@ -1943,9 +2173,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 174,
-        "q": "O que é o EPC?",
+        "id": 196,
         "difficulty": "easy",
+        "q": "O que é o EPC?",
         "options": [
             "Equipamento de Proteção Coletiva",
             "Empresa de Controle",
@@ -1954,9 +2184,9 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 175,
-        "q": "Qual a função do aterramento?",
+        "id": 197,
         "difficulty": "easy",
+        "q": "Qual a função do aterramento?",
         "options": [
             "Aumentar a conta",
             "Segurança contra choques e proteção de equipamentos",
@@ -1965,9 +2195,20 @@ const fullQuestionBank = [
         ]
     },
     {
-        "id": 176,
-        "q": "O que é um Checklist?",
+        "id": 198,
+        "difficulty": "medium",
+        "q": "O que é um Multímetro CAT III?",
+        "options": [
+            "Categoria de peso",
+            "Categoria de segurança para medições industriais",
+            "Cor do multímetro",
+            "Preço"
+        ]
+    },
+    {
+        "id": 199,
         "difficulty": "easy",
+        "q": "O que é um Checklist?",
         "options": [
             "Lista de compras",
             "Lista de verificação para garantir que nada foi esquecido",
