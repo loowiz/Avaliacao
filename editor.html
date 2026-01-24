@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor de Banco de Questões</title>
+    <title>Editor de Banco de Questões (Seguro)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Ícones Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -38,23 +38,23 @@
     <input type="file" id="fileInput" accept=".js" class="hidden" onchange="handleFileUpload(this)">
 
     <!-- Cabeçalho -->
-    <header class="bg-indigo-600 text-white shadow-lg sticky top-0 z-50">
+    <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
         <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <i data-lucide="file-json" class="h-8 w-8"></i>
+                <i data-lucide="shield-check" class="h-8 w-8 text-green-400"></i>
                 <div>
-                    <h1 class="text-xl font-bold">Gerador de Questões</h1>
-                    <p class="text-xs text-indigo-200">Para avaliações online</p>
+                    <h1 class="text-xl font-bold">Gerador Seguro</h1>
+                    <p class="text-xs text-indigo-200">Gera questions.js criptografado</p>
                 </div>
             </div>
 
             <div class="flex gap-3 items-center">
-                <span class="bg-indigo-700 px-3 py-1 rounded text-sm font-mono mr-2">Total: <span
+                <span class="bg-indigo-800 px-3 py-1 rounded text-sm font-mono mr-2">Total: <span
                         id="q-count">0</span></span>
 
                 <!-- Botão de Upload -->
                 <button onclick="document.getElementById('fileInput').click()"
-                    class="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-semibold py-2 px-4 rounded transition-colors border border-indigo-400">
+                    class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2 px-4 rounded transition-colors border border-indigo-500">
                     <i data-lucide="upload" class="h-4 w-4"></i>
                     Carregar questions.js
                 </button>
@@ -191,8 +191,8 @@
             </div>
             <button onclick="generateAndDownload()"
                 class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                <i data-lucide="download" class="h-5 w-5"></i>
-                Baixar questions.js
+                <i data-lucide="lock" class="h-5 w-5"></i>
+                Gerar Seguro (.js)
             </button>
         </div>
     </div>
@@ -327,11 +327,36 @@
         lucide.createIcons();
 
         let questionCount = 0;
+        // Chave de encriptação simples (Client-side)
+        const SALT_KEY = "S3cr3t_K3y_@!#_SENAI_2025"; 
 
         // Ao carregar, adiciona uma questão vazia se não houver upload
         window.onload = function () {
             if (document.getElementById('questions-container').children.length === 0) {
                 addQuestion();
+            }
+        }
+
+        // --- FUNÇÕES DE CRIPTOGRAFIA ---
+        // Simples XOR Cipher com Base64
+        function encrypt(text) {
+            let result = "";
+            for (let i = 0; i < text.length; i++) {
+                result += String.fromCharCode(text.charCodeAt(i) ^ SALT_KEY.charCodeAt(i % SALT_KEY.length));
+            }
+            return btoa(result);
+        }
+
+        function decrypt(encoded) {
+            try {
+                let text = atob(encoded);
+                let result = "";
+                for (let i = 0; i < text.length; i++) {
+                    result += String.fromCharCode(text.charCodeAt(i) ^ SALT_KEY.charCodeAt(i % SALT_KEY.length));
+                }
+                return result;
+            } catch(e) {
+                return ""; // Retorna vazio se não conseguir decriptar
             }
         }
 
@@ -390,9 +415,26 @@
 
         function parseAndLoadContent(content) {
             try {
-                const kMatch = content.match(/const\s+_k\s*=\s*"([a-d]+)"/);
-                if (!kMatch) throw new Error("Chave de respostas (_k) não encontrada.");
-                const loadedKey = kMatch[1];
+                // Tenta encontrar a chave criptografada primeiro
+                let loadedKey = "";
+                const kMatchEnc = content.match(/const\s+_k\s*=\s*"([^"]+)"/);
+                
+                if (!kMatchEnc) throw new Error("Chave de respostas (_k) não encontrada.");
+                
+                // Verifica se parece criptografado (Base64) ou plano
+                const rawKey = kMatchEnc[1];
+                // Tentativa simples de detecção: se decriptar e sair chars válidos ('a','b','c','d'), ok.
+                const decryptedTry = decrypt(rawKey);
+                
+                if (/^[abcd]+$/.test(decryptedTry)) {
+                    loadedKey = decryptedTry; // Era criptografado
+                    console.log("Arquivo criptografado detectado.");
+                } else if (/^[abcd]+$/.test(rawKey)) {
+                    loadedKey = rawKey; // Era plano (antigo)
+                    console.log("Arquivo legado (plano) detectado.");
+                } else {
+                    throw new Error("Formato de chave irreconhecível.");
+                }
 
                 const configMatch = content.match(/const\s+examConfig\s*=\s*({[\s\S]*?});/);
                 if (configMatch) {
@@ -411,7 +453,6 @@
                         const l = extract('lockoutDurationMinutes', 'int');
                         const q = extract('questionsQty', 'int');
                         
-                        // Extração da distribuição
                         const e = extract('easy', 'int');
                         const md = extract('medium', 'int');
                         const h = extract('hard', 'int');
@@ -441,10 +482,8 @@
                     addQuestion(false);
                     const card = container.lastElementChild;
 
-                    // Preenche enunciados e dificuldade
                     card.querySelector('.q-text').value = qObj.q;
                     
-                    // CORREÇÃO: Mapeia o nível de dificuldade para o select
                     if (qObj.difficulty) {
                         card.querySelector('.q-difficulty').value = qObj.difficulty;
                     }
@@ -588,8 +627,8 @@
 
                 const qObj = {
                     id: index,
-                    q: qText,
                     difficulty: qDiff,
+                    q: qText,
                     options: options
                 };
 
@@ -602,7 +641,10 @@
 
             if (hasError) return;
 
-            const fileContent = `/* BANCO DE QUESTÕES - GERADO PELO EDITOR */
+            // --- CRIPTOGRAFIA DO GABARITO ---
+            const encryptedKey = encrypt(keyString);
+
+            const fileContent = `/* BANCO DE QUESTÕES (CRIPTOGRAFADO) - GERADO PELO EDITOR SEGURO */
 
 const examConfig = {
     title: "${confTitle}",
@@ -617,7 +659,8 @@ const examConfig = {
     }
 };
 
-const _k = "${keyString}";
+// Chave criptografada (Base64 XOR)
+const _k = "${encryptedKey}";
 
 const fullQuestionBank = ${JSON.stringify(fullQuestionBank, null, 4)};
 `;
@@ -635,7 +678,7 @@ const fullQuestionBank = ${JSON.stringify(fullQuestionBank, null, 4)};
             // Feedback Visual
             const btn = document.querySelector('button[onclick="generateAndDownload()"]');
             const originalText = btn.innerHTML;
-            btn.innerHTML = `<i data-lucide="check" class="h-5 w-5"></i> Sucesso!`;
+            btn.innerHTML = `<i data-lucide="check" class="h-5 w-5"></i> Gerado com Sucesso!`;
             btn.classList.remove('bg-green-600', 'hover:bg-green-700');
             btn.classList.add('bg-indigo-600');
             lucide.createIcons();
