@@ -404,6 +404,10 @@
     <script>
         // --- CONFIGURAÇÃO GLOBAL ---
 
+        // Chave de desencriptação (Deve corresponder ao Editor)
+        const _s = "S3cr3t_K3y_@!#_SENAI_2025";
+        let _decryptedKey = "";
+
         // Valores padrão caso o questions.js seja antigo e não tenha config
         let CONFIG = {
             title: "Avaliação",
@@ -431,13 +435,38 @@
         let timerInterval;
         let timeElapsed = 0;
 
+        // Função interna para decriptar a chave
+        function _d(encoded) {
+            try {
+                // Tenta decriptar
+                let text = atob(encoded);
+                let result = "";
+                for (let i = 0; i < text.length; i++) {
+                    result += String.fromCharCode(text.charCodeAt(i) ^ _s.charCodeAt(i % _s.length));
+                }
+                return result;
+            } catch(e) {
+                // Se der erro (ex: não é base64), assume que é texto plano (retrocompatibilidade)
+                return encoded;
+            }
+        }
+
         // Inicialização ao carregar
         window.onload = function () {
+            // Prepara a chave de respostas
+            if (typeof _k !== 'undefined') {
+                // Se for criptografada (não contém apenas abcd), decripta
+                if (/^[abcd]+$/.test(_k)) {
+                     _decryptedKey = _k; // Legado (não seguro)
+                } else {
+                     _decryptedKey = _d(_k); // Novo (Seguro)
+                }
+            }
+
             // Atualiza Título da Prova na interface
             document.querySelector('h1.text-3xl').textContent = CONFIG.title;
             document.querySelector('#welcome-screen p.text-gray-600').textContent = `Tempo: ${CONFIG.timeLimitMinutes} min | Limite de penalidades: ${CONFIG.maxPenalties}`;
 
-            // (O resto do código existente continua aqui...)
             document.querySelectorAll('.max-penalties-text').forEach(el => {
                 el.textContent = MAX_PENALTIES;
             });
@@ -598,12 +627,16 @@
         }
 
         function getCorrectAnswerIndex(questionId) {
-            // Usa a chave _k carregada do questions.js
-            if (typeof _k === 'undefined') {
-                showToast("Erro: Chave de respostas não encontrada.");
+            if (!_decryptedKey) {
+                // Tenta recuperar novamente se estiver vazio
+                 if (typeof _k !== 'undefined') _decryptedKey = /^[abcd]+$/.test(_k) ? _k : _d(_k);
+            }
+
+            if (!_decryptedKey) {
+                showToast("Erro: Chave de respostas inválida.");
                 return 0;
             }
-            const charCode = _k.charCodeAt(questionId);
+            const charCode = _decryptedKey.charCodeAt(questionId);
             return charCode - 97;
         }
 
