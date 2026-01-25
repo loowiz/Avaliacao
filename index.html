@@ -4,164 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação: UC Linguagem de Programação</title>
-    <!-- Tailwind CSS (Estilo Visual) -->
+    <title>Avaliação Online</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- jsPDF (Gerador de PDF) -->
+    <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    <!-- KaTeX (Renderização de LaTeX) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
-        xintegrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
-        xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
-        xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
-        crossorigin="anonymous"></script>
-
-    <!-- IMPORTANTE: Carrega o banco de questões externo -->
-    <script src="questions.js"></script>
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f3f4f6;
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
+        .no-select { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+        .question-card { transition: all 0.3s ease; }
+        
+        /* Highlight e Animações */
+        @keyframes highlight-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); border-color: #2563eb; }
+            70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); border-color: #2563eb; }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
         }
-
-        /* Estilos Nativos */
-        .hidden {
-            display: none !important;
-        }
-
-        .block {
-            display: block;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        /* Proteção Anti-Cópia */
-        .no-select {
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .question-card {
-            transition: all 0.3s ease;
-        }
-
-        .question-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Notificação Flutuante (Toast) */
+        .highlight-card { animation: highlight-pulse 1.5s ease-out; }
+        .video-thumb:hover .play-overlay { background-color: rgba(0, 0, 0, 0.3); }
+        .penalty-shake { animation: shake 0.4s; background-color: #ef4444 !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+        
+        /* Toast & Modals */
         #custom-toast {
-            visibility: hidden;
-            min-width: 300px;
-            background-color: #fee2e2;
-            color: #b91c1c;
-            text-align: center;
-            border-radius: 8px;
-            padding: 16px;
-            position: fixed;
-            z-index: 100;
-            left: 50%;
-            top: 30px;
-            transform: translateX(-50%);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            border-left: 5px solid #ef4444;
-            opacity: 0;
-            transition: opacity 0.5s, top 0.5s;
-            font-weight: bold;
+            visibility: hidden; min-width: 300px; background-color: #fee2e2; color: #b91c1c;
+            text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 100;
+            left: 50%; top: 30px; transform: translateX(-50%); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border-left: 5px solid #ef4444; opacity: 0; transition: opacity 0.5s, top 0.5s; font-weight: bold;
         }
-
-        #custom-toast.show {
-            visibility: visible;
-            opacity: 1;
-            top: 50px;
-        }
-
-        /* Modal Personalizado */
-        @keyframes modalPop {
-            0% {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .modal-animate {
-            animation: modalPop 0.2s ease-out;
-        }
-
-        /* Play Button Overlay */
-        .play-overlay {
-            transition: background-color 0.2s;
-        }
-
-        .video-thumb:hover .play-overlay {
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        .video-thumb:hover .play-icon {
-            transform: scale(1.1);
-        }
-
-        /* Animações */
-        @keyframes pulse-red {
-            0% {
-                color: white;
-            }
-
-            50% {
-                color: #ffcccc;
-            }
-
-            100% {
-                color: white;
-            }
-        }
-
-        .timer-warning {
-            animation: pulse-red 1s infinite;
-            font-weight: bold;
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            10%,
-            30%,
-            50%,
-            70%,
-            90% {
-                transform: translateX(-4px);
-            }
-
-            20%,
-            40%,
-            60%,
-            80% {
-                transform: translateX(4px);
-            }
-        }
-
-        .penalty-shake {
-            animation: shake 0.4s;
-            background-color: #ef4444 !important;
-        }
+        #custom-toast.show { visibility: visible; opacity: 1; top: 50px; }
+        @keyframes modalPop { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .modal-animate { animation: modalPop 0.2s ease-out; }
     </style>
 </head>
 
@@ -170,452 +49,335 @@
     <!-- TOAST -->
     <div id="custom-toast"></div>
 
-    <!-- MODAL (Avisos) -->
-    <div id="custom-modal-overlay"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
+    <!-- LOADING SPINNER -->
+    <div id="loading-overlay" class="fixed inset-0 bg-white z-[999] flex flex-col items-center justify-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-600 mb-4"></div>
+        <h2 class="text-xl font-bold text-gray-700">Carregando Prova...</h2>
+        <p id="loading-text" class="text-sm text-gray-500 mt-2">Buscando arquivo...</p>
+    </div>
+
+    <!-- MODAL GERAL -->
+    <div id="custom-modal-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
         <div id="custom-modal-box" class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 text-center modal-animate">
-            <div class="mb-4">
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 mb-4">
-                    <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900" id="modal-title">Aviso</h3>
-                <p class="text-gray-600 mt-2 text-sm leading-relaxed" id="modal-text">Mensagem.</p>
-            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2" id="modal-title">Aviso</h3>
+            <p class="text-gray-600 mb-6 text-sm leading-relaxed" id="modal-text">Mensagem.</p>
             <div class="flex justify-center gap-3" id="modal-actions"></div>
         </div>
     </div>
 
-    <!-- MODAL DE IMAGEM AMPLIADA -->
-    <div id="image-modal-overlay"
-        class="hidden fixed inset-0 bg-black bg-opacity-90 z-[300] flex items-center justify-center p-4 backdrop-blur-sm"
-        onclick="closeMediaModal()">
-        <div class="relative max-w-6xl max-h-full flex flex-col items-center justify-center"
-            onclick="event.stopPropagation()">
-            <button onclick="closeMediaModal()"
-                class="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none transition-colors"
-                title="Fechar">
-                <svg class="h-10 w-10 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <img id="expanded-image" src="" alt="Imagem Ampliada"
-                class="max-h-[85vh] max-w-full rounded-lg shadow-2xl border-4 border-white object-contain">
-            <p class="text-gray-300 text-sm mt-2">Clique fora da imagem para fechar</p>
-        </div>
-    </div>
-
-    <!-- MODAL DE VÍDEO (NOVO) -->
-    <div id="video-modal-overlay"
-        class="hidden fixed inset-0 bg-black bg-opacity-90 z-[300] flex items-center justify-center p-4 backdrop-blur-sm"
-        onclick="closeMediaModal()">
-        <div class="relative w-full max-w-4xl aspect-video bg-black rounded-lg shadow-2xl border-4 border-gray-800"
-            onclick="event.stopPropagation()">
-            <button onclick="closeMediaModal()"
-                class="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none transition-colors"
-                title="Fechar">
-                <svg class="h-10 w-10 drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <div id="video-container" class="w-full h-full">
-                <!-- O iframe será injetado aqui dinamicamente -->
+    <!-- MODAL DE REVISÃO -->
+    <div id="review-modal-overlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-95 z-[250] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 modal-animate flex flex-col max-h-[90vh]">
+            <div class="border-b pb-4 mb-4 flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900">Resumo da Avaliação</h3>
+                    <p class="text-sm text-gray-500">Verifique suas respostas antes de entregar.</p>
+                </div>
+                <button onclick="closeReviewModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="flex-grow overflow-y-auto mb-6">
+                <div class="flex gap-4 mb-4 text-xs justify-center">
+                    <div class="flex items-center gap-1"><div class="w-3 h-3 bg-green-500 rounded"></div> Respondida</div>
+                    <div class="flex items-center gap-1"><div class="w-3 h-3 bg-gray-200 border border-gray-300 rounded"></div> Em branco</div>
+                </div>
+                <div id="review-grid" class="grid grid-cols-5 sm:grid-cols-8 gap-3"></div>
+            </div>
+            <div class="border-t pt-4 flex justify-between items-center bg-gray-50 -m-6 p-6 rounded-b-xl mt-0">
+                <div class="text-sm">
+                    <span class="font-bold text-gray-700">Total:</span> 
+                    <span id="review-total-answered">0</span>/<span id="review-total-questions">0</span>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="closeReviewModal()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">Voltar</button>
+                    <button onclick="finalizeGrading()" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold shadow-lg transform hover:scale-105 transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Entregar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- TELA DE BLOQUEIO (LOCKOUT) -->
+    <!-- MODAIS DE MÍDIA -->
+    <div id="image-modal-overlay" class="hidden fixed inset-0 bg-black bg-opacity-90 z-[300] flex items-center justify-center p-4 backdrop-blur-sm" onclick="closeMediaModal()">
+        <img id="expanded-image" src="" alt="Ampliada" class="max-h-[85vh] max-w-full rounded-lg shadow-2xl object-contain">
+    </div>
+    
+    <!-- MODAL DE VÍDEO ATUALIZADO COM OPÇÃO EXTERNA -->
+    <div id="video-modal-overlay" class="hidden fixed inset-0 bg-black bg-opacity-90 z-[300] flex items-center justify-center p-4 backdrop-blur-sm" onclick="closeMediaModal()">
+        <div class="relative w-full max-w-4xl aspect-video bg-black rounded-lg shadow-2xl border-4 border-gray-800 flex flex-col" onclick="event.stopPropagation()">
+            <button onclick="closeMediaModal()" class="absolute -top-12 right-0 text-white hover:text-gray-300"><svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+            <div id="video-container" class="w-full flex-grow relative"></div>
+        </div>
+    </div>
+
+    <!-- TELA DE BLOQUEIO -->
     <div id="lockout-screen" class="hidden fixed inset-0 bg-gray-100 z-[150] flex items-center justify-center p-4">
-        <div class="max-w-lg w-full bg-white rounded-xl shadow-2xl overflow-hidden border-t-8 border-red-600">
-            <div class="p-8 text-center">
-                <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-6">
-                    <svg class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-2">Acesso Bloqueado</h2>
-                <p class="text-gray-600 mb-6">
-                    Uma tentativa de avaliação já foi iniciada neste navegador recentemente.
-                    Para garantir a integridade da prova, o reinício imediato não é permitido.
-                </p>
-                <div class="bg-red-50 p-4 rounded-lg border border-red-100">
-                    <p class="text-sm text-red-800 font-medium">Você poderá tentar novamente em:</p>
-                    <p id="lock-timer" class="text-2xl font-mono font-bold text-red-600 mt-1">--:--</p>
-                </div>
-                <p class="text-xs text-gray-400 mt-6">Se houve um erro técnico grave, contate o professor.</p>
-            </div>
+        <div class="max-w-lg w-full bg-white rounded-xl shadow-2xl p-8 text-center border-t-8 border-red-600">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">Acesso Bloqueado</h2>
+            <p class="text-gray-600 mb-6">Tentativa de reinício não permitida.</p>
+            <p id="lock-timer" class="text-2xl font-mono font-bold text-red-600">--:--</p>
         </div>
     </div>
 
-    <div id="main-app-container" class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg relative">
+    <!-- MAIN APP -->
+    <div id="main-app-container" class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg relative hidden"> <!-- Inicialmente hidden até carregar -->
 
         <!-- TELA 1: BOAS-VINDAS -->
         <div id="welcome-screen" class="p-8">
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-blue-700">Avaliação</h1>
-                <p class="text-gray-600 mt-2 text-lg">Situação de Aprendizagem 3 - Arduino</p>
+                <p class="text-gray-600 mt-2 text-lg">Carregando configurações...</p>
+                <!-- Badge do arquivo carregado -->
+                <!--<span id="exam-id-badge" class="inline-block mt-2 px-3 py-1 bg-gray-100 text-gray-500 text-xs rounded-full font-mono border">questions.js</span>-->
             </div>
 
-            <!-- QUADRO DE BOAS-VINDAS E INSTRUÇÕES -->
-            <div
-                class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-600 p-6 mb-8 rounded-lg shadow-sm">
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <span class="text-3xl">👋</span>
-                    </div>
-                    <div class="ml-4">
-                        <h2 class="text-xl font-bold text-blue-900 mb-2">Bem-vindo(a) à sua Avaliação!</h2>
-                        <p class="text-gray-700 mb-4 leading-relaxed">
-                            Esta atividade verifica seus conhecimentos sobre os projetos práticos de Arduino realizados
-                            em aula.
-                            Siga o roteiro abaixo para realizar a prova com tranquilidade:
-                        </p>
-                        <ol
-                            class="list-decimal list-inside space-y-2 text-sm text-gray-800 font-medium bg-white p-4 rounded border border-blue-100">
-                            <li><span class="text-blue-600 font-bold">Identificação:</span> Preencha seu Nome e Turma no
-                                campo abaixo.</li>
-                            <li><span class="text-blue-600 font-bold">Revisão:</span> Se precisar, use os links de
-                                "Material de Estudo" antes de começar.</li>
-                            <li><span class="text-blue-600 font-bold">Atenção:</span> Ao clicar em
-                                <strong>INICIAR</strong>, o tempo de prova começará a contar.</li>
-                            <li><span class="text-blue-600 font-bold">Segurança:</span> Não saia desta tela. O sistema
-                                monitora mudanças de aba.</li>
-                            <li><span class="text-blue-600 font-bold">Entrega:</span> Ao terminar, baixe o PDF gerado e
-                                envie no Google Classroom.</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-8 bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
-                <h3 class="text-md font-bold text-gray-700 mb-4 uppercase tracking-wide border-b pb-2">1. Dados do Aluno
-                </h3>
+            <div class="mb-8 bg-gray-50 p-6 rounded-lg border border-gray-200">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Nome Completo</label>
-                        <input type="text" id="studentName"
-                            class="mt-1 w-full p-3 border rounded-md focus:ring-blue-500"
-                            placeholder="Digite seu nome...">
+                        <input type="text" id="studentName" class="mt-1 w-full p-3 border rounded-md focus:ring-blue-500" placeholder="Seu nome">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Turma</label>
-                        <input type="text" id="studentClass"
-                            class="mt-1 w-full p-3 border rounded-md focus:ring-blue-500" placeholder="Ex: 1IAID">
+                        <input type="text" id="studentClass" class="mt-1 w-full p-3 border rounded-md focus:ring-blue-500" placeholder="Sua turma">
                     </div>
                 </div>
             </div>
 
-            <div class="mb-8 bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
+            <!-- ÁREA DE MATERIAL DE ESTUDO DINÂMICA -->
+            <div id="study-material-container" class="hidden mb-8 bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
                 <h3 class="text-md font-bold text-blue-800 mb-4 flex items-center gap-2">
                     🎓 Material de Estudo (Revisão)
                 </h3>
-                <p class="text-sm text-gray-600 mb-4">Links oficiais das estações para consulta prévia:</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-                    <div>
-                        <h4 class="font-bold text-gray-700 mb-2">Lógica e Programação</h4>
-                        <ul class="list-disc pl-4 space-y-1 text-blue-600">
-                            <li><a href="https://youtu.be/ZaGx0ll0pnU" target="_blank"
-                                    class="hover:underline">Estruturas Condicionais (If/Else)</a></li>
-                            <li><a href="https://youtu.be/MeAA0oX6LyE" target="_blank" class="hover:underline">Entradas
-                                    Digitais</a></li>
-                            <li><a href="https://youtu.be/hRtF2UCNatM" target="_blank" class="hover:underline">Saídas
-                                    Digitais</a></li>
-                        </ul>
+                <p class="text-sm text-gray-600 mb-4">Links recomendados para consulta prévia:</p>
+                <div class="text-sm">
+                    <ul id="study-links-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Links inseridos via JS -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 p-6 rounded-lg shadow-sm mb-8">
+                <h3 class="text-lg font-bold text-blue-800 mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Regras de Conduta
+                </h3>
+                <div class="space-y-4 text-sm text-gray-700">
+                    <div class="flex items-start gap-3">
+                        <div class="bg-red-100 text-red-600 p-2 rounded-full flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">Não saia da aba</p>
+                            <p class="text-xs text-gray-500">Mudar para outra janela, aba ou minimizar o navegador contará como infração.</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-gray-700 mb-2">Componentes</h4>
-                        <ul class="list-disc pl-4 space-y-1 text-blue-600">
-                            <li><a href="https://youtu.be/MQlRQaOtkoM" target="_blank" class="hover:underline">Teclado
-                                    Matricial</a></li>
-                            <li><a href="https://youtu.be/0yxg3Z_Gc60" target="_blank" class="hover:underline">Display
-                                    LCD</a></li>
-                            <li><a href="https://projecthub.arduino.cc/arcaegecengiz/using-dht11-12f621" target="_blank"
-                                    class="hover:underline">Sensor DHT11</a></li>
-                        </ul>
+                    
+                    <div class="flex items-start gap-3">
+                        <div class="bg-red-100 text-red-600 p-2 rounded-full flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">Mantenha o foco</p>
+                            <p class="text-xs text-gray-500">Clicar fora da área da prova (ex: na barra de tarefas ou em outro monitor) será registrado.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <div class="bg-red-100 text-red-600 p-2 rounded-full flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">Não recarregue a página</p>
+                            <p class="text-xs text-gray-500">Atualizar (F5) não reinicia o tempo e pode bloquear seu acesso por segurança.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 border-t border-gray-200 pt-3 mt-2">
+                        <div class="bg-orange-100 text-orange-600 p-2 rounded-full flex-shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800">Limite de Infrações: <span class="max-penalties-text text-red-600">10</span></p>
+                            <p class="text-xs text-gray-500">Ao atingir o limite, a prova será encerrada automaticamente e enviada como está.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-yellow-50 border border-yellow-200 p-5 rounded-lg shadow-sm mb-8">
-                <h3 class="text-md font-bold text-red-700 mb-2">⚠️ Sistema Anti-Fraude Ativo</h3>
-                <ul class="text-sm text-gray-700 list-disc pl-5">
-                    <li><strong>Tentativa Única:</strong> Ao iniciar, você terá 1 hora de bloqueio para reiniciar a
-                        página. Não atualize (F5)!</li>
-                    <li><strong>Foco da Janela:</strong> Clicar fora da prova ou em outro monitor gera penalidade.</li>
-                    <li><strong>Bloqueio de Cópia:</strong> A seleção de texto e atalhos estão desativados.</li>
-                    <li><strong><span class="max-penalties-text">10</span> Penalidades = BLOQUEIO:</strong> A prova será
-                        encerrada automaticamente.</li>
-                </ul>
-            </div>
-
-            <button onclick="startExam()"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-lg text-lg transition transform hover:scale-[1.01]">
-                🚀 LI AS REGRAS E QUERO INICIAR AVALIAÇÃO
+            <button onclick="startExam()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-lg text-lg transition transform hover:scale-[1.01]">
+                INICIAR AVALIAÇÃO
             </button>
         </div>
 
         <!-- TELA 2: A PROVA -->
         <div id="exam-screen" class="hidden">
-
-            <div
-                class="bg-blue-600 px-6 py-4 text-white flex flex-col md:flex-row justify-between items-center sticky top-0 z-50 shadow-md rounded-t-xl gap-4">
-                <div>
-                    <h1 class="text-lg md:text-xl font-bold">Avaliação em Andamento</h1>
-                    <p class="text-blue-100 text-xs mt-1" id="student-display">Aluno: ...</p>
+            <div class="bg-blue-600 text-white sticky top-0 z-50 shadow-md rounded-t-xl">
+                <div class="px-6 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div>
+                        <h1 class="text-lg font-bold truncate max-w-[200px] md:max-w-xs" id="header-title">Avaliação</h1>
+                        <p class="text-blue-100 text-xs" id="student-display">Aluno</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <div id="penalty-box" class="bg-red-800 px-3 py-1 rounded text-center">
+                            <p class="text-[9px] text-red-200 uppercase">Penalidades</p>
+                            <div class="font-mono font-bold"><span id="penalty-display">0</span>/<span class="max-penalties-text">10</span></div>
+                        </div>
+                        <div class="bg-blue-800 px-3 py-1 rounded text-center min-w-[80px]">
+                            <p class="text-[9px] text-blue-200 uppercase">Tempo</p>
+                            <div id="timer-display" class="font-mono font-bold">00:00</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex gap-4">
-                    <div id="penalty-box" class="bg-red-800 px-3 py-2 rounded-lg text-center min-w-[100px]">
-                        <p class="text-[10px] text-red-200 uppercase">Penalidades</p>
-                        <div class="text-lg font-mono font-bold"><span id="penalty-display">0</span>/<span
-                                class="max-penalties-text">10</span></div>
-                    </div>
-                    <div class="bg-blue-800 px-3 py-2 rounded-lg text-center min-w-[100px]">
-                        <p class="text-[10px] text-blue-200 uppercase">Tempo</p>
-                        <div id="timer-display" class="text-lg font-mono font-bold">00:00</div>
-                    </div>
+                <div class="bg-blue-800 h-1 w-full relative">
+                    <div id="progress-bar" class="bg-green-400 h-full w-0 transition-all duration-500 ease-out"></div>
+                </div>
+                <div class="bg-blue-700 px-6 py-1 text-xs text-blue-100 flex justify-between">
+                    <span>Progresso: <span id="progress-text-count">0</span> de <span id="total-questions-count">0</span></span>
+                    <span id="progress-percent">0%</span>
                 </div>
             </div>
-
-            <div id="quiz-container" class="p-6 space-y-6 bg-gray-50 min-h-[500px]"></div>
-
-            <div class="p-6 bg-white border-t border-gray-200 flex justify-end gap-4 rounded-b-xl">
-                <button onclick="finishQuiz()" id="btn-finish"
-                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow">
-                    Finalizar e Ver Nota
+            <div id="quiz-container" class="p-6 space-y-8 bg-gray-50 min-h-[500px] pb-24"></div>
+            <div class="p-6 bg-white border-t border-gray-200 flex justify-end gap-4 rounded-b-xl sticky bottom-0 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+                <button onclick="openReviewModal()" id="btn-review" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg flex items-center gap-2 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg> Revisar e Finalizar
                 </button>
-                <button onclick="generatePDF()" id="btn-pdf"
-                    class="hidden bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow flex items-center gap-2">
+                <button onclick="generatePDF()" id="btn-pdf" class="hidden bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg flex items-center gap-2">
                     📄 Baixar Comprovante
                 </button>
             </div>
-
-            <div id="result-area" class="hidden p-6 bg-yellow-50 text-center border-t border-yellow-200">
-                <h3 class="text-2xl font-bold text-gray-800">Nota: <span id="score-display"
-                        class="text-blue-600"></span>/100</h3>
-                <h3 class="text-lg font-bold text-gray-800">ATENÇÃO: Você deve baixar o comprovante e enviar no
-                    Classroom para concluir a avaliação.</h3>
+            <div id="result-area" class="hidden p-8 bg-white text-center border-t border-gray-200">
+                <div class="inline-block p-4 rounded-full bg-blue-50 mb-4">
+                    <h3 class="text-4xl font-bold text-blue-600" id="score-display">--</h3>
+                </div>
+                <p class="text-gray-500 mb-6">Nota Final (/100)</p>
+                <div class="bg-yellow-50 p-4 rounded border border-yellow-200 inline-block text-left text-sm max-w-md">
+                    <strong>Próximo passo:</strong> Clique no botão verde "Baixar Comprovante" e envie o arquivo PDF no Google Classroom.
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURAÇÃO GLOBAL ---
-
-        // Chave de desencriptação (Deve corresponder ao Editor)
+        // --- CONFIGURAÇÃO E CONSTANTES ---
         const _s = "S3cr3t_K3y_@!#_SENAI_2025";
         let _decryptedKey = "";
-
-        // Valores padrão caso o questions.js seja antigo e não tenha config
+        
         let CONFIG = {
             title: "Avaliação",
             maxPenalties: 10,
             timeLimitMinutes: 30,
             lockoutDurationMinutes: 60,
-            questionsQty: 20 // Valor padrão
+            questionsQty: 20,
+            showAnswers: true,
+            difficultyDistribution: { easy: 30, medium: 40, hard: 30 },
+            studyLinks: [] 
         };
 
-        // Sobrescreve com o que veio do arquivo JS
-        if (typeof examConfig !== 'undefined') {
-            CONFIG = { ...CONFIG, ...examConfig };
+        // Variáveis de Estado
+        let MAX_PENALTIES, TIME_LIMIT_SECONDS, SESSION_LOCK_TIME_MS, STORAGE_KEY;
+        let currentQuestions = [], userAnswers = {}, isExamStarted = false, isLocked = false, isFinished = false;
+        let penaltyCount = 0, timerInterval, timeElapsed = 0;
+        let currentExamId = "questions";
+        
+        // --- CONTROLE DE SEGURANÇA EXTERNA ---
+        let isSafeExternalLink = false; // Flag para permitir saída segura
+
+        // --- SISTEMA DE CARREGAMENTO DINÂMICO ---
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let examId = urlParams.get('id');
+
+            if (examId) examId = examId.replace(/[^a-zA-Z0-9_-]/g, "");
+            if (!examId) examId = "questions";
+            
+            currentExamId = examId;
+            document.getElementById('loading-text').textContent = `Carregando: ${examId}.js ...`;
+
+            const script = document.createElement('script');
+            script.src = `${examId}.js`;
+            
+            script.onload = function() {
+                console.log(`Prova ${examId}.js carregada.`);
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('main-app-container').classList.remove('hidden');
+                initApp();
+            };
+
+            script.onerror = function() {
+                document.getElementById('loading-overlay').innerHTML = `
+                    <div class="text-center p-8">
+                        <svg class="h-16 w-16 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                        </svg>
+                        <h2 class="text-xl font-bold text-gray-800">Prova não encontrada!</h2>
+                        <p class="text-gray-600 mt-2">A prova <b>${examId}</b> não existe.</p>
+                        <p class="text-sm text-gray-400 mt-4">Verifique o link ou contate seu professor.</p>
+                    </div>
+                `;
+            };
+
+            document.head.appendChild(script);
+        };
+
+        function initApp() {
+            if (typeof examConfig !== 'undefined') CONFIG = { ...CONFIG, ...examConfig };
+            // Garante que existe distribuição mesmo em arquivos antigos
+            if (!CONFIG.difficultyDistribution) CONFIG.difficultyDistribution = { easy: 30, medium: 40, hard: 30 };
+
+            MAX_PENALTIES = CONFIG.maxPenalties;
+            TIME_LIMIT_SECONDS = CONFIG.timeLimitMinutes * 60;
+            SESSION_LOCK_TIME_MS = CONFIG.lockoutDurationMinutes * 60 * 1000;
+            STORAGE_KEY = `lock_${currentExamId}`;
+
+            if (typeof _k !== 'undefined') _decryptedKey = /^[abcd]+$/.test(_k) ? _k : _d(_k);
+
+            document.querySelector('#welcome-screen h1').textContent = CONFIG.title;
+            document.getElementById('header-title').textContent = CONFIG.title;
+            document.querySelector('#welcome-screen p.text-gray-600').textContent = 
+                `Tempo: ${CONFIG.timeLimitMinutes} min | Questões: ${CONFIG.questionsQty}`;
+            
+            document.getElementById('exam-id-badge').textContent = `${currentExamId}`;
+
+            document.querySelectorAll('.max-penalties-text').forEach(el => el.textContent = MAX_PENALTIES);
+
+            // --- RENDERIZAR LINKS DE ESTUDO DINÂMICOS ---
+            if (CONFIG.studyLinks && Array.isArray(CONFIG.studyLinks) && CONFIG.studyLinks.length > 0) {
+                const list = document.getElementById('study-links-list');
+                list.innerHTML = '';
+                CONFIG.studyLinks.forEach(link => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${link.url}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        ${link.label}
+                    </a>`;
+                    list.appendChild(li);
+                });
+                document.getElementById('study-material-container').classList.remove('hidden');
+            }
+            
+            checkSessionLock();
         }
 
-        const MAX_PENALTIES = CONFIG.maxPenalties;
-        const TIME_LIMIT_SECONDS = CONFIG.timeLimitMinutes * 60;
-        const SESSION_LOCK_TIME_MS = CONFIG.lockoutDurationMinutes * 60 * 1000;
-        const STORAGE_KEY = 'arduino_quiz_lock';
-
-        let currentQuestions = [];
-        let userAnswers = {};
-        let isExamStarted = false;
-        let isLocked = false;
-        let penaltyCount = 0;
-        let timerInterval;
-        let timeElapsed = 0;
-
-        // Função interna para decriptar a chave
+        // --- UTILS ---
         function _d(encoded) {
             try {
-                // Tenta decriptar
                 let text = atob(encoded);
                 let result = "";
                 for (let i = 0; i < text.length; i++) {
                     result += String.fromCharCode(text.charCodeAt(i) ^ _s.charCodeAt(i % _s.length));
                 }
                 return result;
-            } catch(e) {
-                // Se der erro (ex: não é base64), assume que é texto plano (retrocompatibilidade)
-                return encoded;
-            }
+            } catch(e) { return encoded; }
         }
 
-        // Inicialização ao carregar
-        window.onload = function () {
-            // Prepara a chave de respostas
-            if (typeof _k !== 'undefined') {
-                // Se for criptografada (não contém apenas abcd), decripta
-                if (/^[abcd]+$/.test(_k)) {
-                     _decryptedKey = _k; // Legado (não seguro)
-                } else {
-                     _decryptedKey = _d(_k); // Novo (Seguro)
-                }
-            }
-
-            // Atualiza Título da Prova na interface
-            document.querySelector('h1.text-3xl').textContent = CONFIG.title;
-            document.querySelector('#welcome-screen p.text-gray-600').textContent = `Tempo: ${CONFIG.timeLimitMinutes} min | Limite de penalidades: ${CONFIG.maxPenalties}`;
-
-            document.querySelectorAll('.max-penalties-text').forEach(el => {
-                el.textContent = MAX_PENALTIES;
-            });
-            checkSessionLock();
-
-            // Atualiza textos da interface
-            document.querySelectorAll('.max-penalties-text').forEach(el => {
-                el.textContent = MAX_PENALTIES;
-            });
-
-            // Verifica se há bloqueio de sessão
-            checkSessionLock();
-        };
-
-        // --- HELPER: Extrair ID do YouTube ---
         function getYoutubeId(url) {
             if (!url) return null;
-            // Suporta: youtu.be, youtube.com/watch?v=, youtube.com/embed/, youtube.com/shorts/
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
             const match = url.match(regExp);
-            // IDs do YouTube geralmente têm 11 caracteres
             return (match && match[2].length === 11) ? match[2] : null;
-        }
-
-        // --- FUNÇÕES DE MODAL DE MÍDIA (IMAGEM E VÍDEO) ---
-        function openImageModal(src) {
-            const modal = document.getElementById('image-modal-overlay');
-            const img = document.getElementById('expanded-image');
-            img.src = src;
-            modal.classList.remove('hidden');
-        }
-
-        function openVideoModal(videoId) {
-            const modal = document.getElementById('video-modal-overlay');
-            const container = document.getElementById('video-container');
-
-            // Injeta o iframe apenas quando o aluno pede (autoplay=1)
-            // Usando www.youtube.com para compatibilidade com file://
-            container.innerHTML = `
-            <iframe 
-                class="w-full h-full rounded-lg"
-                src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" 
-                title="Video Question"
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>`;
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeMediaModal() {
-            const imgModal = document.getElementById('image-modal-overlay');
-            const videoModal = document.getElementById('video-modal-overlay');
-            const videoContainer = document.getElementById('video-container');
-
-            imgModal.classList.add('hidden');
-            videoModal.classList.add('hidden');
-
-            // Remove o iframe para parar o som imediatamente
-            videoContainer.innerHTML = "";
-        }
-
-        // --- LÓGICA DE BLOQUEIO DE SESSÃO ---
-        function checkSessionLock() {
-            const storedData = localStorage.getItem(STORAGE_KEY);
-            if (storedData) {
-                const session = JSON.parse(storedData);
-                const now = Date.now();
-                const timePassed = now - session.timestamp;
-
-                if (timePassed < SESSION_LOCK_TIME_MS) {
-                    // Bloqueia a tela
-                    document.getElementById('main-app-container').classList.add('hidden');
-                    document.getElementById('lockout-screen').classList.remove('hidden');
-
-                    // Inicia contagem regressiva para desbloqueio
-                    const unlockTime = session.timestamp + SESSION_LOCK_TIME_MS;
-
-                    setInterval(() => {
-                        const remaining = unlockTime - Date.now();
-                        if (remaining <= 0) {
-                            localStorage.removeItem(STORAGE_KEY);
-                            location.reload();
-                        } else {
-                            const mins = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                            const secs = Math.floor((remaining % (1000 * 60)) / 1000);
-                            document.getElementById('lock-timer').textContent =
-                                `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                        }
-                    }, 1000);
-                } else {
-                    // Tempo expirou, limpa o bloqueio
-                    localStorage.removeItem(STORAGE_KEY);
-                }
-            }
-        }
-
-        function setSessionLock() {
-            const sessionData = {
-                timestamp: Date.now(),
-                active: true
-            };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(sessionData));
-        }
-
-        // --- FUNÇÃO TOAST ---
-        let toastTimeout;
-        function showToast(message) {
-            const toast = document.getElementById("custom-toast");
-            toast.textContent = message;
-            toast.className = "show";
-            if (toastTimeout) clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(function () { toast.className = toast.className.replace("show", ""); }, 4000);
-        }
-
-        // --- FUNÇÃO MODAL ---
-        function showModal(message, onConfirm = null, isConfirm = false) {
-            const overlay = document.getElementById('custom-modal-overlay');
-            const title = document.getElementById('modal-title');
-            const text = document.getElementById('modal-text');
-            const actions = document.getElementById('modal-actions');
-
-            title.textContent = isConfirm ? "Confirmação Necessária" : "Aviso do Sistema";
-            text.innerHTML = message.replace(/\n/g, '<br>');
-            actions.innerHTML = "";
-
-            const btnYes = document.createElement("button");
-            btnYes.textContent = isConfirm ? "Sim, continuar" : "Entendi";
-            btnYes.className = "bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition shadow-md";
-            btnYes.onclick = () => {
-                closeModal();
-                if (onConfirm) onConfirm();
-            };
-            actions.appendChild(btnYes);
-
-            if (isConfirm) {
-                const btnNo = document.createElement("button");
-                btnNo.textContent = "Cancelar";
-                btnNo.className = "bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded transition shadow-sm";
-                btnNo.onclick = () => closeModal();
-                actions.appendChild(btnNo);
-            }
-
-            overlay.classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('custom-modal-overlay').classList.add('hidden');
         }
 
         function shuffleArray(array) {
@@ -626,54 +388,32 @@
             return array;
         }
 
-        function getCorrectAnswerIndex(questionId) {
-            if (!_decryptedKey) {
-                // Tenta recuperar novamente se estiver vazio
-                 if (typeof _k !== 'undefined') _decryptedKey = /^[abcd]+$/.test(_k) ? _k : _d(_k);
-            }
-
-            if (!_decryptedKey) {
-                showToast("Erro: Chave de respostas inválida.");
-                return 0;
-            }
-            const charCode = _decryptedKey.charCodeAt(questionId);
-            return charCode - 97;
-        }
-
+        // --- LÓGICA DE PROVA ---
         function startExam() {
-            try {
-                if (typeof fullQuestionBank === 'undefined' || !fullQuestionBank) {
-                    showToast("Erro crítico: Banco de questões (questions.js) não encontrado.");
-                    return;
-                }
-
-                const name = document.getElementById('studentName').value.trim();
-                const turma = document.getElementById('studentClass').value.trim();
-
-                if (!name || !turma) {
-                    showToast("Por favor, preencha Nome e Turma antes de iniciar.");
-                    return;
-                }
-
-                showModal("Você tem certeza que deseja iniciar?\n\nO tempo começará a contar e clicar fora da prova gerará penalidade.\n\nATENÇÃO: Ao iniciar, você não poderá reiniciar a página por 1 hora.", () => {
-
-                    // Grava o bloqueio no navegador
-                    setSessionLock();
-
-                    document.getElementById('student-display').textContent = `Aluno: ${name} (${turma})`;
-                    document.getElementById('welcome-screen').classList.add('hidden');
-                    document.getElementById('exam-screen').classList.remove('hidden');
-                    document.getElementById('exam-screen').classList.add('block');
-
-                    isExamStarted = true;
-                    generateQuiz();
-                    startTimer();
-                    window.scrollTo(0, 0);
-                }, true);
-
-            } catch (e) {
-                showToast("Erro ao iniciar: " + e.message);
+            if (typeof fullQuestionBank === 'undefined') {
+                showToast("Erro: Banco de questões não carregado.");
+                return;
             }
+
+            const name = document.getElementById('studentName').value.trim();
+            const turma = document.getElementById('studentClass').value.trim();
+
+            if (!name || !turma) {
+                showToast("Preencha seu Nome e Turma.");
+                return;
+            }
+
+            showModal("Confirmar Início", "O tempo começará agora.\nNão saia da tela cheia ou mude de aba.", () => {
+                setSessionLock();
+                document.getElementById('student-display').textContent = `${name} (${turma})`;
+                document.getElementById('welcome-screen').classList.add('hidden');
+                document.getElementById('exam-screen').classList.remove('hidden');
+                document.getElementById('exam-screen').classList.add('block');
+                isExamStarted = true;
+                generateQuiz();
+                startTimer();
+                window.scrollTo(0, 0);
+            }, true);
         }
 
         function generateQuiz() {
@@ -681,73 +421,189 @@
             container.innerHTML = '';
             userAnswers = {};
 
-            const shuffled = shuffleArray([...fullQuestionBank]);
-            currentQuestions = shuffled.slice(0, CONFIG.questionsQty);
+            // 1. Definição de cotas
+            const totalQty = CONFIG.questionsQty;
+            const dist = CONFIG.difficultyDistribution;
+            
+            let easyTarget = Math.round(totalQty * (dist.easy / 100));
+            let mediumTarget = Math.round(totalQty * (dist.medium / 100));
+            let hardTarget = totalQty - easyTarget - mediumTarget;
+
+            if (hardTarget < 0) { hardTarget = 0; mediumTarget = totalQty - easyTarget; }
+
+            // 2. Separação por Nichos (Pools)
+            const pools = {
+                easy: fullQuestionBank.filter(q => q.difficulty === 'easy'),
+                medium: fullQuestionBank.filter(q => !q.difficulty || q.difficulty === 'medium'),
+                hard: fullQuestionBank.filter(q => q.difficulty === 'hard')
+            };
+
+            // 3. Embaralha
+            shuffleArray(pools.easy);
+            shuffleArray(pools.medium);
+            shuffleArray(pools.hard);
+
+            // 4. Seleção das questões
+            let selectedList = [];
+            const take = (pool, count) => {
+                if (count <= 0) return [];
+                return pool.splice(0, count);
+            };
+
+            selectedList.push(...take(pools.easy, easyTarget));
+            selectedList.push(...take(pools.medium, mediumTarget));
+            selectedList.push(...take(pools.hard, hardTarget));
+
+            // 5. Fallback
+            if (selectedList.length < totalQty) {
+                const missingCount = totalQty - selectedList.length;
+                const leftovers = [...pools.easy, ...pools.medium, ...pools.hard];
+                shuffleArray(leftovers);
+                selectedList.push(...take(leftovers, missingCount));
+            }
+
+            currentQuestions = shuffleArray(selectedList);
+            document.getElementById('total-questions-count').textContent = currentQuestions.length;
 
             currentQuestions.forEach((qObj, index) => {
                 const div = document.createElement('div');
-                div.className = 'bg-white p-6 rounded-lg border shadow-sm mb-4 question-card';
+                div.id = `q-card-${index}`;
+                div.className = 'bg-white p-6 rounded-lg border shadow-sm question-card scroll-mt-32';
 
-                // --- RENDERIZAÇÃO DE MÍDIA (IMAGEM OU VÍDEO) ---
                 let mediaHtml = '';
-
                 if (qObj.video) {
                     const vidId = getYoutubeId(qObj.video);
                     if (vidId) {
-                        // Thumbnail com botão de Play sobreposto
                         mediaHtml = `
-                    <div class="mb-4 flex justify-center group">
-                        <div class="relative cursor-pointer video-thumb rounded-lg overflow-hidden shadow-md border border-gray-200 w-full max-w-md aspect-video bg-black" onclick="openVideoModal('${vidId}')">
-                            <img src="https://img.youtube.com/vi/${vidId}/mqdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity" alt="Video Thumbnail">
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <div class="play-overlay bg-red-600 text-white rounded-full p-3 shadow-lg transform transition-transform group-hover:scale-110">
-                                    <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                </div>
+                        <div class="mb-4 flex justify-center group">
+                            <div class="relative cursor-pointer video-thumb rounded-lg overflow-hidden shadow-md border w-full max-w-md aspect-video bg-black" onclick="openVideoModal('${vidId}')">
+                                <img src="https://img.youtube.com/vi/${vidId}/mqdefault.jpg" class="w-full h-full object-cover opacity-80" alt="Video">
+                                <div class="absolute inset-0 flex items-center justify-center"><div class="bg-red-600 text-white rounded-full p-3"><svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
                             </div>
-                            <div class="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">Clique para assistir</div>
-                        </div>
-                    </div>`;
+                        </div>`;
                     }
                 } else if (qObj.image) {
-                    mediaHtml = `<div class="mb-4 flex justify-center"><img src="${qObj.image}" alt="Imagem da questão" class="max-h-60 rounded border border-gray-200 cursor-pointer hover:opacity-90 transition-opacity" onclick="openImageModal('${qObj.image}')" title="Clique para ampliar"></div>`;
+                    mediaHtml = `<div class="mb-4 flex justify-center"><img src="${qObj.image}" class="max-h-60 rounded border cursor-pointer hover:opacity-90" onclick="openImageModal('${qObj.image}')"></div>`;
                 }
 
+                const mixedOptions = qObj.options.map((opt, i) => ({ text: opt, originalIdx: i }));
+                shuffleArray(mixedOptions);
+
                 let opts = '';
-                qObj.options.forEach((opt, i) => {
-                    const safeOpt = opt.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                mixedOptions.forEach((optObj) => {
+                    const safeOpt = optObj.text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                     opts += `
-                    <label class="flex items-center space-x-3 p-2 rounded hover:bg-blue-50 cursor-pointer">
-                        <input type="radio" name="q${index}" value="${i}" class="h-5 w-5 text-blue-600" onchange="saveAnswer(${index}, ${i})">
-                        <span class="text-gray-700">${safeOpt}</span>
-                    </label>
-                `;
+                    <label class="flex items-start space-x-3 p-3 rounded-lg border border-transparent hover:bg-blue-50 cursor-pointer transition-colors">
+                        <input type="radio" name="q${index}" value="${optObj.originalIdx}" class="mt-1 h-5 w-5 text-blue-600 focus:ring-blue-500" onchange="saveAnswer(${index}, ${optObj.originalIdx})">
+                        <span class="text-gray-700 leading-snug">${safeOpt}</span>
+                    </label>`;
                 });
 
                 div.innerHTML = `
-                <h3 class="text-lg font-semibold text-gray-800 mb-3">${index + 1}. ${qObj.q}</h3>
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="text-lg font-bold text-gray-800"><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-sm mr-2">Q${index + 1}</span> ${qObj.q}</h3>
+                </div>
                 ${mediaHtml}
-                <div class="space-y-2">${opts}</div>
-                <div id="feedback-${index}" class="mt-2 font-bold hidden"></div>
-            `;
+                <div class="space-y-1">${opts}</div>
+                <div id="feedback-${index}" class="mt-3 font-bold hidden p-2 rounded text-center"></div>
+                `;
                 container.appendChild(div);
             });
+            renderMath();
+            updateProgress();
+        }
 
-            // Chama o renderizador do KaTeX após criar os elementos
-            if (window.renderMathInElement) {
-                renderMathInElement(container, {
-                    delimiters: [
-                        { left: '$$', right: '$$', display: true },
-                        { left: '$', right: '$', display: false },
-                        { left: '\\(', right: '\\)', display: false },
-                        { left: '\\[', right: '\\]', display: true }
-                    ],
-                    throwOnError: false
-                });
+        function saveAnswer(questionIdx, answerValue) {
+            userAnswers[questionIdx] = answerValue;
+            const card = document.getElementById(`q-card-${questionIdx}`);
+            card.querySelectorAll('label').forEach(l => l.classList.remove('bg-blue-100', 'border-blue-200'));
+            const selectedRadio = card.querySelector(`input[value="${answerValue}"]`);
+            if(selectedRadio) selectedRadio.closest('label').classList.add('bg-blue-100', 'border-blue-200');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = currentQuestions.length;
+            const answered = Object.keys(userAnswers).length;
+            const percent = Math.round((answered / total) * 100);
+            const bar = document.getElementById('progress-bar');
+            bar.style.width = `${percent}%`;
+            if(percent < 50) bar.classList.replace('bg-green-500', 'bg-yellow-400');
+            else bar.classList.replace('bg-yellow-400', 'bg-green-500');
+            document.getElementById('progress-text-count').textContent = answered;
+            document.getElementById('progress-percent').textContent = `${percent}%`;
+        }
+
+        function openReviewModal() {
+            const grid = document.getElementById('review-grid');
+            grid.innerHTML = '';
+            let answeredCount = 0;
+            currentQuestions.forEach((_, index) => {
+                const isAnswered = userAnswers.hasOwnProperty(index);
+                if (isAnswered) answeredCount++;
+                const btn = document.createElement('button');
+                btn.className = `p-2 rounded font-bold text-sm border transition-all transform hover:scale-105 ${
+                    isAnswered ? 'bg-green-100 border-green-300 text-green-800 hover:bg-green-200' : 'bg-gray-100 border-gray-300 text-gray-500 hover:bg-gray-200'
+                }`;
+                btn.textContent = index + 1;
+                btn.onclick = () => jumpToQuestion(index);
+                grid.appendChild(btn);
+            });
+            document.getElementById('review-total-answered').textContent = answeredCount;
+            document.getElementById('review-total-questions').textContent = currentQuestions.length;
+            document.getElementById('review-modal-overlay').classList.remove('hidden');
+        }
+
+        function closeReviewModal() { document.getElementById('review-modal-overlay').classList.add('hidden'); }
+        function jumpToQuestion(index) {
+            closeReviewModal();
+            const card = document.getElementById(`q-card-${index}`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.classList.remove('highlight-card');
+                void card.offsetWidth; 
+                card.classList.add('highlight-card');
             }
         }
 
-        function saveAnswer(idx, val) {
-            userAnswers[idx] = val;
+        function finalizeGrading() {
+            closeReviewModal();
+            isFinished = true; isLocked = true; clearInterval(timerInterval);
+            window.onbeforeunload = null; localStorage.removeItem(STORAGE_KEY);
+            let score = 0; const pointsPerQuestion = 100 / currentQuestions.length;
+            currentQuestions.forEach((q, i) => {
+                const correct = getCorrectAnswerIndex(q.id);
+                const feedback = document.getElementById(`feedback-${i}`);
+                feedback.classList.remove('hidden');
+                document.getElementsByName(`q${i}`).forEach(inp => inp.disabled = true);
+                if (userAnswers[i] == correct) {
+                    score += pointsPerQuestion;
+                    feedback.innerHTML = "✅ Resposta Correta";
+                    feedback.classList.add('bg-green-100', 'text-green-700');
+                } else {
+                    feedback.innerHTML = "❌ Resposta Incorreta";
+                    feedback.classList.add('bg-red-100', 'text-red-700');
+                    if (CONFIG.showAnswers) {
+                        const correctRadio = document.querySelector(`input[name="q${i}"][value="${correct}"]`);
+                        if(correctRadio) {
+                            const label = correctRadio.closest('label');
+                            label.classList.add('ring-2', 'ring-green-500', 'bg-green-50');
+                            label.innerHTML += `<span class="ml-auto text-xs font-bold text-green-700 bg-green-200 px-2 py-1 rounded">Correta</span>`;
+                        }
+                    }
+                }
+            });
+            document.getElementById('score-display').textContent = Math.round(score * 10) / 10;
+            document.getElementById('btn-review').classList.add('hidden');
+            document.getElementById('result-area').classList.remove('hidden');
+            document.getElementById('btn-pdf').classList.remove('hidden');
+            setTimeout(() => document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' }), 500);
+        }
+
+        function getCorrectAnswerIndex(qid) {
+            if (!_decryptedKey && typeof _k !== 'undefined') _decryptedKey = /^[abcd]+$/.test(_k) ? _k : _d(_k);
+            if (!_decryptedKey) return 0;
+            return _decryptedKey.charCodeAt(qid) - 97;
         }
 
         function startTimer() {
@@ -755,185 +611,183 @@
             timerInterval = setInterval(() => {
                 if (isLocked) return clearInterval(timerInterval);
                 timeElapsed++;
-
                 const m = Math.floor(timeElapsed / 60).toString().padStart(2, '0');
                 const s = (timeElapsed % 60).toString().padStart(2, '0');
                 display.textContent = `${m}:${s}`;
-
-                if (timeElapsed >= TIME_LIMIT_SECONDS) lockQuiz("Tempo esgotado!");
+                if (timeElapsed >= TIME_LIMIT_SECONDS) forceFinish("Tempo esgotado!");
             }, 1000);
         }
 
         function addPenalty(reason) {
-            if (!isExamStarted || isLocked || document.getElementById('btn-finish').classList.contains('hidden')) return;
+            // VERIFICA SE ESTÁ EM MODO SEGURO (LINK EXTERNO ATIVO)
+            if (isSafeExternalLink) return; 
 
+            if (!isExamStarted || isLocked || isFinished) return;
             penaltyCount++;
             document.getElementById('penalty-display').textContent = penaltyCount;
-
             const box = document.getElementById('penalty-box');
             box.classList.add('penalty-shake');
             setTimeout(() => box.classList.remove('penalty-shake'), 500);
-
-            if (penaltyCount >= MAX_PENALTIES) lockQuiz("Muitas penalidades detectadas!");
+            if (penaltyCount >= MAX_PENALTIES) forceFinish("Limite de penalidades atingido!");
             else showToast(`⚠️ PENALIDADE (${penaltyCount}/${MAX_PENALTIES}): ${reason}`);
         }
 
-        function lockQuiz(msg) {
-            isLocked = true;
-            clearInterval(timerInterval);
-            document.querySelectorAll('input').forEach(i => i.disabled = true);
-            showModal(`${msg}\n\nO formulário foi bloqueado. Finalize agora para gerar seu comprovante.`);
+        function forceFinish(reason) {
+            isLocked = true; clearInterval(timerInterval);
+            showModal("Prova Encerrada", `${reason}\nO sistema finalizará sua avaliação agora.`, () => finalizeGrading());
         }
 
-        // --- DETECTORES DE FRAUDE ---
-        document.addEventListener("visibilitychange", () => {
-            if (document.hidden && isExamStarted && !isLocked) addPenalty("Saiu da aba.");
-        });
-
-        // Alerta de saída (Refresh Acidental)
-        window.onbeforeunload = function () {
-            if (isExamStarted && !document.getElementById('btn-finish').classList.contains('hidden')) {
-                return "Se você recarregar a página, perderá o acesso à prova por 1 hora. Tem certeza?";
-            }
-        };
-
-        // DETECTOR DE FOCO INTELIGENTE (Ignora modais e iframes)
-        window.addEventListener("blur", () => {
-            // Verifica se modais estão abertos
-            const modalOpen = !document.getElementById('custom-modal-overlay').classList.contains('hidden');
-            const imgModalOpen = !document.getElementById('image-modal-overlay').classList.contains('hidden');
-            const vidModalOpen = !document.getElementById('video-modal-overlay').classList.contains('hidden');
-
-            // Verifica se o foco foi para um iframe (video do youtube)
-            const activeEl = document.activeElement;
-            const isIframeFocus = activeEl && activeEl.tagName === 'IFRAME';
-
-            // Se a prova está rodando e o usuário não está interagindo com modais permitidos
-            if (isExamStarted && !isLocked && !document.getElementById('btn-finish').classList.contains('hidden')
-                && !modalOpen && !imgModalOpen && !vidModalOpen && !isIframeFocus) {
-                addPenalty("Janela perdeu o foco (clicou fora).");
-            }
-        });
-
-        document.addEventListener('copy', (e) => { if (isExamStarted) { e.preventDefault(); addPenalty("Cópia bloqueada."); } });
-        document.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
-        document.addEventListener('keydown', (e) => {
-            if (e.key == "F12" || (e.ctrlKey && (e.key == "u" || e.key == "s" || e.key == "p"))) {
-                e.preventDefault();
-                if (isExamStarted) addPenalty("Tecla proibida.");
-            }
-        });
-
+        // --- SISTEMA ANTI-TRAPAÇA ---
         setInterval(() => {
-            if (isExamStarted && !isLocked) {
+            if (isExamStarted && !isLocked && !isFinished && !isSafeExternalLink) { // Ignora se estiver no youtube
                 const t0 = Date.now();
-                debugger;
-                if (Date.now() - t0 > 100) addPenalty("Inspector aberto.");
+                debugger; 
+                if (Date.now() - t0 > 100) {
+                    addPenalty("Inspector/DevTools aberto.");
+                }
             }
         }, 4000);
 
-        function finishQuiz() {
-            const executeFinish = () => {
-                isLocked = true;
-                clearInterval(timerInterval);
-                let score = 0;
+        // --- DETECÇÃO DE MUDANÇA DE ABA ---
+        document.addEventListener("visibilitychange", () => { 
+            // Só aplica penalidade se NÃO for um link seguro permitido
+            if (document.hidden && isExamStarted && !isLocked && !isFinished && !isSafeExternalLink) {
+                addPenalty("Saiu da aba."); 
+            }
+        });
 
-                // Calcula quanto vale cada questão dinamicamente (Ex: 100 / 20 = 5pts, 100 / 10 = 10pts)
-                const pointsPerQuestion = 100 / currentQuestions.length;
+        // --- DETECÇÃO DE PERDA DE FOCO ---
+        window.addEventListener("blur", () => {
+            if (isExamStarted && !isLocked && !isFinished && !isSafeExternalLink) {
+                const active = document.activeElement;
+                if (active && active.tagName === 'IFRAME') return;
+                const modals = ['custom-modal-overlay', 'review-modal-overlay', 'image-modal-overlay', 'video-modal-overlay'];
+                if(!modals.some(id => !document.getElementById(id).classList.contains('hidden'))) {
+                    addPenalty("Janela perdeu foco.");
+                }
+            }
+        });
 
-                currentQuestions.forEach((q, i) => {
-                    const correct = getCorrectAnswerIndex(q.id);
-                    const feedback = document.getElementById(`feedback-${i}`);
-                    feedback.classList.remove('hidden');
+        // Retorno de Foco: Reativa a segurança
+        window.addEventListener("focus", () => {
+            if (isSafeExternalLink) {
+                // Dá um pequeno delay antes de reativar a segurança para evitar penalidade imediata
+                setTimeout(() => {
+                    isSafeExternalLink = false;
+                    console.log("Segurança reativada.");
+                }, 1000);
+            }
+        });
 
-                    document.getElementsByName(`q${i}`).forEach(inp => inp.disabled = true);
+        window.onbeforeunload = function () { if (isExamStarted && !isFinished) return "Sair agora bloqueará seu acesso."; };
+        document.addEventListener('copy', (e) => { if (isExamStarted) { e.preventDefault(); addPenalty("Cópia bloqueada"); } });
+        document.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
+        document.addEventListener('keydown', (e) => { if (e.key === "F12" || (e.ctrlKey && (e.key === "u" || e.key === "p"))) { e.preventDefault(); addPenalty("Tecla proibida"); } });
 
-                    if (userAnswers[i] === correct) {
-                        score += pointsPerQuestion
-                        feedback.innerHTML = "<span class='text-green-600'>✅ Correto</span>";
-                        if (userAnswers[i] !== undefined)
-                            document.querySelector(`input[name="q${i}"][value="${userAnswers[i]}"]`).parentElement.classList.add('bg-green-100');
-                    } else {
-                        feedback.innerHTML = "<span class='text-red-600'>❌ Incorreto</span>";
-                        if (userAnswers[i] !== undefined)
-                            document.querySelector(`input[name="q${i}"][value="${userAnswers[i]}"]`).parentElement.classList.add('bg-red-100');
-                    }
-                });
-
-                // Arredonda a nota para evitar casas decimais longas (ex: 33.333)
-                const finalScore = Math.round(score * 10) / 10;
-                document.getElementById('score-display').textContent = finalScore;
-                document.getElementById('result-area').classList.remove('hidden');
-                document.getElementById('btn-finish').classList.add('hidden');
-                document.getElementById('btn-pdf').classList.remove('hidden');
-                document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
-
-                // Remove o aviso de saída e o bloqueio de sessão ao terminar com sucesso
-                window.onbeforeunload = null;
-                localStorage.removeItem(STORAGE_KEY);
-            };
-
-
-            if (!isLocked && Object.keys(userAnswers).length < currentQuestions.length) {
-                showModal("Ainda existem questões em branco.\nTem certeza que deseja finalizar agora?", () => {
-                    executeFinish();
-                }, true);
-            } else {
-                executeFinish();
+        function setSessionLock() { localStorage.setItem(STORAGE_KEY, JSON.stringify({ timestamp: Date.now() })); }
+        function checkSessionLock() {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            if (data) {
+                const passed = Date.now() - data.timestamp;
+                if (passed < SESSION_LOCK_TIME_MS) {
+                    document.getElementById('main-app-container').classList.add('hidden');
+                    document.getElementById('lockout-screen').classList.remove('hidden');
+                    const unlockTime = data.timestamp + SESSION_LOCK_TIME_MS;
+                    setInterval(() => {
+                        const rem = unlockTime - Date.now();
+                        if (rem <= 0) { localStorage.removeItem(STORAGE_KEY); location.reload(); }
+                        else {
+                            const m = Math.floor(rem / 60000).toString().padStart(2,'0');
+                            const s = Math.floor((rem % 60000) / 1000).toString().padStart(2,'0');
+                            document.getElementById('lock-timer').textContent = `${m}:${s}`;
+                        }
+                    }, 1000);
+                } else { localStorage.removeItem(STORAGE_KEY); }
             }
         }
 
         async function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-
             const name = document.getElementById('studentName').value;
             const turma = document.getElementById('studentClass').value;
             const score = document.getElementById('score-display').textContent;
             const now = new Date();
-            const authString = `${name}-${score}-${timeElapsed}-${penaltyCount}-${now.getTime()}`;
-
-            let hash = 0;
-            for (let i = 0; i < authString.length; i++) {
-                hash = ((hash << 5) - hash) + authString.charCodeAt(i);
-                hash |= 0;
-            }
+            const raw = `${name}${score}${timeElapsed}${penaltyCount}${now.getTime()}${currentExamId}`;
+            let hash = 0; for(let i=0; i<raw.length; i++) hash = ((hash << 5) - hash) + raw.charCodeAt(i) | 0;
             const authCode = "AUTH-" + Math.abs(hash).toString(16).toUpperCase().padStart(8, '0');
 
-            doc.setFillColor(37, 99, 235);
-            doc.rect(0, 0, 210, 40, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(20);
-            doc.text("Comprovante de Avaliação", 105, 25, null, null, "center");
-
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(12);
-            doc.text(`Aluno: ${name}`, 20, 60);
-            doc.text(`Turma: ${turma}`, 20, 70);
+            doc.setFillColor(37, 99, 235); doc.rect(0, 0, 210, 40, 'F');
+            doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.text("Comprovante de Avaliação", 105, 25, { align: "center" });
+            
+            doc.setTextColor(0, 0, 0); doc.setFontSize(12);
+            doc.text(`Aluno: ${name}`, 20, 60); doc.text(`Turma: ${turma}`, 20, 70);
             doc.text(`Data: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`, 20, 80);
+            doc.text(`Prova ID: ${currentExamId}`, 20, 90);
 
-            doc.setFontSize(14);
-            doc.text(`Nota Final: ${score}/100`, 20, 100);
-            doc.text(`Tempo: ${document.getElementById('timer-display').textContent}`, 120, 100);
+            doc.setFontSize(16); doc.text(`Nota Final: ${score} / 100`, 20, 110);
+            doc.setFontSize(12); doc.text(`Tempo de Prova: ${document.getElementById('timer-display').textContent}`, 20, 120);
+            
+            if (penaltyCount > 0) { doc.setTextColor(220, 38, 38); doc.text(`Penalidades: ${penaltyCount}`, 20, 130); } 
+            else { doc.setTextColor(22, 163, 74); doc.text("Conduta: Limpa (Sem infrações)", 20, 130); }
 
-            if (penaltyCount > 0) {
-                doc.setTextColor(200, 0, 0);
-                doc.text(`Penalidades: ${penaltyCount}`, 20, 115);
-            } else {
-                doc.setTextColor(0, 128, 0);
-                doc.text("Conduta: Limpa (Sem penalidades)", 20, 115);
-            }
-
-            doc.setTextColor(100, 100, 100);
-            doc.setFontSize(10);
-            doc.text("Código de Autenticação:", 105, 140, null, null, "center");
-            doc.setFont("courier", "bold");
-            doc.setFontSize(14);
-            doc.text(authCode, 105, 150, null, null, "center");
-
-            doc.save(`Relatorio_${name.replace(/\s+/g, '_')}.pdf`);
+            doc.setTextColor(150, 150, 150); doc.setFontSize(10);
+            doc.text("Código de Autenticação:", 105, 160, { align: "center" });
+            doc.setFont("courier", "bold"); doc.setFontSize(14); doc.setTextColor(0, 0, 0);
+            doc.text(authCode, 105, 170, { align: "center" });
+            doc.save(`Relatorio_${name.replace(/\s+/g, '_')}_${currentExamId}.pdf`);
         }
+
+        // --- FUNÇÃO PARA ABRIR YOUTUBE SEGURO ---
+        function openSafeYouTube(vidId) {
+            isSafeExternalLink = true; // Ativa flag de segurança
+            window.open(`https://www.youtube.com/watch?v=${vidId}`, '_blank');
+        }
+
+        function showModal(title, msg, onConfirm, isConfirm = false) {
+            const overlay = document.getElementById('custom-modal-overlay');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-text').innerText = msg;
+            const actions = document.getElementById('modal-actions'); actions.innerHTML = '';
+            const btn = document.createElement('button');
+            btn.className = "bg-blue-600 text-white px-6 py-2 rounded font-bold hover:bg-blue-700";
+            btn.textContent = isConfirm ? "Confirmar" : "OK";
+            btn.onclick = () => { overlay.classList.add('hidden'); if(onConfirm) onConfirm(); };
+            actions.appendChild(btn);
+            if(isConfirm) {
+                const cancel = document.createElement('button');
+                cancel.className = "bg-gray-200 text-gray-700 px-6 py-2 rounded font-bold hover:bg-gray-300";
+                cancel.textContent = "Cancelar";
+                cancel.onclick = () => overlay.classList.add('hidden');
+                actions.appendChild(cancel);
+            }
+            overlay.classList.remove('hidden');
+        }
+        function showToast(msg) { const t = document.getElementById("custom-toast"); t.textContent = msg; t.className = "show"; setTimeout(() => t.className = t.className.replace("show", ""), 3000); }
+        function renderMath() { if (window.renderMathInElement) { renderMathInElement(document.getElementById('quiz-container'), { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true } ], throwOnError: false }); } }
+        function openImageModal(src) { document.getElementById('expanded-image').src = src; document.getElementById('image-modal-overlay').classList.remove('hidden'); }
+        
+        // MODAL DE VIDEO ATUALIZADO
+        function openVideoModal(vidId) { 
+            const container = document.getElementById('video-container');
+            container.innerHTML = `
+                <div class="flex flex-col h-full bg-black rounded-lg overflow-hidden">
+                    <div class="flex-grow">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/${vidId}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <div class="bg-gray-900 p-3 text-center border-t border-gray-800">
+                        <p class="text-gray-400 text-xs mb-2">O vídeo não carregou? (Erro 153 ou tela preta?)</p>
+                        <button onclick="openSafeYouTube('${vidId}')" class="bg-red-600 hover:bg-red-700 text-white text-sm px-4 py-2 rounded flex items-center justify-center gap-2 mx-auto transition-colors font-bold shadow-lg">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            Assistir no YouTube (Sem Penalidade)
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('video-modal-overlay').classList.remove('hidden'); 
+        }
+        
+        function closeMediaModal() { document.getElementById('image-modal-overlay').classList.add('hidden'); document.getElementById('video-modal-overlay').classList.add('hidden'); document.getElementById('video-container').innerHTML = ""; }
     </script>
 </body>
-
 </html>
