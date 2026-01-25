@@ -105,6 +105,18 @@
                 </div>
             </div>
 
+            <!-- NOVA CONFIGURAÇÃO: GABARITO -->
+            <div class="mt-6 pt-4 border-t border-gray-100">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                    <input type="checkbox" id="conf-showAnswers" class="w-5 h-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500" checked>
+                    <span class="text-gray-700 font-medium">Mostrar Gabarito ao Final?</span>
+                </label>
+                <p class="text-xs text-gray-500 mt-1 ml-8">
+                    Se marcado, o aluno verá quais questões acertou/errou E qual era a resposta correta. 
+                    Se desmarcado, ele verá apenas "Incorreto" sem revelar a resposta certa.
+                </p>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-6">&nbsp;</div>
 
             <div class="col-span-full bg-gray-50 p-4 rounded border border-gray-200 mt-4">
@@ -124,6 +136,25 @@
                     </div>
                 </div>
             </div>
+
+            <!-- NOVA SEÇÃO: MATERIAL DE ESTUDO -->
+            <div class="col-span-full bg-blue-50 p-4 rounded border border-blue-200 mt-4">
+                <h3 class="text-sm font-bold text-blue-800 mb-2 flex items-center gap-2">
+                    <i data-lucide="book-open" class="h-4 w-4"></i> Material de Estudo (Opcional)
+                </h3>
+                <p class="text-xs text-blue-600 mb-3">Estes links aparecerão na tela inicial da prova para revisão.</p>
+                
+                <div id="study-links-container" class="space-y-2 mb-3">
+                    <!-- Links serão inseridos aqui -->
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="addStudyLinkField()" class="text-xs bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 flex items-center gap-1">
+                        <i data-lucide="plus" class="h-3 w-3"></i> Adicionar Link
+                    </button>
+                </div>
+            </div>
+
         </div>
 
         <!-- INSTRUÇÕES LATEX -->
@@ -368,6 +399,22 @@
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
+        // --- MANIPULAÇÃO DE LINKS DE ESTUDO ---
+        function addStudyLinkField(label = '', url = '') {
+            const container = document.getElementById('study-links-container');
+            const div = document.createElement('div');
+            div.className = "flex gap-2 items-center";
+            div.innerHTML = `
+                <input type="text" class="link-label w-1/3 p-2 border text-sm rounded focus:ring-blue-500" placeholder="Título (Ex: Vídeo Aula)" value="${label}">
+                <input type="text" class="link-url w-2/3 p-2 border text-sm rounded focus:ring-blue-500" placeholder="URL (https://...)" value="${url}">
+                <button onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700">
+                    <i data-lucide="trash-2" class="h-4 w-4"></i>
+                </button>
+            `;
+            container.appendChild(div);
+            lucide.createIcons();
+        }
+
         // --- Função de Preview de Imagem ---
         function updateImagePreview(input) {
             const url = input.value.trim();
@@ -440,10 +487,16 @@
                 if (configMatch) {
                     try {
                         const confStr = configMatch[1];
+                        
+                        // Parser manual seguro
                         const extract = (key, type) => {
-                            const regex = new RegExp(key + "\\s*:\\s*(\"[^\"]*\"|\\d+)");
+                            const regex = new RegExp(key + "\\s*:\\s*(\"[^\"]*\"|\\d+|true|false)");
                             const m = confStr.match(regex);
-                            if (m) return type === 'int' ? parseInt(m[1]) : m[1].replace(/"/g, '');
+                            if (m) {
+                                if (type === 'int') return parseInt(m[1]);
+                                if (type === 'bool') return m[1] === 'true';
+                                return m[1].replace(/"/g, '');
+                            }
                             return null;
                         };
 
@@ -452,6 +505,7 @@
                         const tm = extract('timeLimitMinutes', 'int');
                         const l = extract('lockoutDurationMinutes', 'int');
                         const q = extract('questionsQty', 'int');
+                        const sa = extract('showAnswers', 'bool');
                         
                         const e = extract('easy', 'int');
                         const md = extract('medium', 'int');
@@ -462,9 +516,26 @@
                         if (tm) document.getElementById('conf-time').value = tm;
                         if (l) document.getElementById('conf-lock').value = l;
                         if (q) document.getElementById('conf-qty').value = q;
+                        if (sa !== null) document.getElementById('conf-showAnswers').checked = sa;
+
                         if (e !== null) document.getElementById('conf-easy').value = e;
                         if (md !== null) document.getElementById('conf-medium').value = md;
                         if (h !== null) document.getElementById('conf-hard').value = h;
+
+                        // Extração de studyLinks (Array)
+                        const studyLinksMatch = confStr.match(/studyLinks\s*:\s*(\[[\s\S]*?\])/);
+                        document.getElementById('study-links-container').innerHTML = ''; // Limpa
+                        if (studyLinksMatch) {
+                            try {
+                                // Usa um parser mais relaxado ou eval seguro para o array
+                                const links = JSON.parse(studyLinksMatch[1].replace(/'/g, '"').replace(/(\w+):/g, '"$1":'));
+                                if (Array.isArray(links)) {
+                                    links.forEach(link => addStudyLinkField(link.label, link.url));
+                                }
+                            } catch(errLink) {
+                                console.warn("Erro ao parsear links de estudo, ignorando...", errLink);
+                            }
+                        }
 
                     } catch (err) { console.error("Erro ao ler configs", err); }
                 }
@@ -574,6 +645,16 @@
             const confTime = document.getElementById('conf-time').value || 30;
             const confLock = document.getElementById('conf-lock').value || 60;
             const confQty = document.getElementById('conf-qty').value || 20;
+            const confShowAnswers = document.getElementById('conf-showAnswers').checked;
+
+            // Coleta Links de Estudo
+            const studyLinkDivs = document.querySelectorAll('#study-links-container > div');
+            let studyLinks = [];
+            studyLinkDivs.forEach(div => {
+                const l = div.querySelector('.link-label').value.trim();
+                const u = div.querySelector('.link-url').value.trim();
+                if(l && u) studyLinks.push({ label: l, url: u });
+            });
 
             const cards = document.querySelectorAll('.question-card');
 
@@ -652,11 +733,13 @@ const examConfig = {
     timeLimitMinutes: ${confTime},
     lockoutDurationMinutes: ${confLock},
     questionsQty: ${confQty},
+    showAnswers: ${confShowAnswers},
     difficultyDistribution: {
         easy: ${parseInt(document.getElementById('conf-easy').value) || 0},
         medium: ${parseInt(document.getElementById('conf-medium').value) || 0},
         hard: ${parseInt(document.getElementById('conf-hard').value) || 0}
-    }
+    },
+    studyLinks: ${JSON.stringify(studyLinks, null, 8)}
 };
 
 // Chave criptografada (Base64 XOR)
