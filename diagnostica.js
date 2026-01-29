@@ -18,7 +18,7 @@ const examConfig = {
 const _k = "MVACEVEQPChRGj0iQkE9MCctIyo8UFNRVzFSABBQFj4pUBs8IkNAPTAnLCMrPVFTUFcwUQEQUBc9KVAYPCFDQD0wJywgKzxQU1BXMlEBEFIWPSpSGz0iQkE9MScvIys9UFJQVDJQARFREDwoURo9IkJBPTAnLSMqPFBTUVcxUgAQUBY+KVAbPCJDQD0wJywjKz1RU1BXMFEBEFAXPSlQGDwhQ0A9MCcsICs8UFNQVzJRARBSFj0qUhs9IkJBPTEnLyMrPVBSUFQ=";
 
 const fullQuestionBank = [
-    // --- PARTE 1: NÍVEL FÁCIL ---
+
     {
         "id": 0,
         "difficulty": "easy",
@@ -129,7 +129,7 @@ const fullQuestionBank = [
             "Entrada, Saída, Terra"
         ]
     },
-    // --- PARTE 1: NÍVEL MÉDIO ---
+
     {
         "id": 10,
         "difficulty": "medium",
@@ -240,7 +240,7 @@ const fullQuestionBank = [
             "0 Hz (corrente contínua pura)"
         ]
     },
-    // --- PARTE 1: NÍVEL DIFÍCIL ---
+
     {
         "id": 20,
         "difficulty": "hard",
@@ -351,7 +351,7 @@ const fullQuestionBank = [
             "analogWrite(9, 255);"
         ]
     },
-    // --- PARTE 2: NÍVEL FÁCIL ---
+
     {
         "id": 30,
         "difficulty": "easy",
@@ -462,7 +462,7 @@ const fullQuestionBank = [
             "F e V"
         ]
     },
-    // --- PARTE 2: NÍVEL MÉDIO ---
+
     {
         "id": 40,
         "difficulty": "medium",
@@ -595,7 +595,7 @@ const fullQuestionBank = [
             "Grupo de 2 elementos."
         ]
     },
-    // --- PARTE 2: NÍVEL DIFÍCIL ---
+
     {
         "id": 52,
         "difficulty": "hard",
@@ -739,7 +739,7 @@ const fullQuestionBank = [
             "= é usado para texto, == para números."
         ]
     },
-    // --- PARTE 3: NÍVEL FÁCIL ---
+
     {
         "id": 65,
         "difficulty": "easy",
@@ -850,7 +850,7 @@ const fullQuestionBank = [
             "O Latch só funciona com tensão negativa."
         ]
     },
-    // --- PARTE 3: NÍVEL MÉDIO ---
+
     {
         "id": 75,
         "difficulty": "medium",
@@ -961,7 +961,7 @@ const fullQuestionBank = [
             "Economizar energia."
         ]
     },
-    // --- PARTE 3: NÍVEL DIFÍCIL ---
+
     {
         "id": 85,
         "difficulty": "hard",
