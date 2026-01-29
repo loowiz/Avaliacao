@@ -1,24 +1,24 @@
-/* BANCO DE QUESTÕES - AUTOMAÇÃO INDUSTRIAL - GERADO VIA CONVERSÃO */
+/* BANCO DE QUESTÕES (CRIPTOGRAFADO) - GERADO PELO EDITOR SEGURO */
 
 const examConfig = {
     title: "Avaliação Diagnóstica 3º Semestre",
     maxPenalties: 10,
-    timeLimitMinutes: 60, // Ajustado para 100 questões
+    timeLimitMinutes: 60,
     lockoutDurationMinutes: 5,
     questionsQty: 50,
     showAnswers: true,
     difficultyDistribution: {
-        easy: 30,   // Aprox 30%
-        medium: 40, // Aprox 40%
-        hard: 30    // Aprox 30%
-    }
+        easy: 30,
+        medium: 40,
+        hard: 30
+    },
+    studyLinks: []
 };
 
-// Chave criptografada (Mantida do original - O Gabarito real precisará ser redefinido no seu sistema)
-const _k = "MVACEVEQPChRGj0iQkE9MCctIyo8UFNRVzFSABBQFj4pUBs8IkNAPTAnLCMrPVFTUFcwUQEQUBc9KVAYPCFDQD0wJywgKzxQU1BXMlEBEFIWPSpSGz0iQkE9MScvIys9UFJQVDJQARFREDwoURo9IkJBPTAnLSMqPFBTUVcxUgAQUBY+KVAbPCJDQD0wJywjKz1RU1BXMFEBEFAXPSlQGDwhQ0A9MCcsICs8UFNQVzJRARBSFj0qUhs9IkJBPTEnLyMrPVBSUFQ=";
+// Chave criptografada (Base64 XOR)
+const _k = "MVAAEVEXPChRGz4jQEE9NyYvICo9UFNQVzBRARBRFjwpVxs+I0NAOzEmLSMrPlFTU1cxUAIQURY8KlAbPSNCQTwwJy0gKz1QUlFXMVEBEFEWPClRGD0jQ0E9MSctIis9UVJTVg==";
 
 const fullQuestionBank = [
-
     {
         "id": 0,
         "difficulty": "easy",
@@ -129,7 +129,6 @@ const fullQuestionBank = [
             "Entrada, Saída, Terra"
         ]
     },
-
     {
         "id": 10,
         "difficulty": "medium",
@@ -240,7 +239,6 @@ const fullQuestionBank = [
             "0 Hz (corrente contínua pura)"
         ]
     },
-
     {
         "id": 20,
         "difficulty": "hard",
@@ -351,7 +349,6 @@ const fullQuestionBank = [
             "analogWrite(9, 255);"
         ]
     },
-
     {
         "id": 30,
         "difficulty": "easy",
@@ -462,7 +459,6 @@ const fullQuestionBank = [
             "F e V"
         ]
     },
-
     {
         "id": 40,
         "difficulty": "medium",
@@ -595,7 +591,6 @@ const fullQuestionBank = [
             "Grupo de 2 elementos."
         ]
     },
-
     {
         "id": 52,
         "difficulty": "hard",
@@ -739,7 +734,6 @@ const fullQuestionBank = [
             "= é usado para texto, == para números."
         ]
     },
-
     {
         "id": 65,
         "difficulty": "easy",
@@ -850,7 +844,6 @@ const fullQuestionBank = [
             "O Latch só funciona com tensão negativa."
         ]
     },
-
     {
         "id": 75,
         "difficulty": "medium",
@@ -961,7 +954,6 @@ const fullQuestionBank = [
             "Economizar energia."
         ]
     },
-
     {
         "id": 85,
         "difficulty": "hard",
