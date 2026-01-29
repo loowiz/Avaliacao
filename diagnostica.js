@@ -1,12 +1,12 @@
 /* BANCO DE QUESTÕES - AUTOMAÇÃO INDUSTRIAL - GERADO VIA CONVERSÃO */
 
 const examConfig = {
-    title: "Diagnóstico Técnico em Automação Industrial",
+    title: "Avaliação Diagnóstica 3º Semestre",
     maxPenalties: 10,
-    timeLimitMinutes: 120, // Ajustado para 100 questões
-    lockoutDurationMinutes: 60,
-    questionsQty: 100,
-    showAnswers: false,
+    timeLimitMinutes: 60, // Ajustado para 100 questões
+    lockoutDurationMinutes: 5,
+    questionsQty: 50,
+    showAnswers: true,
     difficultyDistribution: {
         easy: 30,   // Aprox 30%
         medium: 40, // Aprox 40%
